@@ -8,9 +8,9 @@ let multiplier = x => {
   return x * 2;
 };
 
-let result = pipe(
-  adder(20),
+let resolve = pipe(
+  adder,
   multiplier
 );
 
-console.log(result);
+console.log(resolve(20)); // 42
