@@ -1,3 +1,19 @@
+function wrapper (acton, state) {
+  switch ('x') {
+    case ('x'):
+      return {
+        ...state,
+        // remove specified index from array, similiar to Array.splice
+        keywords: [
+          ...state.keywords.slice(0, action.payload),
+          ...state.keywords.slice(action.payload + 1)
+        ]
+      };
+  }
+}
+
+// Source : https://medium.com/dailyjs/functional-js-with-es6-recursive-patterns-b7d0813ef9e3
+
 // ----------------------------------------------------
 const array = [1, 2, 3, 4, 5];
 
@@ -111,7 +127,6 @@ const max = ([x, ...xs], result = -Infinity) => def(x)
 const array = [0, 1, 2, 3, 4, 5];
 
 max(array); // 5
-
 
 // ----------------------------------------------------
 // Return if argument supplied is defined.
