@@ -1,0 +1,5 @@
+  @HostListener('window:resize') //  WITH EVENT: @HostListener('document:keyup', ['$event'])
+  onResize(ev) {
+    // do something meaningful with it
+    console.log(`Taaa`);
+  }

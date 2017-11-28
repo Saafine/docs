@@ -1,0 +1,9 @@
+  @HostListener('document:click', ['$event.target'])
+  public handleClick (eventTarget) {
+    const clickedInside = this.selectWrapper.nativeElement.contains(eventTarget);
+    if (!clickedInside) {
+      this.opened = false;
+    }
+  }
+  
+  

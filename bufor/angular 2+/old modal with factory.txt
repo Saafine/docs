@@ -1,0 +1,59 @@
+import {
+  Component, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ModalModel } from '../../reducers/modal.reducer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import * as ModalActions from '../../actions/modal.actions';
+
+@Component({
+  selector: 'modal',
+  styleUrls: ['./modal.component.scss'],
+  templateUrl: './modal.component.html'
+})
+
+// Possible issue: img srcs not being hashed
+export class ModalComponent implements OnInit {
+  @ViewChild('modalWrapper', {read: ViewContainerRef}) public modalWrapper;
+  // @ViewChild('modalWrapper') public test: ElementRef;
+
+  public modal: ModalModel;
+  private projectState: Observable<ModalModel>;
+  private subscription: Subscription;
+  // !todo fix
+  @HostListener('document:click', ['$event.target'])
+  public handleClick (eventTarget) {
+    // alert(this.modal.component.contains());
+    // console.log(eventTarget);
+    // console.log(this.modalWrapper);
+    // console.log(this.modalWrapper);
+    // console.log(this.test);
+    console.log(this.modalWrapper);
+    // const clickedInside = this.modal.component.nativeElement.contains(eventTarget);
+    // if (!clickedInside) {
+    //   this.opened = false;
+    // }
+  }
+
+  constructor (private store: Store<ModalModel>) {}
+
+  ngOnInit () {
+    this.projectState = this.store.select('modal');
+    this.subscription = this.projectState.subscribe((store) => {
+      this.modal = store;
+    });
+    // console.log(this.component);
+
+    this.modalWrapper.insert(this.modal.component);
+  }
+
+  ngOnDestroy () {
+    this.subscription.unsubscribe();
+  }
+
+  // public closeModal () {
+  //   alert('hey');
+  //   this.store.dispatch(new ModalActions.CloseModal());
+  // }
+}
