@@ -1,0 +1,8 @@
+<form>
+    <input
+            (change)="changeProjectName($event.target.value)"
+            (keydown.enter)="this.form.submit()"
+            value="{{properties.name}}"
+            class="wl-input"
+            type="text"/>
+</form>
