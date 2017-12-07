@@ -1,0 +1,4 @@
+CodeBuild @ Amazon
+
+code-build-NodeJS-service (created during Code Build, which is used piping) 
+	role needs permission: AmazonS3FullAccess

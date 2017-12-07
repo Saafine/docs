@@ -47,3 +47,6 @@ git config --get remote.origin.url
 
 change origin url
 git remote set-url origin https://github.com/USERNAME/REPOSITORY.git
+
+This will show the entire history of the file (including history beyond renames and with diffs for each change).
+git log --follow -p -- file
