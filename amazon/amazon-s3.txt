@@ -4,7 +4,7 @@ S3 @ Amazon
 - Properties -> Static Website Hosting
 - Permissions -> Public Access -> List objects / Write objects
 
-# Optional Bucket Policy
+# Bucket Policy
 {
     "Version": "2012-10-17",
     "Statement": [
