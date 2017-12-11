@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "[RUNNING] Linting typescript files... (npm run lint)"
+npm run lint
+
+if [[ "$?" == 0 ]]; then
+	echo "[PASS] No lint errors found"
+else
+	echo "[FAIL] Fix typescript errors manually or run 'npm run lint:fix'"
+	exit 1
+fi
+
+echo "[RUNNING] Checking for outdated packages..."
+npm outdated
