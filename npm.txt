@@ -17,7 +17,7 @@ Display whats installed in node_modules
 npm list --depth=0 
 
 Remove extraneous packages
-npm-prune --production=false
+npm prune --production=false
 
 Show any new dependencies for the project in the current directory:
 ncu

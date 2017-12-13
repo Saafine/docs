@@ -1,0 +1,1 @@
+ssh -i "C:\Users\plabus\.ssh\TTF-test.pem" ubuntu@XX.eu-west-2.compute.amazonaws.com
