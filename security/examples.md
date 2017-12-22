@@ -14,5 +14,5 @@ XSS Inside input:
   [Gotcha](javascript&#58this;alert(1&#41))
 
 Denial of Service
-----
- with RegExp expressions (executing regexp that will almost match, but nut exactly)
+----q
+ with RegExp expressions (executing regexp that will almost match, but not exactly)
