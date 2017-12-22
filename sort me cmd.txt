@@ -1,0 +1,7 @@
+# Search for file
+sudo find / -name "package.json"
+
+# Recursively change the owneer of specified files
+sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+source ~/.bashrc

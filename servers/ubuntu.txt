@@ -4,9 +4,6 @@ $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh |
 This file gets run on every log in, but you can initilize it manually to get access to nvm ls
 source ~/.bashrc
 
-Install node with specified version
-nvm install X.X.X
-
 Check if installed
 node --version
 

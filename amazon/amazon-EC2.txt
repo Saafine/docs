@@ -1,1 +1,12 @@
-ssh -i "C:\Users\plabus\.ssh\TTF-test.pem" ubuntu@XX.eu-west-2.compute.amazonaws.com
+# Connect with command line
+ssh -i "C:\Users\XXX\.ssh\TTF-test.pem" ubuntu@XX.eu-west-2.compute.amazonaws.com
+
+# Connect with SFTP (winscp)
+hostname: XX.eu-west-2.compute.amazonaws.com
+username: ubuntu
+advanced -> SSH -> authentication -> private key file -> C:\Users\XXX\.ssh\YYY.ppk
+
+
+"C:\Users\XXXX\.ssh\TTF-test.pem" ubuntu@ec2XXXXXXXXXX.eu-west-2.compute.amazonaws.com
+
+ssh -i "C:\Users\XXXX\.ssh\TTF-test.pem" ubuntu@ec2XXXXXXXXXX.eu-west-2.compute.amazonaws.com

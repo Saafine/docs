@@ -1,5 +1,9 @@
 Git @ Amazon
 
+[!]
+USERNAME MUST BE CONFIGURED (SSH key ID)!
+ACCESS TO SSH IS DEFINED BY IAM ROLE !
+
 # IAM
 Security credentials / SSH keys
 
@@ -24,3 +28,4 @@ ssh -v git-codecommit.us-east-2.amazonaws.com
 Host git-codecommit.*.amazonaws.com
   User XXXXXXXXXXX
   IdentityFile ~/.ssh/id_rsa
+  
