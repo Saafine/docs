@@ -1,0 +1,22 @@
+Service: Route53
+
+ns-1509.awsdns-60.org
+ns-107.awsdns-13.com
+ns-1644.awsdns-13.co.uk
+ns-615.awsdns-12.net
+
+set nameservers on namescheap
+nameservers
+
+go to running instances
+take public ip 52.29.4.250
+
+create record set on route
+name: www.testing-domain.pl
+value: public ip
+
+create record set alias
+name: empty
+aliast target: www.testing-domain.pl
+
+https://www.youtube.com/watch?v=aHuQExY360I

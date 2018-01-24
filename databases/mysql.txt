@@ -1,0 +1,2 @@
+# copy table without data
+CREATE TABLE `XXX` SELECT * FROM `YYYY` LIMIT 0

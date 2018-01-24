@@ -1,0 +1,114 @@
+# list storage
+ls
+ls SomeDir -> get files inside SomeDir with relative path
+ls /home/joe/SomeDir -> get them with absolute path
+ls -a -> shows hidden files
+ls -l -> long list, shows with permissions
+
+# sign means you are logged as normal user (not root)
+$
+
+# present working directory - absolute path
+pwd
+
+# change directory
+cd -> no args or ~, goes home
+cd .. -> 1 level up
+
+# change directory checkpoint save
+pushd /etc
+
+# brings you back
+popd 
+
+# get file type
+file
+
+# find a file
+locate
+
+# what is this command
+whatis
+
+# shows manual of specified command
+man
+
+# make directory
+mkdir
+
+# create file or updates date of existing file
+touch
+
+# copy
+cp
+cp ~/.bashrc bashrc => from home dir copy file to this dir
+
+# rename file
+mv
+
+# remove file
+rm
+rm file* => remove all files starting with file
+
+# remove directory
+rm -r
+
+# remove directory without files
+rmdir
+
+# open file
+cat
+cat >> fileXXX => opens up editor (ctrl+d to leave)
+
+# open part of file (q to leave)
+more
+
+# open part of file (q to leave)
+less
+
+# text editor
+nano fileName
+
+# administator privleges
+sudo
+sudo -s => active root for a while, exit to leave
+
+# change user
+su - cindy
+
+# file permissions
+ls -l
+r - read (4 bits), w - write (2 bits), x - execute (1 bit)
+user / group / everyone
+chmod +x file1 => make file executable
+chmod 700 => read/write/execute to me, group and everyone not allowed
+chmod 744 => user can do anything. group and everyone can read
+
+When you are working with directories, x - bit will make
+directory not visible
+
+# piping - take output of one command and feet it into a second one
+
+# watch memory
+watch free -h
+
+# kil process
+killall firefox
+
+# Search for file
+sudo find / -name "package.json"
+
+# Recursively change the owneer of specified files
+sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+source ~/.bashrc
+
+# Change the time
+sudo timedatectl set-timezone CET
+
+# Show the time
+date
+
+$PATH will show paths, that are searched for executables. For example:
+which sudo -> /usr/bin/sudo -> because /usr/bin/ is part of PATH
+to append to path: PATH=$PATH:xxxxxxx/x/x/

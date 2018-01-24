@@ -1,0 +1,28 @@
+LAUNCHING EC2 SERVER
+1. launch EC2 instance inside a chosen region
+2. set iam role - added ecsInstanceRole
+3. storage: 8gb
+4. security group: create a new
+group name: jenkins-for-web
+5. Launch
+6. Create a new key pair (download as .pem)
+
+# Set Elastic IP to prevent public dns from changing
+7. Go to EC2 Instances, right click on instance, click manage IP addresses, click Allocate an Elastic IP to this instance or network interface,
+go to Network & Security / Elastic IPs, right click on IP, click assosciate address, select instance and click [Assosciate]
+8. ssh -i "C:\Users\xxxx\.ssh\jenkins-for-web-key-pair.pem" ubuntu@xxxx.compute.amazonaws.com
+
+// OTHER
+
+# Connect with command line
+ssh -i "C:\Users\XXX\.ssh\TTF-test.pem" ubuntu@XX.eu-west-2.compute.amazonaws.com
+
+# Connect with SFTP (winscp)
+hostname: XX.eu-west-2.compute.amazonaws.com
+username: ubuntu
+advanced -> SSH -> authentication -> private key file -> C:\Users\XXX\.ssh\YYY.ppk
+
+
+"C:\Users\XXXX\.ssh\TTF-test.pem" ubuntu@ec2XXXXXXXXXX.eu-west-2.compute.amazonaws.com
+
+ssh -i "C:\Users\XXXX\.ssh\TTF-test.pem" ubuntu@ec2XXXXXXXXXX.eu-west-2.compute.amazonaws.com
