@@ -1,7 +1,0 @@
-CLI @ Amazon
-
-# IAM
-Security credentials / SSH keys
-
-# Commands
-aws s3 rb s3://dev.webclient.xbt.com --force // Removing bucket
