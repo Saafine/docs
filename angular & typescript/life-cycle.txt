@@ -1,0 +1,7 @@
+ngOnChanges() is triggered when the @Input data is changed
+ 
+ngDoCheck
+Invoked when the change detector of the given component is invoked. 
+It allows us to implement our own change detection algorithm for the given componen
+
+! ngDoCheck and ngOnChanges should not be implemented together on the same component.
