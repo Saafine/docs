@@ -30,3 +30,7 @@ grant_type: xxxx
 This is why it is secure to do the following: - Store the JWT in a cookie 
 so that it can't be retrieved from XSS - Store a CSRF token in localStorage 
 so it can't be retrieved from CSRF – Alejandro Cavazos Nov 6 '17 at 17:55 
+
+https://docs.angularjs.org/api/ng/service/$http#cross-site-request-forgery-xsrf-protection
+https://github.com/expressjs/csurf
+http://spring.io/blog/2013/08/21/spring-security-3-2-0-rc1-highlights-csrf-protection/

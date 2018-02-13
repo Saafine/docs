@@ -50,3 +50,10 @@ git remote set-url origin https://github.com/USERNAME/REPOSITORY.git
 
 This will show the entire history of the file (including history beyond renames and with diffs for each change).
 git log --follow -p -- file
+
+# Changing last commit message
+git commit --amend
+
+# VIM
+ESC -> :q! // quit without saving any changes
+ESC -> :wq // quit and save

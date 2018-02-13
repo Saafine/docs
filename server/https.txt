@@ -1,9 +1,15 @@
 # https://letsencrypt.org/getting-started/
-# https://certbot.eff.org/#ubuntuxenial-nginx
-# cd /etc/nginx/sites-available
-# nano backoffice-master
-# webroot /home/ubuntu/server/dist/public
-# enable https on EC2
+
+1. # https://certbot.eff.org/#ubuntuxenial-nginx
+
+2. # cd /etc/nginx/sites-available
+3. # sudo nano backoffice-master
+
+4. sudo certbot --authenticator webroot --installer nginx
+5. press number to select domain (based on sites-available/xxx-domain-name
+6. press number to enter webroot
+7. # enter webroot /home/ubuntu/server/dist/public
+8. # enable https on EC2
 
 server {
   listen 80;
