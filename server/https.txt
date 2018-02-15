@@ -1,7 +1,6 @@
 # https://letsencrypt.org/getting-started/
 
 1. # https://certbot.eff.org/#ubuntuxenial-nginx
-
 2. # cd /etc/nginx/sites-available
 3. # sudo nano backoffice-master
 
