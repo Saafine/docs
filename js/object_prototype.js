@@ -44,3 +44,4 @@ function Person (saying) {
 Person.prototype.talk = function () {
   console.log('I say:', this.saying);
 };
+
