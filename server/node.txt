@@ -1,0 +1,38 @@
+INSTALLING NODE JS ON UBUNTU
+1. Run these commands
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+lub
+curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+lub
+inna nowa wersja
+
+sudo apt-get install -y nodejs
+
+2. Install process manager to run node on startup
+sudo npm install -g pm2
+pm2 install typescript
+
+3. Starting
+pm2 start src/server.ts
+
+4. To run on startup
+pm2 startup systemd
+- The last line of the resulting output will include a command that you must run with superuser privileges:
+
+5. Check status of the systemd
+systemctl status pm2-MYUSERNAME
+
+# Stop application
+pm2 stop app_name_or_id
+
+# Restart application
+pm2 restart app_name_or_id
+
+# List of managed apps
+pm2 list
+
+# More info
+pm2 info example
+
+# Monitor
+pm2 monit

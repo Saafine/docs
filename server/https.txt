@@ -1,0 +1,33 @@
+# https://letsencrypt.org/getting-started/
+
+1. # https://certbot.eff.org/#ubuntuxenial-nginx
+2. # cd /etc/nginx/sites-available
+3. # sudo nano backoffice-master
+
+4. sudo certbot --authenticator webroot --installer nginx
+5. press number to select domain (based on sites-available/xxx-domain-name
+6. press number to enter webroot
+7. # enter webroot /home/ubuntu/server/dist/public
+8. # enable https on EC2
+
+server {
+  listen 80;
+  server_name testing-domain.pl;
+  location / {
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  Host       $http_host;
+    proxy_pass        http://127.0.0.1:3000;
+  }
+
+    listen 443 ssl; # managed by Certbot
+ssl_certificate /etc/letsencrypt/live/testing-domain.pl/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/testing-domain.pl/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+}

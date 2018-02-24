@@ -1,0 +1,26 @@
+INSTALLING JENKINS ON UBUNTU
+1. Run these commands
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+
+2. Starting Jenkins Server
+sudo systemctl start jenkins
+
+3. Check if started and active
+sudo systemctl status jenkins -> ● jenkins.service - LSB: Start Jenkins at boot time
+
+4. Open ports on amazon:
+security groups -> inbound -> custom tcp -> 8080 -> source 0.0.0.0/0 or allow only company ip 212.160.173.3/32
+
+5. Go to ec2-52-59-118-183.eu-central-1.compute.amazonaws.com:8080
+
+# Fixing ECACCESS during npm install errors
+make  sure you are jenkins user, if not ->
+https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-2-change-npms-default-directory-to-another-directory
+npm config get prefix
+sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+// if npm install fails, you may need to rebuild some packages so it is better to start over
+// npm rebuild node-sass

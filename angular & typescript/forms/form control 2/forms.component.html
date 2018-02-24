@@ -1,0 +1,27 @@
+login component
+<a>
+    <span *ngIf="loginRequired">Login</span>
+    <span *ngIf="!loginRequired">Logout</span>
+</a>
+
+<form>
+    <label hoverfocus>Email</label>
+    <input type="email" #email>
+    <label>Password</label>
+    <input type="password" #password>
+    <button type="button" (click)="login(email.value, password.value)" [disabled]="!enabled">Login</button>
+</form>
+
+
+<form
+        (ngSubmit)="login()"
+        [formGroup]="form"
+>
+    <label>Email</label>
+    <input type="email"
+           formControlName="email">
+    <label>Password</label>
+    <input type="password"
+           formControlName="password">
+    <button type="submit">Login</button>
+</form>

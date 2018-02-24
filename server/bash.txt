@@ -94,3 +94,21 @@ watch free -h
 
 # kil process
 killall firefox
+
+# Search for file
+sudo find / -name "package.json"
+
+# Recursively change the owneer of specified files
+sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+source ~/.bashrc
+
+# Change the time
+sudo timedatectl set-timezone CET
+
+# Show the time
+date
+
+$PATH will show paths, that are searched for executables. For example:
+which sudo -> /usr/bin/sudo -> because /usr/bin/ is part of PATH
+to append to path: PATH=$PATH:xxxxxxx/x/x/

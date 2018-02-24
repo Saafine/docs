@@ -1,0 +1,30 @@
+INSTALLING NGINX ON UBUNTU
+1. Run these commands:
+sudo apt-get update
+sudo apt-get install nginx
+
+2. remove default nginx welcoming:
+sudo rm /etc/nginx/sites-enabled/default
+Create a config file in sites-available and name it whatever you like.
+sudo nano /etc/nginx/sites-available/XXXXXXX
+The following is the config we are going to use.
+server {
+  listen 80;
+  server_name XXXXXXX;
+  location / {
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  Host       $http_host;
+    proxy_pass        http://127.0.0.1:3000;
+  }
+}
+
+Link the config file in sites enabled (this will make it seem like the file is actually copied insites-enabled).
+
+sudo ln -s /etc/nginx/sites-available/XXXXXXX /etc/nginx/sites-enabled/XXXXXXX
+sudo systemctl start nginx // start web server
+sudo systemctl enable nginx // enable nginx on startup
+sudo systemctl restart nginx // restart web server
+
+sudo systemctl stop nginx // stop web server
+sudo systemctl reload nginx // reload without dropping connection
+sudo systemctl disable nginx // disable nginx on startup
