@@ -57,3 +57,6 @@ git commit --amend
 # VIM
 ESC -> :q! // quit without saving any changes
 ESC -> :wq // quit and save
+
+If cmder is not storing passwords
+git config --global credential.helper wincred
