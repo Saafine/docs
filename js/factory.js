@@ -39,3 +39,17 @@ const factories = [
 
 // ES6 deconstructing
 const [deleteUser, createUser, selectUser] = factories.map((factory) => factory(connection));
+
+
+// Factories help avoiding 'this' keyword problems: a factory object can be referenced by a html button without the need to bind (this) keyword
+const dog = () => {
+  const sound = 'wooof';
+  return {
+    talk: function () {
+      console.log(sound)
+    }
+  };
+};
+
+const sniffles = dog();
+sniffles.talk();

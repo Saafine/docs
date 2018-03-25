@@ -16,6 +16,15 @@ addToThis.call(obj, 1, 2, 3); // 8
 // --------------------
 const arr = [1, 2, 3];
 addToThis.apply(obj, arr); // 8
+
+// call is borrowing function 'slice' from Array and executes it with [1,2,3] and 1 as arguments
+// --
+// same as: Array.from(arguments).slice(1)
+// --
+// you can try using ...spread syntax too
+// --
+// performance should be considered, as [].slice.call seems to be the fastest
+const test = [].slice.call(['1', '2', '3'], 1); // ['2', '3']
 // ----------------------------------------------------
 
 

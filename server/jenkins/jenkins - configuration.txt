@@ -1,0 +1,33 @@
+git 
+ssh://git-codecommit.eu-west-2.amazonaws.com/v1/repos/backoffice
+credentials
+
+pobierz z repozytorium kodu
+* * * * *
+
+Abort the build if it's stuck
+
+execute shell
+echo 'go to /client, set environment to INSTALL, run npm install...' && cd client && export NODE_ENV=INSTALL && npm install
+
+echo 'go to /client, build prod for server...' && cd client && npm run build:prod:server
+
+echo 'go to /client/dist, compress * from dist (client) folder' && cd client/dist && tar -czf ../../client.tar.gz *
+
+echo 'go to /server, set environment to INSTALL, run npm install...' && cd server && export NODE_ENV=INSTALL && npm install
+
+echo 'go to /server, build prod for server...' && cd server && npm run build
+
+echo 'go to /server, compress * folder' && cd server && tar -czf ../server.tar.gz *
+
+send files over ssh (order matters)
+backoffice-master
+server.tar.gz
+
+send files over ssh (order matters)
+client.tar.gz
+
+send files over ssh (order matters)
+source start
+
+delete workspace when done

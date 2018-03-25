@@ -1,0 +1,47 @@
+// Startup script
+#!/bin/sh
+
+# !todo check if files exists
+
+# remove old files
+rm client_old.tar.gz server_old.tar.gz
+rm -r server_old
+
+# unpack new files
+mkdir server_temp
+tar -xvf server.tar.gz -C server_temp
+mkdir server_temp/dist/public
+tar -xvf client.tar.gz -C server_temp/dist/public
+
+# copy environment variables
+cp .env server_temp/dist/
+
+# stop and rename current server
+/home/ubuntu/.nvm/versions/node/v9.3.0/bin/pm2 delete server
+mv server server_old
+
+# make temp server active
+mv server_temp server
+
+# test
+echo TESTING NODE
+#/home/ubuntu/.nvm/versions/node/v9.3.0/bin/node -v
+node -v
+
+echo TESTING PM2
+#/home/ubuntu/.nvm/versions/node/v9.3.0/bin/pm2 list
+pm2 list
+
+echo TESTING NVM
+nvm --version
+
+echo PATH
+echo $PATH
+
+# run new server
+#/home/ubuntu/.nvm/versions/node/v9.3.0/bin/pm2 start server/dist/server.js
+pm2 start server/dist/server.js
+
+# save old zips for backup
+mv client.tar.gz client_old.tar.gz
+mv server.tar.gz server_old.tar.gz
