@@ -8,7 +8,7 @@
 // ~ Increments by 1
 
 function addLoopedValue (initial, add, max) {
-  let result = {};
+  const result = {};
 
   // assume that array starts with 0
   result.MIN = 0;
