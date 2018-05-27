@@ -1,3 +1,17 @@
+<nav mat-tab-nav-bar>
+    <a mat-tab-link
+       *ngFor="let tab of config"
+       [routerLink]="tab.path"
+       [routerLinkActiveOptions]="{exact: true}"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive"
+    >
+        {{ tab.label }}
+    </a>
+</nav>
+
+
+
 /**
 * Router's path in URL
 */
