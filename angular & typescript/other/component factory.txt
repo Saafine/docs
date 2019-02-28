@@ -1,0 +1,68 @@
+import {
+  Component, ComponentFactoryResolver, OnInit, ReflectiveInjector, ViewContainerRef
+} from '@angular/core';
+import { ProjectModel } from './project/project.model';
+import { ModalModel } from '../../reducers/modal.reducer';
+import { Store } from '@ngrx/store';
+import { CopyWlComponent } from './copy-wl/copy-wl';
+
+@Component({
+  selector: 'project-list',
+  providers: [],
+  styleUrls: ['./projects-list.component.scss'],
+  templateUrl: './projects-list.component.html'
+})
+export class ProjectListComponent implements OnInit {
+  // !todo add model to project list
+  public projectList;
+  constructor (private resolver: ComponentFactoryResolver,
+               private store: Store<ModalModel>,
+               private vCref: ViewContainerRef) {}
+
+  ngOnInit () {
+    // !todo add project URL, project PATh and project description. This is needed for
+    // for copying project from project list
+    // !todo add project ID (needed for project delete / edit)
+    this.projectList = [
+      {
+        name: 'Project green & red aaaaaaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa',
+        url: 'url 1',
+        status: 'active',
+        created: 1503475045391,
+        modified: 0
+      },
+      {
+        name: 'Project green & red',
+        status: 'active',
+        created: 1403475045391,
+        modified: 140300000000
+      },
+      {
+        name: 'Project green & red',
+        status: 'inactive',
+        created: 1503475045391,
+        modified: 0
+      },
+      {
+        name: 'Project green & red',
+        status: 'updating',
+        created: 1503475045391,
+        modified: 0
+      },
+    ];
+    // this.openModal();
+  }
+
+  // !todo fix this
+  private openModal () {
+    const factory = this.resolver.resolveComponentFactory(CopyWlComponent);
+    const injector = ReflectiveInjector.fromResolvedProviders([], this.vCref.parentInjector);
+    const component = factory.create(injector);
+    component.instance.projectName = 'some project name';
+    component.instance.projectURL = 'project url';
+    component.instance.projectDescription = 'description';
+    setTimeout(() => {
+      // this.store.dispatch(new ModalActions.OpenModalCopyWl(component.hostView));
+    }, 500);
+  }
+}

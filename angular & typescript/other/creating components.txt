@@ -1,0 +1,41 @@
+import {
+  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, ViewChild, ViewContainerRef, OnDestroy
+} from '@angular/core';
+import { ModalComponent } from '../../../components/modal';
+// !todo fix this, save for docs
+@Component({
+  selector: 'project-list-project',
+  providers: [],
+  styleUrls: ['./project-list-project.component.scss'],
+  templateUrl: './project-list-project.component.html'
+})
+export class ProjectListProjectComponent implements OnDestroy {
+  @ViewChild('modalContainer', {read: ViewContainerRef}) private container;
+  @Input() public project;
+  public showOptions: boolean = false;
+  public componentRef: ComponentRef<any>;
+
+  constructor (private resolver: ComponentFactoryResolver) {}
+
+  public toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
+  public copyProject () {
+    this.createComponent();
+  }
+
+  private createComponent () {
+    this.container.clear();
+    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(ModalComponent);
+    this.componentRef = this.container.createComponent(factory);
+    this.componentRef.instance.type = 'abc'; // this will pass string 'abc' to ModalComponent, which can be referenced as input
+    // this.componentRef.instance.output.subscribe(event => console.log(event));
+  }
+
+  // ngOnDestroy () {
+  //   this.componentRef.destroy();
+  // }
+
+
+}
