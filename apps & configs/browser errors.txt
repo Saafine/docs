@@ -1,0 +1,6 @@
+Issue: localhost unexpectedly closed the connection
+
+chrome://net-interlans/#hsts
+delete domain security policcies
+wpisac localhost
+i delete kliknac

@@ -1,0 +1,34 @@
+View child is for elements you manually added to the template yourself.
+Content child is for content projection. Any content that gets added to the component through ng-content can be grabbed with it.  
+
+
+@ViewChild(TodoInputComponent) inputComponent: TodoInputComponent
+@ViewChildren(TodoComponent) todoComponents: QueryList<TodoComponent>;
+@ContentChild(FooterComponent) footer: FooterComponent;
+@ContentChildren(..)
+  
+  
+@ViewChild('test') private test: ElementRef;
+template:
+<div #test>abc</div>
+
+template:
+<dynamic-material-form
+    [group]="formGroup"
+    [model]="config.model"
+    [layout]="config.layout">
+</dynamic-material-form>
+
+
+@ViewChildren(DynamicMaterialFormComponent) test: QueryList<DynamicMaterialFormComponent>;
+ngAfterViewInit() {
+	console.log(this.test);
+}
+
+
+@ContentChild('test2) // INSIDE CHILD
+// PARENT .TS COMPONENT
+	<adhoc-form-builder [config]="config"
+	<div #test2>testing XXX</div>
+</adhoc-form-builder>
+

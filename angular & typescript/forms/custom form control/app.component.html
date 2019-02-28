@@ -1,0 +1,19 @@
+<form [formGroup]="testSelectForm" class="form">
+  <select formControlName="testSelectControl">
+    <option *ngFor="let option of testOptions" [value]="option">
+      {{option }}
+    </option>
+  </select>
+  <pre>{{ testSelectForm.value | json }}</pre>
+</form>
+
+
+<form [formGroup]="testForm" class="form">
+  <app-order-control
+    formControlName="testCustomControl"
+    [options]="testSelectForm.value.testSelectControl"
+  ></app-order-control>
+  <pre>{{ testForm.value | json }}</pre>
+</form>
+
+
