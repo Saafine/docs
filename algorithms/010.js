@@ -22,7 +22,7 @@ const result = countBits(arr);
 console.log(result);
 
 // ----------------------------------------------------
-const countBits = function(n) {
-  const matchResult = n.toString();
+var countBits2 = function(n) {
+  const matchResult = (n).toString(2).match(/[1]/g);
+  return !matchResult ? 0 : matchResult.length;
 };
-
