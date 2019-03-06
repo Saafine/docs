@@ -13,11 +13,16 @@ const countBits = function(n) {
   let count = 0;
   while (n > 0) {
     if (n & 1) count++;
-    n = Math.floor(n/2);
+    n = Math.floor(n / 2);
   }
   return count;
 };
 
 const result = countBits(arr);
 console.log(result);
+
+// ----------------------------------------------------
+const countBits = function(n) {
+  const matchResult = n.toString();
+};
 
