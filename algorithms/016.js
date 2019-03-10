@@ -13,7 +13,32 @@ export const testData = [
   }
 ];
 
-//
+export function solution(str) {
+  const numbersStr = str.replace(/[^0-9]/g, '');
+  const numSplit = numbersStr.length % 3;
+
+  let doubleDigits;
+  if (numSplit === 1) doubleDigits = 2;
+  if (numSplit === 2) doubleDigits = 1;
+
+  const doublePart = doubleSplit(numbersStr, doubleDigits);
+  const triplePart =
+    (!doubleDigits ?
+      numbersStr.match(/.{1,3}/g) :
+      numbersStr.slice(0, -2 * doubleDigits).match(/.{1,3}/g)) || [];
+
+  return triplePart.concat(doublePart).join('-');
+}
+
+function doubleSplit(str, timesToSplit) {
+  if (!timesToSplit) return [];
+  return str.slice(-2 * timesToSplit).match(/.{1,2}/g) || [];
+}
+
+// trySolution(solution, testData);
+
+// Alternative solutions
+// --------------------
 export function solution(str) {
   const numbers = str.split('').filter(part => /[0-9]/.exec(part));
   const numbersLen = numbers.length;
