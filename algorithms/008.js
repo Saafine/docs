@@ -31,9 +31,4 @@ const addBinary = function(a, b, result = [], carryon = 0) {
   }
 };
 
-console.log(addBinary('1010', '1011'));
 
-
-// var v = '123456';
-// // console.log(v.slice(0, -1));
-// console.log(v.slice(-1));

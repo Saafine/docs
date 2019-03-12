@@ -19,7 +19,6 @@ export const testData = [
   }
 ];
 
-// !todo [lbs] save dynamic regexp, pattern to match whole parts of strings ^xxxxx$|^yyyy$|
 export function solution(str, exceptions = '') {
   const strArr = str.toLowerCase().split(' ');
   const exceptionsSplit = exceptions.split(' ');
@@ -30,7 +29,6 @@ export function solution(str, exceptions = '') {
     return `${ acc }^${ part }$|`;
   }, '');
   const regexp = new RegExp(pattern, 'gi');
-  console.log(pattern);
 
   const leftSideRaw = strArr[0];
   const leftSide = leftSideRaw.charAt(0).toUpperCase() + leftSideRaw.slice(1);
