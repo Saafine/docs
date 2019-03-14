@@ -53,7 +53,7 @@ const keySolutions = (() => {
   return keyGroups;
 })();
 
-function getPINs(str, variation = '', result = [], strLen = str.length) {
+function getPINs(str, variation = '', result = []) {
   if (str.length === variation.length) {
     result.push(variation);
     return result;
@@ -64,7 +64,7 @@ function getPINs(str, variation = '', result = [], strLen = str.length) {
   const keyPaths = keySolutions[keyValue];
 
   for (let key of keyPaths) {
-    getPINs(str, variation + key, result, strLen);
+    getPINs(str, variation + key, result);
   }
 
   return result;
