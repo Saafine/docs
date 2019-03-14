@@ -7,6 +7,14 @@ Global pattern flags
 g modifier: global. All matches (don't return after first match)
 i modifier: insensitive. Case insensitive match (ignores case of [a-zA-Z])
 
+Shorthand	Description
+.	Any character except new line
+\w	Matches alphanumeric characters: [a-zA-Z0-9_]
+\W	Matches non-alphanumeric characters: [^\w]
+\d	Matches digit: [0-9]
+\D	Matches non-digit: [^\d]
+\s	Matches whitespace character: [\t\n\f\r\p{Z}]
+\S	Matches non-whitespace character: [^\s]
 
 ### /[\w]/gi
 \w matches any word character (equal to [a-zA-Z0-9_])
