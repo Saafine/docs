@@ -1,87 +1,93 @@
 const meta = {
-  link: 'https://www.codewars.com/kata/snail/train/javascript?fbclid=IwAR3ZWuoLyJ1NPh0Lc-qL3OcOFQkJDywyxXfCJ6HfgTbmzK5XnXyih-WS3Pw',
-  name: 'Snail',
-  tags: ['Snaking through arrays']
+  link: 'https://www.codewars.com/kata/the-observed-pin/train/javascript?fbclid=IwAR04oxil_zHttgpfneRCHtSfvxHVDA3U_X3t6NUAxJnCnhhAqra1zMharD0',
+  name: 'The observed PIN',
+  tags: []
 };
 
-const testData = [
+// Warning!
+// test data output can have different order, so the test will fail for === assertions
+// --------------------
+export const testData = [
   {
-    args: [
-      [
-        [1, 2, 3],
-        [8, 9, 4],
-        [7, 6, 5]
-      ]
-    ],
-    output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    args: ['8'],
+    output: ['5', '7', '8', '9', '0']
   },
   {
-    args: [
-      [
-        [1, 2, 3, 1],
-        [4, 5, 6, 4],
-        [7, 8, 9, 7],
-        [7, 8, 9, 7]
-      ]
-    ],
-    output: [1, 2, 3, 1, 4, 7, 7, 9, 8, 7, 7, 4, 5, 6, 9, 8]
-  }
+    args: ['11'],
+    output: ['11', '22', '44', '12', '21', '14', '41', '24', '42']
+  },
+  {
+    args: ['369'],
+    output: ['339', '366', '399', '658', '636', '258', '268', '669', '668', '266', '369', '398', '256', '296', '259', '368', '638', '396', '238', '356', '659', '639', '666', '359', '336', '299', '338', '696', '269', '358', '656', '698', '699', '298', '236', '239']
+  },
 ];
 
-function snail(arr, go = 'RIGHT', visits = []) {
-  if (!arr.length) return visits;
+const keyboard = [
+  ['1', '2', '3'],
+  ['4', '5', '6'],
+  ['7', '8', '9'],
+  [null, '0', null]
+];
 
-  switch (go) {
-    case('RIGHT'):
-      visits.push(...arr[0]);
-      arr.splice(0, 1);
-      return snail(arr, 'BOTTOM', visits);
-    case('BOTTOM'):
-      for (let x = 0; x < arr.length; x++) {
-          visits.push(...arr[x].splice(arr[x].length - 1));
-          if (!arr[x].length) arr.splice(x, 1);
-      }
-      return snail(arr, 'LEFT', visits);
-    case('LEFT'):
-      const left = arr[arr.length - 1].reverse();
-      visits.push(...left);
-      arr.splice(arr.length - 1, 1);
-      return snail(arr, 'TOP', visits);
-    case('TOP'):
-      for (let x = arr.length - 1; x >= 0; x--) {
-        visits.push(...arr[x].splice(0, 1));
-        if (!arr[x].length) arr.splice(x, 1);
-      }
-      return snail(arr, 'RIGHT', visits);
-  }
-}
+const keyIndexes = {
+  '1': [0, 0],
+  '2': [0, 1],
+  '3': [0, 2],
 
-/**
- * Other solutions
- */
-snail2 = function(array) {
-  var result;
-  while (array.length) {
-    // Steal the first row.
-    result = (result ? result.concat(array.shift()) : array.shift());
-    // Steal the right items.
-    for (var i = 0; i < array.length; i++)
-      result.push(array[i].pop());
-    // Steal the bottom row.
-    result = result.concat((array.pop() || []).reverse());
-    // Steal the left items.
-    for (var i = array.length - 1; i >= 0; i--)
-      result.push(array[i].shift());
+  '4': [1, 0],
+  '5': [1, 1],
+  '6': [1, 2],
+
+  '7': [2, 0],
+  '8': [2, 1],
+  '9': [2, 2],
+
+  '0': [3, 1]
+};
+
+const keySolutions = (() => {
+  const keyGroups = {};
+  for (let key in keyIndexes) {
+    keyGroups[key] = keySolver(key);
   }
+  return keyGroups;
+})();
+
+function getPINs(str, variation = '', result = []) {
+  if (str.length === variation.length) {
+    result.push(variation);
+    return result;
+  }
+
+  const keyCheckedIdx = variation.length;
+  const keyValue = str[keyCheckedIdx];
+  const keyPaths = keySolutions[keyValue];
+
+  for (let key of keyPaths) {
+    getPINs(str, variation + key, result);
+  }
+
   return result;
 }
 
-function snail3(array) {
-  var vector = [];
-  while (array.length) {
-    vector.push(...array.shift());
-    array.map(row => vector.push(row.pop()));
-    array.reverse().map(row => row.reverse());
-  }
-  return vector;
+function keySolver(key) {
+  const [x, y] = keyIndexes[key];
+  const possibleKeys = [key];
+  [
+    [x, y - 1],
+    [x, y + 1],
+    [x - 1, y],
+    [x + 1, y]
+  ].forEach(([adjacentX, adjacentY]) => {
+    if (getElement(adjacentX, adjacentY)) {
+      possibleKeys.push(keyboard[adjacentX][adjacentY]);
+    }
+  });
+
+  return possibleKeys;
 }
+
+function getElement(x, y) {
+  return keyboard && keyboard[x] && keyboard[x][y];
+}
+

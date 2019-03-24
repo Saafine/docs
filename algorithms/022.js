@@ -1,54 +1,82 @@
 const meta = {
-  link: 'https://www.codewars.com/kata/52d1bd3694d26f8d6e0000d3/train/javascript',
-  name: 'Vigenère Cipher Helper',
-  tags: ['encryption']
+  link: 'https://www.codewars.com/kata/54d512e62a5e54c96200019e/train/javascript',
+  name: 'Primes in numbers',
+  tags: ['prime numbers', 'generators']
 };
 
 export const testData = [
   {
-    args: ['TO JEST BARDZO TAJNY TEKST', 'TAJNE'],
-    output: 'MO SRWM BJEHSO CNNGY CROLT'
+    args: [[1, 2, 0, 1, 0, 1, 0, 3, 0, 1]],
+    output: [1, 2, 1, 1, 3, 1, 0, 0, 0, 0]
+  },
+  {
+    args: [[false, 1, 0, 1, 2, 0, 1, 3, 'a']],
+    output: [false, 1, 1, 2, 1, 3, 'a', 0, 0]
   }
 ];
 
-function getVinegereMatrix(dictionary) {
-  return dictionary.split('').reduce((acc, curr, idx, src) => {
-    acc[idx] = [];
-    const left = src.slice(idx);
-    const right = src.slice(0, idx);
-    acc[idx].push(...left, ...right);
-    return acc;
-  }, []);
+function isPrime(num) {
+  if (num === 2) return true; // only even number that is prime
+  if (!(num & 1)) return false; // if can be divided by two, its not a prime
+  const maxDivider = Math.abs(Math.sqrt(num)); // max value used to to divide num
+  for (let x = 2; x < maxDivider; x++) {
+    if (num % x === 0) return false;
+  }
+  return true;
 }
 
-function getHashKeyForMessage(message, key) {
-  const keyLen = key.length - 1;
-  return message.split('').reduce((acc) => {
-    acc.key += key[acc.idx];
-    acc.idx = acc.idx === keyLen ? acc.idx = 0 : acc.idx + 1;
-    return acc;
-  }, { key: '', idx: 0 }).key;
+function* primeGeneratorFn() {
+  for (let x = 2; ; x++) {
+    if (isPrime(x)) yield x;
+  }
 }
 
-function VigenèreCipher(privateKey, dictionary) {
-  const matrix = getVinegereMatrix(dictionary);
+function getFactorials(num, primesGenerator, prime, result = [], max = Math.abs(Math.sqrt(num))) {
+  const nextPrime = prime || primesGenerator.next().value;
 
-  this.encode = function(msgToEncode) {
-    const hashKey = getHashKeyForMessage(msgToEncode, privateKey);
-    return msgToEncode.split('').map((char, idx) => {
-      if (!dictionary.includes(char)) return char;
-      const x = matrix[0].findIndex(x => x === char);
-      const y = matrix.findIndex(x => x[0] === hashKey[idx]);
-      return matrix[x][y];
-    }).join('');
+  if (nextPrime > max) {
+    if (num > 1) result.push(num);
+    return result;
+  }
+
+  const numberRest = num % nextPrime;
+  if (numberRest === 0) {
+    result.push(nextPrime);
+    return getFactorials(num / nextPrime, primesGenerator, nextPrime, result, max);
+  }
+
+  return getFactorials(num, primesGenerator, undefined, result, max);
+}
+
+function primeFactors(num) {
+  const primes = primeGeneratorFn();
+  const factorials = getFactorials(num, primes);
+
+  const unify = factorials.reduce((acc, cur) => {
+    acc[cur] ? acc[cur]++ : acc[cur] = 1;
+    return acc;
+  }, {});
+
+  const formatQuantifier = (value, quantifier) => {
+    return quantifier > 1 ? `(${ value }**${ quantifier })` : `(${ value })`;
   };
-  this.decode = function(msgToDecode) {
-    const hashKey = getHashKeyForMessage(msgToDecode, privateKey);
-    return msgToDecode.split('').reduce((acc, char, idx) => {
-      if (!dictionary.includes(char)) return acc + char;
-      const x = matrix[0].findIndex(x => x === hashKey[idx]);
-      const y = matrix[x].findIndex(x => x === char);
-      return acc + matrix[0][y];
-    }, '');
-  };
+
+  return Object.keys(unify).reduce((acc, cur) => {
+    const [value, quantifier] = [cur, unify[cur]];
+    return `${ acc }${ formatQuantifier(value, quantifier) }`;
+  }, '');
+}
+
+// Other people's code
+// --------------------
+function primeFactors(n) {
+  for (var i = 2, res = '', f; i <= n; i++) {
+    f = 0;
+    while (n % i == 0) {
+      f++;
+      n /= i;
+    }
+    res += f ? '(' + (f > 1 ? i + '**' + f : i) + ')' : '';
+  }
+  return res || '(' + n + ')';
 }
