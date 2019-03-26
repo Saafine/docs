@@ -6,7 +6,7 @@ const meta = {
   tags: []
 };
 
-export const testData = [
+const testData = [
   {
     args: [],
     output: undefined
@@ -20,11 +20,11 @@ function solution(str) {
 
 trySolution(solution, testData);
 
-export function trySolution(solutionFn, cases, specifyIdx) {
+function trySolution(solutionFn, cases, specifyIdx) {
   let casesLen = cases.length;
   let startIdx = specifyIdx || 0;
-  if(typeof specifyIdx !== 'undefined') {
-    casesLen =  startIdx + 1;
+  if (typeof specifyIdx !== 'undefined') {
+    casesLen = startIdx + 1;
   }
 
   for (let x = startIdx; x < casesLen; x++) {
