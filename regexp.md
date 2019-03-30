@@ -63,6 +63,14 @@ abcde123 => 3
 abcd0089 => 89
 abcdef9999 => 9999
 
+## /^0{2,}/ 
+Matches all 0's at the begining of the string, example:
+00001230.replace(reg, '') -> 11230
+
+## 
+Same as above, but allows single '0
+'0'.replace(reg, '')  => '0'
+
 # Javascript
 
 ## Common use cases:
