@@ -19,7 +19,7 @@ function isPrime(num) {
   if (num === 2) return true; // only even number that is prime
   if (!(num & 1)) return false; // if can be divided by two, its not a prime
   const maxDivider = Math.abs(Math.sqrt(num)); // max value used to to divide num
-  for (let x = 2; x < maxDivider; x++) {
+  for (let x = 2; x <= maxDivider; x++) {
     if (num % x === 0) return false;
   }
   return true;
