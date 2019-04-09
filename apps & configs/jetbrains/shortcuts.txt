@@ -7,4 +7,14 @@ alt + c -> search by file name
 alt + f -> auto reformat
 alt + g -> select enclosing tag
 ctrl + shift + f -> find in project
+
+open settings?
+toggling between windows?
+favourites?
+go to project structure?
+alt + l -> go to line
+
+
+
+deprecated?
 shift + b ON ELEMENT -> go to source
