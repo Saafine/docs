@@ -1,0 +1,5 @@
+root=cd xxx
+test-browser=ng test
+ns=npm run start
+nt=run test
+go=git checkout
