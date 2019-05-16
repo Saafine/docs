@@ -1,20 +1,45 @@
-alt + w -> split screen
-alt + z -> create bookmark
-alt + x -> go to bookmark
-alt + q -> close
-alt + r -> rename
-alt + c -> search by file name
-alt + f -> auto reformat
-alt + g -> select enclosing tag
-ctrl + shift + f -> find in project
+# CTRL
+    + SHIFT + A = actions (add to favourites, quick definitions, find usage)
+    + SHIFT + F = find in path
+    + SHIFT + R = replace in path
+    + TAB = switcher
+    + R = replace in file
+    + L = go to line
+    + B = go to declaration
+    + D = copy line
+    + I = implement methods
+    + UP/DOWN = scrolling
+    + Q = comment //
+    + W = comment /*
+    + MINUS = collapse
+    + SHIFT + MINUS = collapse all
+    !!+ SHIFT + B = go to type definitions
+    !!+ ALT + B = go to implementation (change alt+b? same as ctrl+b ?)
 
-open settings?
-toggling between windows?
-favourites?
-go to project structure?
-alt + l -> go to line
-
-
-
-deprecated?
-shift + b ON ELEMENT -> go to source
+# ALT
+    + UP/DOWN = fast scrolling
+    + > = next bookmark
+    + < = previous bookmark
+    + B = toggle bookmark
+    + P = prettier
+    + F = intellij formatter
+    + O = optimize imports
+    + LEFT/RIGHT = jumping tabs
+    + Q = close tab
+    + R = refactor
+    + W = split screen
+    + Q = close
+    + C = extend selection
+    + L = select line
+# SHIFT
+    + SHIFT = find by file/class
+    + ESC = hide window
+    + F1 = GIT - compare with same repository version
+# FN
+    + / = context menu
+# TO ADD
+    - open settings?
+    - compare with same repository version
+    - types
+    - annotate
+    - error show
