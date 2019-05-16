@@ -1,0 +1,14 @@
+cd-dev=cd C:/Projects
+root=cd main project
+nt=npm run test
+ns=ng serve
+go=git checkout $*
+gs=git status
+go=git commit -am $*
+ga=git add .
+push=git push $*
+pushOrigin=node "path to script"
+pull=git pull $*
+pulldev=git pull origin dev
+removeUntracked=git clean -df
+removeUnstaged=git checkout -- .
