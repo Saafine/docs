@@ -1,13 +1,23 @@
 const meta = {
-  link: 'https://www.codewars.com/kata/one-line-task-squirrel-and-tree/javascript',
-  name: 'One Line Task: Squirrel And Tree',
-  tags: ['math', 'powers', 'sqrt', 'hypot']
+  link: 'https://www.codewars.com/kata/prime-streaming-pg-13/train/javascript',
+  name: 'Prime Streaming (PG-13)',
+  tags: ['prime numbers']
 };
 
-squirrel=(h,H,S)=>+(H/h*(S**2+h**2)**.5).toFixed(4)
-// alternative squirrel=(h,H,S)=>+(H/h*Math.hypot(h,S)).toFixed(4)
+class Primes {
+  *stream() {
+    yield 2; // only even number that is prime
+    for (let x = 3; ; x+=2) {
+      if (this.isPrime(x)) yield x;
+    }
+  }
 
-const squirrelAsLong = (climbedHeight, treeHeight, circumference) => {
-  const turns = treeHeight / climbedHeight;
-  return Math.round(turns * Math.sqrt((circumference**2 + climbedHeight**2))*10000)/10000;
-};
+  isPrime(num) {
+    if (!(num & 1)) return false; // if can be divided by two, its not a prime
+    const maxDivider = Math.abs(Math.sqrt(num)); // max value used to to divide num
+    for (let x = 3; x <= maxDivider; x+=2) {
+      if (!(num % x)) return false;
+    }
+    return true;
+  }
+}

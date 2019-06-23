@@ -1,51 +1,49 @@
 const meta = {
-  link: 'https://www.codewars.com/kata/51c8e37cee245da6b40000bd/train/javascript',
-  name: 'Strip Comments',
+  link: 'https://www.codewars.com/kata/5302d655be2a91068b0001fb/train/javascript',
+  name: 'Dependency Injection',
   tags: []
 };
 
-const testData = [
-  {
-    args: ['apples, pears # and bananas\ngrapes\nbananas!apples', ["#", "!"]],
-    output: 'apples, pears \ngrapes\nbananas'
-  },
-  {
-    args: ['apples, plums % and bananas\npears\noranges !applesauce', ["%", "!"]],
-    output: 'apples, plums\npears\noranges'
-  },
-  {
-    args: ['Q @b\nu\ne -e f g', ["@", "-"]],
-    output: 'Q\nu\ne'
-  },
-  {
-    args: ['a #b\nc\nd $e f g', ["#", "$"]],
-    output: 'a\nc\nd'
-  }
-];
+const testData = [];
 
-function solution(input, [markA, markB]) {
-  return input.replace(new RegExp(`(( +\\${markA}|\\${markB}).*?)(?=(\n|($)))`, 'g'),'').trim()
+// https://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically
+// may not handle all edge cases
+function $args(func) {
+  return (func + '')
+    .replace(/[/][/].*$/mg,'') // strip single-line comments
+    .replace(/\s+/g, '') // strip white space
+    .replace(/[/][*][^/*]*[*][/]/g, '') // strip multi-line comments
+    .split('){', 1)[0].replace(/^[^(]*[(]/, '') // extract the parameters
+    .replace(/=[^,]+/g, '') // strip any ES6 defaults
+    .split(',').filter(Boolean); // split & filter [""]
 }
 
-trySolution(solution, testData, 3);
+/**
+ * Constructor DependencyInjector
+ * @param {Object} - object with dependencies
+ */
+const DI = function(dependency) {
+  this.dependency = dependency;
+};
 
+const deps = {
+  'dep1': function () {return 'this is dep1';},
+  'dep2': function () {return 'this is dep2';},
+  'dep3': function () {return 'this is dep3';},
+  'dep4': function () {return 'this is dep4';}
+};
 
-function trySolution(solutionFn, cases, specifyIdx) {
-  let casesLen = cases.length;
-  let startIdx = specifyIdx || 0;
-  if (typeof specifyIdx !== 'undefined') {
-    casesLen = startIdx + 1;
-  }
+DI.prototype.inject = function(func) {
+  const args = $args(func);
+  const resolvedDependencies = args.map((dep) => this.dependency[dep]);
+  return () => func.apply(null, resolvedDependencies);
+  // func.bind(func, ...arguments);
+};
 
-  for (let x = startIdx; x < casesLen; x++) {
-    const args = cases[x].args;
-    const expectedOutput = cases[x].output;
-    const testOutput = solutionFn(...args);
-    const result = testOutput === expectedOutput;
-    if (!result) {
-      console.error(`[${ x }] FAIL | Expected: ${ expectedOutput } | Got: ${ testOutput }`);
-    } else {
-      console.log(`[${ x }] Success`);
-    }
-  }
-}
+const di = new DI(deps);
+
+const myFunc = di.inject(function (dep3, dep1, dep2) {
+  return [dep1(), dep2(), dep3()].join(' -> ');
+});
+
+console.log(myFunc());

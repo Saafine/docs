@@ -1,0 +1,42 @@
+debugger - dg
+constructor - cr
+
+[?]
+collapsae in project
+options tab?
+select entire line
+change [lbs] to [P. Labus]
+compare with same repository version
+types
+annoatate
+error show
+
+ctrl -> tab -> swiotcher
+ctrl -> shift + a -> actions
+	actions + add to favourites
+	actions + quick definition
+	action + find usage
+ctrl + shift + f -> find in path
+ctrl + r -> replace in file
+ctrl + shift + r -> replace in path
+ctrl + l -> go to line
+shift + shift -> find by file/class
+ctrl + b -> go to declaration
+ctrl + shift + b -> go to type definitions
+ctrl + alt + b => go to implementation / / change alt+b? same as ctrl+b ?
+ctrl + d =>  copy line
+ctrl + i => iomplem,ent methods
+ctrl + down / UP -> scrolling
+alt + down / up -> scrolling aster
+alt + < => next book mark
+alt + > +> previous bookmark
+alt + b > toogle bookmark
+
+alt +  p -> pretteir
+alt + f -> inntellij formatter
+alt + i -> optiomize imports 
+alt + c -> comment //
+alt + v -> /* comment
+alt + LEFT / RIGHT -> jumping tabs
+alt + q -> close tab
+alt + r -> refactor

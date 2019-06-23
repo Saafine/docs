@@ -10,7 +10,7 @@
   },
   "husky": {
     "hooks": {
-      "precommit": "npm run inspect:all",
-      "prepush": "npm run inspect:all"
+      "precommit": "npm run inspect:all", // should run lint-staged ?
+      "prepush": "npm run inspect:all" // should lint ?
     }
   }
