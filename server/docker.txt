@@ -1,0 +1,80 @@
+# docker machine
+- list all methods
+docker-machine
+
+- list machines
+docker-machine ls
+
+- start / stop machine
+docker-machine start [machine-name]
+
+-
+docker-machine env [machine-name]
+
+-
+docker-machine ip [machine-name]
+
+
+
+# drafts
+inside quickstart terminal
+- sets the machine called "default" as default when using command docker-machine
+docker-machine env default
+eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env default)
+
+
+# docker client
+- pulling an image
+docker pull [image name]
+
+- running an image
+docker run [image name]
+
+docker images
+
+- list containers that are running
+docker ps
+
+- list all containers
+docker ps -a
+
+- remove cointainer (hash from docker ps -a)
+- to remove volume, add -v before hash
+docker rm 6c11
+
+- remove image (hash from docker images)
+docker rmi fce1
+
+- creating a data volume
+- 8000 - external port
+- 3000 - internal port
+- v create a volume
+- /var/www - container volume
+docker run -p 8080:3000 -v /var/www node
+
+locating a volume
+- docker inspect mycontainer
+
+## customizing the host location for a data volume
+docker run -p 8080:3000 -v $(pwd):/var/www node
+
+## example:
+- cd to directory with node example app
+- run:
+- w -> sets the context to working directory (node app)
+- $(pwd) gets current path
+- /var/www - volume inside the container is going to point to the node app is going to be /var/www
+- and then we use it as our working directory -> -w "/var/www"
+docker run -p 8080:3000 -v $(pwd):/var/www -w "/var/www" node npm start
+!!! must be in C:\Users\xxx
+
+
+## Key dockerfile instructions
+FROM
+MAINTAINER
+RUN
+COPY
+ENTRYPOINT
+WORKDIR
+EXPOSE
+ENV
