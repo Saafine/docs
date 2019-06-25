@@ -37,7 +37,6 @@ const dragons = [
 
 // hasElement VERSION 2
 // -------------------
-// this function doesn't work alone, it needs arguments to work
 let hasElement = (element, obj) => {
   return obj.element === element;
 };
