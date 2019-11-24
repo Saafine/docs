@@ -4,7 +4,42 @@ const meta = {
   tags: []
 };
 
+/*
+ {
+ args: [[0, 1, 0, 2, 1, 0, 1, 1, 3, 2, 1, 2, 1]],
+ output: 6
+ },
+ {
+ args: [[0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]],
+ output: 6
+ }
+ */
+
 const testData = [
+  {
+    args: [[0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]],
+    output: 6
+  },
+  {
+    args: [[1, 0, 1]],
+    output: 1
+  },
+  {
+    args: [[0, 1, 0, 2, 1, 0, 1]],
+    output: 2
+  },
+  {
+    args: [[0, 1, 0, 2, 1, 0, 1, 3, 2, 1]],
+    output: 5
+  },
+  {
+    args: [[0, 1, 0, 2, 1, 0, 1, 3]],
+    output: 5
+  },
+  {
+    args: [[3, 2, 1, 2, 1]],
+    output: 1
+  },
   {
     args: [[0, 1, 0, 2, 1, 0, 1, 1, 3, 2, 1, 2, 1]],
     output: 6
@@ -15,39 +50,57 @@ const testData = [
   }
 ];
 
-function getCount(terrain) {
-  let edge = 0;
-  let fill = 0;
-  let sum = 0;
-  // , 3, 2, 1, 2, 1
-  for (const block of [2, 1, 0, 1]) {
-    if (edge === block) {
-      sum = sum + fill;
-      fill = 0;
-      continue;
-    }
-
-    if (block < edge) {
-      console.log(block, edge);
-      fill = fill + edge - block;
-      continue;
-    }
-
-    if (block > edge) {
-      sum = sum + fill;
-      fill = 0;
-      edge = block;
-    }
-  }
-  console.log(sum, fill);
-  return sum;
-}
+const TEST_ID = 6;
 
 function solution(terrain) {
-  return getCount(terrain);
+  console.log([0, 1, 0, 2, 1, 0, 1, 1, 3, 2, 1, 2, 1]);
+  let potentialFns = [];
+  const getWaterGetter = (leftMax, elevation, elevIndx) => (_rightMax) => {
+    const rightMax = _rightMax ? _rightMax : Math.max(...terrain.slice(elevIndx + 1));
+    const result = Math.min(leftMax, rightMax) - elevation;
+    // if (elevIndx === 11) {
+    //   console.log({ leftMax, elevation, rightMax, result, elevIndx, _rightMax, water });
+    // }
+    return result > 0 ? result : 0;
+  };
+
+  const calculateAllWater = (right) => {
+    return potentialFns.reduce((acc, cur) => {
+      return acc + cur(right);
+    }, 0);
+  };
+
+  let leftMax = 0;
+  let rightMax = 0;
+  let water = 0;
+
+  for (let x = 0; x < terrain.length; x++) {
+    const elevation = terrain[x];
+
+    if (x === terrain.length - 1) {
+      water = water + calculateAllWater(undefined);
+      continue;
+    }
+
+    if (elevation >= leftMax) {
+      rightMax = rightMax > elevation ? rightMax : elevation;
+      water = water + calculateAllWater(rightMax);
+
+      // reset
+      potentialFns = [];
+      leftMax = elevation;
+      rightMax = 0;
+
+    } else {
+      potentialFns.push(getWaterGetter(leftMax, elevation, x));
+      rightMax = elevation > rightMax ? elevation : rightMax;
+    }
+  }
+
+  return water;
 }
 
-trySolution(solution, testData, 1);
+trySolution(solution, testData, TEST_ID);
 
 function trySolution(solutionFn, cases, specifyIdx) {
   let casesLen = cases.length;
