@@ -42,7 +42,7 @@ const testData = [
   },
   {
     args: [[0, 1, 0, 2, 1, 0, 1, 1, 3, 2, 1, 2, 1]],
-    output: 6
+    output: 7
   },
   {
     args: [[0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]],
@@ -53,46 +53,61 @@ const testData = [
 const TEST_ID = 6;
 
 function solution(terrain) {
-  console.log([0, 1, 0, 2, 1, 0, 1, 1, 3, 2, 1, 2, 1]);
-  let potentialFns = [];
-  const getWaterGetter = (leftMax, elevation, elevIndx) => (_rightMax) => {
-    const rightMax = _rightMax ? _rightMax : Math.max(...terrain.slice(elevIndx + 1));
-    const result = Math.min(leftMax, rightMax) - elevation;
-    // if (elevIndx === 11) {
-    //   console.log({ leftMax, elevation, rightMax, result, elevIndx, _rightMax, water });
-    // }
+  let water = 0;
+  let leftMax = 0;
+  let rightMax = 0;
+  let waterValueCallbacks = [];
+  let memMaxRightValues;
+  let memMaxRightValueStartIndex = null;
+
+  const calculateMaxRightValues = (arr) => {
+    return arr.reduceRight((acc, el) => {
+      const max = acc.max || el;
+      return {
+        max: el > max ? el : max,
+        result: [max, ...acc.result]
+      };
+    }, {
+      max: null,
+      result: []
+    }).result;
+  };
+
+  const getMaxRightValueForIndex = (index) => {
+    if (memMaxRightValues) return memMaxRightValues[index - memMaxRightValueStartIndex];
+    memMaxRightValueStartIndex = index;
+    memMaxRightValues = calculateMaxRightValues(terrain.slice(index));
+    return memMaxRightValues[0];
+  };
+
+  const waterGetter = (startPoint, elevation, elevationIndex) => (rightMax) => {
+    const endPoint = rightMax ? rightMax : getMaxRightValueForIndex(elevationIndex);
+    const result = Math.min(startPoint, endPoint) - elevation;
     return result > 0 ? result : 0;
   };
 
   const calculateAllWater = (right) => {
-    return potentialFns.reduce((acc, cur) => {
+    water = water + waterValueCallbacks.reduce((acc, cur) => {
       return acc + cur(right);
     }, 0);
+    waterValueCallbacks = [];
+    rightMax = 0;
   };
-
-  let leftMax = 0;
-  let rightMax = 0;
-  let water = 0;
 
   for (let x = 0; x < terrain.length; x++) {
     const elevation = terrain[x];
 
     if (x === terrain.length - 1) {
-      water = water + calculateAllWater(undefined);
+      calculateAllWater();
       continue;
     }
 
     if (elevation >= leftMax) {
       rightMax = rightMax > elevation ? rightMax : elevation;
-      water = water + calculateAllWater(rightMax);
-
-      // reset
-      potentialFns = [];
+      calculateAllWater(rightMax);
       leftMax = elevation;
-      rightMax = 0;
-
     } else {
-      potentialFns.push(getWaterGetter(leftMax, elevation, x));
+      waterValueCallbacks.push(waterGetter(leftMax, elevation, x));
       rightMax = elevation > rightMax ? elevation : rightMax;
     }
   }
@@ -100,7 +115,7 @@ function solution(terrain) {
   return water;
 }
 
-trySolution(solution, testData, TEST_ID);
+trySolution(solution, testData);
 
 function trySolution(solutionFn, cases, specifyIdx) {
   let casesLen = cases.length;
