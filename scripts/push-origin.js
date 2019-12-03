@@ -1,4 +1,5 @@
-const { executionPromise, applyTerminalArguments } = require('/custom-utils');
+const { executionPromise, applyTerminalArguments } = require('./custom-utils');
+
 const getBranches = 'git branch';
 const pushBranchToOrigin = 'git push --set-upstream origin';
 
