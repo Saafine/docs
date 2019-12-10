@@ -1,10 +1,12 @@
 const { readFile } = require('fs');
-const { getArguments, executionPromise } = require('./custom-utils');
+const { getArguments } = require('./custom-utils');
+
+const PATH_TO_ANGULAR_JSON = 'C:/Projects/clp/angular.json';
 
 async function init() {
   const userInput = getArguments();
   const filePath = getFilePathFromUserInput(userInput);
-  readFile('C:/Projects/clp/angular.json', 'utf8', (err, data) => {
+  readFile(PATH_TO_ANGULAR_JSON, 'utf8', (err, data) => {
     const json = JSON.parse(data);
     const projectsAndRoots = getProjectsAndRootsFromAngularJson(json);
     const projectToRunTest = getProjectToRunTest(projectsAndRoots, filePath);
