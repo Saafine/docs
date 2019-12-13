@@ -6,11 +6,12 @@ const PATH_TO_ANGULAR_JSON = 'C:/Projects/clp/angular.json';
 async function init() {
   const userInput = getArguments();
   const filePath = getFilePathFromUserInput(userInput);
+
   readFile(PATH_TO_ANGULAR_JSON, 'utf8', (err, data) => {
     const json = JSON.parse(data);
     const projectsAndRoots = getProjectsAndRootsFromAngularJson(json);
     const projectToRunTest = getProjectToRunTest(projectsAndRoots, filePath);
-    process.stdout.write(`${projectToRunTest} --test-file ${filePath}`);
+	console.log(`${projectToRunTest} --test-file ${filePath}`)
   });
 }
 
@@ -20,9 +21,15 @@ function getFilePathFromUserInput(input) {
 }
 
 function getProjectToRunTest(projectsAndRoots, filePath) {
-  return projectsAndRoots.find(([project, root]) => {
+  if (!filePath) throw new Error(`No file path were given'}`)
+  if (!projectsAndRoots) throw new Error(`No Angular projects, check angular.json path'}`)
+  const project = projectsAndRoots.find(([project, root]) => {
     return filePath.startsWith(`${root}/`)
-  })[0]
+  })
+  if (!project) {
+	throw new Error(`No project found!`)
+  }
+  return project[0];
 }
 
 function getProjectsAndRootsFromAngularJson(angularJson) {
