@@ -23,5 +23,6 @@ function applyTerminalArguments(command) {
 
 module.exports = {
   executionPromise,
-  applyTerminalArguments
+  applyTerminalArguments,
+  getArguments
 };
