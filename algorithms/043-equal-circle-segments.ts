@@ -1,7 +1,7 @@
 const meta = {
     link: '',
     name: '',
-    tags: []
+    tags: ['knapsack', 'binary search']
 };
 
 const testData = [
@@ -11,91 +11,55 @@ const testData = [
     },
     {
         args: [[4, 3, 3], 3],
-        output: '28.2743'
+        output: '28.2744'
     },
     {
         args: [[5], 5],
-        // output: '15.7079'
-        output: '15.7080'
+        output: '15.7079'
     },
     {
-        args: [[ 6, 7 ], 12],
+        args: [[6, 7], 12],
         output: '21.9911'
     }
 ];
+
 
 function getCircleArea(radius) {
     return Math.PI * radius * radius;
 }
 
-function round(value) {
-    return Math.round(value * 10000) / 10000
+function format(value) {
+    return value.toFixed(4)
 }
 
-function largestSegment(radii, segments) {
+function possible(areas, trySegmentArea, segments) {
+    let fittedSegments = 0;
+    for (let area of areas) {
+        fittedSegments += Math.floor(area / trySegmentArea);
+        if (fittedSegments >= segments) return true;
+    }
+    return false;
+}
+
+// Simple binary search solution
+// Complexity is O(log(A/epsilon) * n),
+// n is number of cakes,
+// A is the largest area,
+// epsilon is the precision tolerance
+function maximumAreaServingCake(radii, segments) {
     const areas = radii.sort((a, b) => b - a).map(getCircleArea);
+    let min = 0;
+    let max = areas[0];
+    let result;
 
-    console.log(areas);
-    console.log(segments);
-    // we can filter all radiuses smaller then seg min
-    return getOptimalSegment(areas, segments, areas[0]).toFixed(4)
-}
-
-// try seg initially segMax
-function getOptimalSegment(areas, segments, trySeg, safety = 0) {
-    if (safety === 2) return;
-    let segmentsLeft = segments;
-    let tryNext = 0;
-
-    for (let x = 0; x < areas.length; x++) {
-        if (trySeg > areas[x]) {
-            tryNext = tryNext > areas[x] ? tryNext : areas[x];
-            break;
-        }
-
-        const segmentsOnArea = fitSegments(areas[x], trySeg);
-        console.log(segmentsOnArea);
-        segmentsLeft = segmentsLeft - segmentsOnArea;
-        if (segmentsLeft <= 0) return trySeg;
-
-        // const tryNextOne = areas[x] / Math.ceil(segmentsOnArea) - 1;
-        // const tryNextOne2 = areas[x] / Math.ceil(segmentsOnArea);
-        // const tryNextTemp = areas[x] % trySeg ? tryNextOne2 : tryNextOne;
-        // tryNext = tryNextTemp > tryNext ? tryNextTemp : tryNext;
-        // console.log(tryNext);
-    }
-
-    if (safety === 1) {
-        console.log(areas , tryNext);
-
-    }
-    return getOptimalSegment(areas, segments, tryNext, ++safety);
-}
-
-function fitSegments(area, trySeg) {
-    const segmentsOnArea = round(area / trySeg);
-    const reducedSegments = Math.floor(segmentsOnArea);
-    return reducedSegments;
-}
-
-trySolution(largestSegment, testData, 1);
-
-function trySolution(solutionFn, cases, specifyIdx = undefined) {
-    let casesLen = cases.length;
-    let startIdx = specifyIdx || 0;
-    if (typeof specifyIdx !== 'undefined') {
-        casesLen = startIdx + 1;
-    }
-
-    for (let x = startIdx; x < casesLen; x++) {
-        const args = cases[x].args;
-        const expectedOutput = cases[x].output;
-        const testOutput = solutionFn(...args);
-        const result = testOutput === expectedOutput;
-        if (!result) {
-            console.error(`[${ x }] FAIL | Expected: ${ expectedOutput } | Got: ${ testOutput }`);
+    while (min + 10e-5 <= max) {
+        result = (min + max) / 2;
+        if (possible(areas, result, segments)) {
+            min = result;
         } else {
-            console.log(`[${ x }] Success`);
+            max = result;
         }
     }
+
+    return format(result);
 }
