@@ -1,6 +1,6 @@
 const meta = {
-    link: '',
-    name: '',
+    link: 'https://leetcode.com/discuss/interview-question/348510/Google-or-OA-2019-or-Maximum-Area-Serving-Cake',
+    name: 'Maximum Area Serving Cake',
     tags: []
 };
 
