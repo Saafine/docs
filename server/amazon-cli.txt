@@ -1,7 +1,44 @@
 CLI @ Amazon
 
+Access Key ID: XXXXX
+Secret access key: XXXXX
+format: json
+zone: eu-west-3
+
+# Instaling
+1. install (https://aws.amazon.com/cli/)
+2. Create / Get user Access Keys (https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)- save access key ID, secret access key
+https://console.aws.amazon.com/iam/
+3. Configure AWS CLI
+aws configure
+
+# ECS (not completed, used GUI instead)
+- Attach policies to user group:
+AmazonEC2FullAccess
+AmazonECS_FullAccess
+- Create a security group called my-ecs-sg
+aws ec2 create-security-group --group-name my-ecs-sg --description my-ecs-sg
+- Now create an ECS Cluster called my-cluster 
+aws ecs create-cluster --cluster-name my-cluster
+- Create EC2 Key Pair so you can later ssh into EC2
+- Create the ec2 instance that belongs to the ECS Cluster. Use the my-ecs-sg security group that was created.
+Amazon Machine Images (image id) for ubuntu: ami-087855b6c8b59a9e4 (you can pick image id from ec2/launch ec2 instance)
+ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20191002 (ami-087855b6c8b59a9e4)
+
+
+# Deploying web app to S3
+// create a bucket (if you didn't already)
+$ aws s3 mb s3://your-bucket-name
+// list buckets
+$ aws s3 ls
+// build and deploy the app
+$ npm run build && aws s3 sync build/ s3://your-bucket-name
+Setup permissions for bucket:
+https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html
+
 # IAM
 Security credentials / SSH keys
 
 # Commands
 aws s3 rb s3://dev.webclient.xbt.com --force // Removing bucket
+
