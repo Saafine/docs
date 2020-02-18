@@ -1,0 +1,14 @@
+# Download certs from any endpoint using curl
+https://daniel.haxx.se/blog/2018/11/07/get-the-ca-cert-for-curl/
+
+# This work, but writes some trash
+openssl s_client -connect backend-clp-main-release.app.os1.t.it.bzwbk:443 -showcerts > C:/certs/output.pem
+
+# This is untested, but suppose not to write trash
+echo quit | openssl s_client -showcerts -servername daniel.haxx.se -connect daniel.haxx.se:443 > cacert.pem
+
+# Try cert using
+curl --cacert cacert.pem https://daniel.haxx.se
+
+# Add cert to node (bash) or Widnows PATH to have it always
+export NODE_EXTRA_CA_CERTS=C:/certs/output.pem
