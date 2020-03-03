@@ -12,3 +12,6 @@ curl --cacert cacert.pem https://daniel.haxx.se
 
 # Add cert to node (bash) or Widnows PATH to have it always
 export NODE_EXTRA_CA_CERTS=C:/certs/output.pem
+
+
+# Główny urząd certyfikacji - tam są najwazniejsze certy, wchodzisz przez windows + certlm
