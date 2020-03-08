@@ -1,17 +1,19 @@
 const { readFile } = require('fs');
 const { getArguments } = require('./custom-utils');
+const { getSpecFromFilePath, isSpecFile } = require('./string.utils');
 
 const PATH_TO_ANGULAR_JSON = 'C:/Projects/clp/angular.json';
 
 async function init() {
   const userInput = getArguments();
   const filePath = getFilePathFromUserInput(userInput);
+  const filePathToSpec = isSpecFile(filePath) ? filePath : getSpecFromFilePath(filePath);
 
   readFile(PATH_TO_ANGULAR_JSON, 'utf8', (err, data) => {
     const json = JSON.parse(data);
     const projectsAndRoots = getProjectsAndRootsFromAngularJson(json);
-    const projectToRunTest = getProjectToRunTest(projectsAndRoots, filePath);
-	console.log(`${projectToRunTest} --test-file ${filePath}`)
+    const projectToRunTest = getProjectToRunTest(projectsAndRoots, filePathToSpec);
+	console.log(`${projectToRunTest} --test-file ${filePathToSpec}`)
   });
 }
 
