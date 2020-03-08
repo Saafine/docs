@@ -1,0 +1,20 @@
+# Combination
+selection of items from a collection, such that (unlike permutations)
+the order of selection does not matter. For example, given three fruits, say an apple,
+an orange and a pear, there are three combinations of two that can be drawn 
+from this set: an apple and a pear; an apple and an orange; or a pear and an orange.
+
+n   n!
+  = -------
+k   k!(n-k)!
+
+# Permutation
+the act of arranging the members of a set into a sequence or order, 
+or, if the set is already ordered, rearranging (reordering) its elements—a process
+called permuting. Permutations differ from combinations, which are selections of 
+some members of a set regardless of order. For example, written as tuples, there 
+are six permutations of the set {1,2,3}, namely: (1,2,3), (1,3,2), (2,1,3), (2,3,1),
+(3,1,2), and (3,2,1).
+
+( Słowo podzbiór powinno, słusznie zresztą, sugerować, iż nie jest dla nas istotna kolejność elementów)
+(Znów, tym razem słowo 'ciąg' ma nam podpowiadać, że tym razem interesuje nas kolejność.)

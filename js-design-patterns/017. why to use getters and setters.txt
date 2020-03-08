@@ -1,0 +1,27 @@
+//Case 1
+public class Shoe{
+    public int size;
+}
+
+//Case 2
+public class Shoe{
+    private int size;
+    public int getSize(){
+        return size;
+    }
+
+    public void setSize(int sz){
+        size = sz;
+    }
+
+}
+
+Because 2 weeks (months, years) from now when you realize that your setter needs to do more than just set the value, you'll also realize that the property has been used directly in 238 other classes :-)
+
+there are much more advantages:
+
+getters and setter can have validation in them, fields can't
+using getter you can get subclass of wanted class.
+getters and setters are polymorphic, fields aren't
+debugging can be much simpler, because breakpoint can be placed inside one method not near many references of that given field.
+they can hide implementation changes:
