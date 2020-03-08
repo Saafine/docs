@@ -15,36 +15,47 @@ const testData = [
   }
 ];
 
-function getCount(terrain) {
-  let edge = 0;
-  let fill = 0;
-  let sum = 0;
-  // , 3, 2, 1, 2, 1
-  for (const block of [2, 1, 0, 1]) {
-    if (edge === block) {
-      sum = sum + fill;
-      fill = 0;
-      continue;
-    }
-
-    if (block < edge) {
-      console.log(block, edge);
-      fill = fill + edge - block;
-      continue;
-    }
-
-    if (block > edge) {
-      sum = sum + fill;
-      fill = 0;
-      edge = block;
-    }
-  }
-  console.log(sum, fill);
-  return sum;
+function countWater(arr) {
+  const max = Math.min(arr[0], arr[arr.length - 1]);
+  return arr.slice(1, -1).reduce((acc, cur) => {
+    return acc + max - cur;
+  }, 0);
 }
 
 function solution(terrain) {
-  return getCount(terrain);
+  const waterTanks = [];
+  let temp = [];
+  for (let x = 0; x < terrain.length; x++) {
+    const elevation = terrain[x];
+
+    // tank begins
+    if (temp.length === 0) {
+      if (elevation === 0) continue;
+      temp.push(elevation);
+      continue;
+    }
+
+    // no mid and next elevation too big
+    if (temp.length === 1 && elevation > temp[0]) {
+      temp = [];
+      continue;
+    }
+
+    temp.push(elevation);
+
+    // handle tank end
+    if (elevation >= temp[0]) {
+      waterTanks.push(temp);
+      x--;
+      temp = [];
+    }
+  }
+
+  console.log(temp);
+  console.log(waterTanks);
+  return waterTanks.reduce((acc, cur) => {
+    return acc + countWater(cur);
+  }, 0);
 }
 
 trySolution(solution, testData, 1);

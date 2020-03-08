@@ -1,22 +1,20 @@
 Service: Route53
 
-ns-1509.awsdns-60.org
-ns-107.awsdns-13.com
-ns-1644.awsdns-13.co.uk
-ns-615.awsdns-12.net
+0. Get nameservers from AWS 
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/GetInfoAboutHostedZone.html
 
-set nameservers on namescheap
+1. Set nameservers on namescheap (DNS)
 nameservers
 
-go to running instances
-take public ip 52.29.4.250
+2. Get $public_ip from running instances on EC2
 
-create record set on route
+3. Go to Route 53
+Create record set on route
 name: www.testing-domain.pl
-value: public ip
+value: $public_ip
 
-create record set alias
-name: empty
+Create record set
+alias name: empty
 aliast target: www.testing-domain.pl
 
 https://www.youtube.com/watch?v=aHuQExY360I
