@@ -18,36 +18,70 @@ const testData = [
         output: 1
     },
     {
-        args: [[5,
-            1,
-            4,
-            5,
-            2, 6]],
+        args: [[5, 1, 4, 5, 2, 6]],
         output: 4
+    }, {
+        args: [[1, 2, 0, 1, 2, 1, 2, 1,3, 4]], //1, 2, 0, 1, 2, 1, 3, 4
+        output: 5
     }
 ];
 
-function findLIS(arr) {
-    let max = arr[0];
-    let size = arr.length > 0 ? 1 : 0;
+class Bucket {
+    size = 0;
+    max = null;
 
-    for (let x = 1; x < arr.length; x++) {
-        const current = arr[x];
-        console.log({current, max});
-        if (current > max) {
-            size++;
-            max = current;
-        }
+    // inside = [];
+
+    constructor(max) {
+        this.add(max);
     }
 
-    return size;
+    add(element) {
+        // this.inside.push(element);
+        this.max = element;
+        this.size++;
+    }
+
+    canAdd(element) {
+        return this.max < element;
+    }
+
+    getSize() {
+        return this.size;
+    }
+}
+
+function findLIS(arr) {
+    const buckets = [];
+    let maxSize = 0;
+
+    arr.forEach((element) => {
+        let added = false;
+
+        buckets.forEach((bucket) => {
+            if (bucket.canAdd(element)) {
+                bucket.add(element);
+                maxSize = bucket.getSize() > maxSize ? bucket.getSize() : maxSize;
+                added = true;
+            } else {
+                added = false;
+            }
+        });
+
+        if (added === false) {
+            buckets.push(new Bucket(element));
+            maxSize = maxSize === 0 ? 1 : maxSize;
+        }
+    });
+
+    return maxSize;
 }
 
 function solution(arr) {
     return findLIS(arr);
 }
 
-trySolution(solution, testData, 3);
+trySolution(solution, testData);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
