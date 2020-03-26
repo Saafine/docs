@@ -1,1 +1,0 @@
-16kb powinien html zajmowac ze wzgledu na tcp/ip pierwszy pakiet

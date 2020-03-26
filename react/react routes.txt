@@ -1,0 +1,11 @@
+urls = {
+  home: () => `/home/`
+  users: {
+    list: () => `/users/`,
+    details: (id) => `/${urls.users.list()}${id}/`,
+   }
+  // ... more routes
+}
+<Link to={urls.users.details('Andy')} />Andy</Link>
+In react-router's routes you do:
+<Route path={urls.users.details(':id')} />
