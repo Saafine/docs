@@ -1,23 +1,36 @@
 const meta = {
     link: '',
-    name: '',
-    description: ``,
+    name: 'Happy number',
     tags: []
 };
 
 const testData = [
     {
-        args: [],
-        output: undefined
+        args: [19],
+        output: true
+    },
+    {
+        args: [4],
+        output: false
     }
 ];
 
-
-function solution(str) {
-
+function split(number) {
+    return String(number).split('').map(Number)
 }
 
-trySolution(solution, testData);
+function getSumOfSquaresOfDigits(numbers) {
+    return numbers.reduce((acc, val) => acc + val**2, 0)
+}
+
+function isHappy(number) {
+    if (number === 4) return false;
+    if (number === 1) return true;
+    const sumOfSquaresOfDigits = getSumOfSquaresOfDigits(split(number));
+    return isHappy(sumOfSquaresOfDigits);
+}
+
+trySolution(isHappy, testData, 1);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;

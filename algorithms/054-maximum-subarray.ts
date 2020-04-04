@@ -1,20 +1,30 @@
 const meta = {
-    link: '',
-    name: '',
-    description: ``,
+    link: 'https://leetcode.com/explore/challenge/card/30-day-leetcoding-challenge/528/week-1/3285/',
+    name: 'Maximum Subarray',
     tags: []
 };
 
 const testData = [
     {
-        args: [],
-        output: undefined
+        args: [[-2, 1, -3, 4, -1, 2, 1, -5, 4]],
+        output: 6
+    },
+    {
+        args: [[-1]],
+        output: -1
     }
 ];
 
 
-function solution(str) {
-
+function solution(nums) {
+    let max = null;
+    let tempSum = 0;
+    nums.forEach((element) => {
+        const sumWithElement = tempSum < 0 ? element : tempSum + element;
+        tempSum =  sumWithElement > 0 ? sumWithElement : element;
+        if (tempSum > max || max === null) max = tempSum;
+    });
+    return max;
 }
 
 trySolution(solution, testData);

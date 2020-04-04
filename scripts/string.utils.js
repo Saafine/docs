@@ -13,7 +13,7 @@ function getFileNameFromPath(input) {
 }
 
 function getSpecFromFilePath(filePath) {
-  return filePath.replace(/\.ts/, ".spec.ts");
+  return filePath.replace(/\.ts/, ".spec.ts").replace(/\.html/, ".spec.ts");
 }
 
 function removeSpecFromFile(filePath) {

@@ -6,6 +6,26 @@ const meta = {
 
 const testData = [
     {
+        args: [[10, 9, 2, 5, 3, 7, 101, 18]], // 2, 5, 7, 101
+        output: 4
+    },
+    {
+        args: [[10, 12, 20, 6, 7, 8, 9, 3, 5]],
+        output: 4
+    },
+    {
+        args: [[1, 555, 6]],
+        output: 2
+    },
+    {
+        args: [[1, 2, 3, 4, 5, 555, 6, 7, 8, 9]],
+        output: 9
+    },
+    {
+        args: [[808, 7905, 9625, 7874, 8131]],
+        output: 3
+    },
+    {
         args: [[1, 4, 3]],
         output: 2
     },
@@ -22,7 +42,7 @@ const testData = [
         output: 4
     },
     {
-        args: [[1, 2, 0, 1, 2, 1, 2, 1, 3, 4]], //1, 2, 0, 1, 2, 1, 3, 4
+        args: [[1, 2, 0, 1, 2, 1, 2, 1, 3, 4]],
         output: 5
     },
     {
@@ -32,191 +52,84 @@ const testData = [
     {
         args: [[10, 12, 20, 6, 7, 8, 9, 3, 5]],
         output: 4
-    },
-    {
-        args: [[808,
-            7905,
-            9625,
-            7874,
-            8131,
-            8756,
-            12843,
-            11408,
-            9260,
-            15106,
-            11092,
-            16533,
-            16862,
-            17319,
-            19108,
-            22263,
-            22614,
-            15376,
-            22711,
-            25360]],
-        output: 13
-    },
-    {
-        args: [[304,
-            6601,
-            3040,
-            10068,
-            11466,
-            12288,
-            8752,
-            16165,
-            9690,
-            12871,
-            12627,
-            14062,
-            17957,
-            20776,
-            18354,
-            20653,
-            19535,
-            22028,
-            19977,
-            17473,
-            26922,
-            28593,
-            26019,
-            28271,
-            27187,
-            28638,
-            33000,
-            28421,
-            26836,
-            28748,
-            27414,
-            36472,
-            34452,
-            38615,
-            39125,
-            37237,
-            36056,
-            42746,
-            38499,
-            42999,
-            39469,
-            43232,
-            45488,
-            48220,
-            45543,
-            41283,
-            45229,
-            50226,
-            47918,
-            53198,
-            47783,
-            52396,
-            55939,
-            49492,
-            48714,
-            49585,
-            57410,
-            55082,
-            58108,
-            59386,
-            60361,
-            58075,
-            58022,
-            65372,
-            57681,
-            67516,
-            61418,
-            64939,
-            66041,
-            65598,
-            65115,
-            69248,
-            68933,
-            72369,
-            76425,
-            77412,
-            76632,
-            78943,
-            76809,
-            75048,
-            78128,
-            77323,
-            75999,
-            82237,
-            83730,
-            83109,
-            78279,
-            83600,
-            86734,
-            80967,
-            87468,
-            87453,
-            83461,
-            86610,
-            94064,
-            90990,
-            90236,
-            92016,
-            92701,
-            91506]],
-        output: 40
-    },
+    }
 ];
 
-class Bucket {
-    size = 0;
-    max = null;
+function getRemovedElementsWhenElementPicked(arr, element) {
+    return arr.filter((restElement) => {
+        return restElement.index < element.index || restElement.value < element.value;
+    });
+}
 
-    // inside = [];
 
-    constructor(max) {
-        this.add(max);
-    }
+function filterAll(arr, filteredArray, el) {
+    const indexesToFilterOut = filteredArray.map(value => value.index);
+    return arr.filter(({ index }) => {
+        return !indexesToFilterOut.includes(index)
+    }).filter((x) => x.value !== el.value) // TODO [P. Labus] filter the same values
+}
 
-    add(element) {
-        // this.inside.push(element);
-        this.max = element;
-        this.size++;
-    }
+function flatUnique(arr) {
+    const mem = {};
+    return arr.reduce((acc, value) => {
+        value.forEach((val) => {
+            if (!mem[val.index]) {
+                acc.push(val);
+                mem[val.index] = val.value;
+            }
+        });
+        return acc;
+    }, []);
+}
 
-    canAdd(element) {
-        return this.max < element;
-    }
+function xxx(arr, count = 0) {
+    if (arr.length === 0) return count;
+    const element = arr[0];
+    const remainder = arr.slice(1);
+    const removedElementsWhenElementPicked = getRemovedElementsWhenElementPicked(remainder, element);
+    const whatWouldBeLostIfWeDidNotRemoveElements = flatUnique(removedElementsWhenElementPicked.map((el) => getRemovedElementsWhenElementPicked(remainder.slice(el.index), el)));
 
-    getSize() {
-        return this.size;
+    const val = 0;
+    if (removedElementsWhenElementPicked.length <= whatWouldBeLostIfWeDidNotRemoveElements.length + 1) { // + 1 because we at least lose the current element
+        const next = filterAll(remainder, removedElementsWhenElementPicked, element);
+        if (count === val) {
+            // console.log(removedElementsWhenElementPicked.length);
+            // removedElementsWhenElementPicked.length;
+            // console.log(removedElementsWhenElementPicked);
+            console.log(removedElementsWhenElementPicked.length);
+            console.log(whatWouldBeLostIfWeDidNotRemoveElements.length + 1);
+            // ;
+            element;
+            // next;
+        }
+        return xxx(next, count + 1);
+    } else {
+        // if (count === val) {
+        //     // removedElementsWhenElementPicked;
+        //     // whatWouldBeLostIfWeDidNotRemoveElements;
+        //     // removedElementsWhenElementPicked
+        //     // whatWouldBeLostIfWeDidNotRemoveElements
+        //     // element;
+        //     // remainder;
+        //     throw Error('')
+        // }
+        return xxx(remainder, count);
     }
 }
 
 function findLIS(arr) {
-    const buckets = [];
-    let maxSize = 0;
-
-    arr.forEach((element) => {
-        let added = false;
-
-        buckets.forEach((bucket) => {
-            if (bucket.canAdd(element)) {
-                bucket.add(element);
-                maxSize = bucket.getSize() > maxSize ? bucket.getSize() : maxSize;
-                added = true;
-            } else {
-                added = false;
-            }
-        });
-
-        if (added === false) {
-            buckets.push(new Bucket(element));
-            maxSize = maxSize === 0 ? 1 : maxSize;
-        }
-    });
-
-    return maxSize;
+    arr
+    const indexedArray = arr
+        .map((x, i) => ({ value: x, index: i }))
+        .sort((a, b) => a.value - b.value);
+    return xxx(indexedArray);
 }
 
 function solution(arr) {
     return findLIS(arr);
 }
 
-trySolution(solution, testData);
+trySolution(solution, testData, 1);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
