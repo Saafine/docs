@@ -1,5 +1,7 @@
 # Problem solving
 - try sorting the input
+- try iterating from left and right
+
 - breaking into smaller sub problems
 - iterate from begin / end
 
