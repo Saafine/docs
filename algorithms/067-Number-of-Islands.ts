@@ -85,76 +85,59 @@ const testData = [
     }
 ];
 
+const memory = {};
+let walks = 0;
 
-function getLandFromList(list, rowIndex) {
-    return list.reduce((acc, val, index) => {
-        if (val == 1) {
-            acc.push([rowIndex, index]);
-        }
-        return acc;
-    }, []);
+function visited(x, y) {
+    return memory['' + x + y];
 }
 
-function getLandFromMatrix(grid) {
-    return grid.reduce((acc, val, index) => {
-        const land = getLandFromList(val, index);
-        if (land.length) {
-            return acc.concat(land);
-        }
-        return acc;
-    }, []);
+function visit(x, y) {
+    memory['' + x + y] = 1;
 }
 
-function mergeIsland(a, b, islands) {
-    let min = Math.min(a, b);
-    let max = Math.max(a, b);
-    for (let key in islands) {
-        if (islands[key] === max) {
-            islands[key] = min;
-        }
+function outOfGrid(x, y, maxX, maxY) {
+    const leftGridMax = x > maxX || y > maxY;
+    const leftGridMin = x < 0 || y < 0;
+    return leftGridMax || leftGridMin;
+}
+
+function walkIslands(grid, maxX, maxY, x = 0, y = 0, partOfIsland = false, safety = 0) {
+    console.log('here', [x, y]);
+    if (visited(x, y)) return;
+    visit(x, y);
+    const isIsland = grid[x][y] == 1;
+
+    if (isIsland && !partOfIsland) {
+        walks++
     }
-}
 
-function isNewIsland([x, y], islands, max) {
-    const searchCords = [[x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]]; // TODO could limit so we dont look out of bounds
-    let numberOfIsland = null;
-    for (let [searchCordX, searchCordY] of searchCords) {
-        const partOfIsland = islands['' + searchCordX + searchCordY];
-        if (partOfIsland) {
-            if (numberOfIsland && partOfIsland !== numberOfIsland) {
-                mergeIsland(partOfIsland, numberOfIsland, islands);
-                numberOfIsland = Math.min(partOfIsland, numberOfIsland);
-            } else {
-                numberOfIsland = partOfIsland;
-            }
-        }
+    if (isIsland) {
+        const searchCords = [[x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]].filter(([a, b]) => !visited(a, b) && !outOfGrid(a, b, maxX, maxY));
+        searchCords.forEach(([searchCordX, searchCordY]) => {
+            walkIslands(grid, maxX, maxY, searchCordX, searchCordY, true, safety + 1)
+        })
     }
-    return numberOfIsland || max + 1;
+
+    if (partOfIsland) return;
+
+    if (x == maxX && y == maxY) {
+        console.log(x);
+        return;
+    } else if (y == maxY) {
+        walkIslands(grid, maxX, maxY, x + 1, 0, false, safety + 1);
+    } else {
+        walkIslands(grid, maxX, maxY, x, y + 1, false, safety + 1);
+    }
 }
 
 function numIslands(grid) {
-    const lands = getLandFromMatrix(grid);
-    const islands = {};
-    let max = 0;
-
-    for (let land of lands) {
-        const islandNumber = isNewIsland(land, islands, max);
-        islands['' + land[0] + land[1]] = islandNumber;
-        max = islandNumber > max ? islandNumber : max;
-    }
-    return getMax(islands);
-}
-
-function getMax(islands) {
-    let max = 0;
-    for (let islandsKey in islands) {
-        max = islands[islandsKey] > max ? islands[islandsKey] : max;
-    }
-    return max;
+    walkIslands(grid, grid.length - 1, grid[0].length - 1);
+    return walks;
 }
 
 
-trySolution(numIslands, testData);
+trySolution(numIslands, testData, 1);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;

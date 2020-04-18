@@ -1,15 +1,7 @@
 # Problem solving
 - try sorting the input
 - try iterating from left and right
-
-- breaking into smaller sub problems
+- path finder
+- divide & conquer
 - iterate from begin / end
 
-- split big problem into small problems
-
-
-+ better debugging experience
-+ test assertions
-+ bisection search
-+ binary tree
-+ add tags metadata to solutions + auto generated readme 
