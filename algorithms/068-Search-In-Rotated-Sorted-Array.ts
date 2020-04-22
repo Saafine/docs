@@ -12,9 +12,34 @@ const meta = {
 };
 
 const testData = [
+    // {
+    //     args: [[0, 1, 2, -2, -1], -1],
+    //     output: 4
+    // },
+    // {
+    //     args: [[4, 5, 6, 7, 0, 1, 2], 0],
+    //     output: 4
+    // },
+    // {
+    //     args: [[4, 5, 6, 7, 0, 1, 2], 3],
+    //     output: -1
+    // },
+    // {
+    //     args: [[6, 7, 0, 1, 2, 4, 5], 7],
+    //     output: 1
+    // },
+    // {
+    //     args: [[6, 7, 2, 3, 4, 5], 2],
+    //     output: 2
+    // },
+    // {
+    //     args: [[8, 9, 2, 3, 4, 5, 6, 7], 2],
+    //     output: 2
+    // }
+
     {
         args: [[0, 1, 2, -2, -1], -1],
-        output: 4
+        output: 3
     },
     {
         args: [[4, 5, 6, 7, 0, 1, 2], 0],
@@ -22,11 +47,11 @@ const testData = [
     },
     {
         args: [[4, 5, 6, 7, 0, 1, 2], 3],
-        output: -1
+        output: 4
     },
     {
         args: [[6, 7, 0, 1, 2, 4, 5], 7],
-        output: 1
+        output: 2
     },
     {
         args: [[6, 7, 2, 3, 4, 5], 2],
@@ -35,42 +60,45 @@ const testData = [
     {
         args: [[8, 9, 2, 3, 4, 5, 6, 7], 2],
         output: 2
-    }
+    },
+    {
+        args: [[1, 7], 0],
+        output: 0
+    },
+    {
+        args: [[7, 1], 0],
+        output: 1
+    },
 ];
 
 
-function findStartIndex(arr, target, index = 0, min = 0, max = arr.length - 1, previousValue = -Infinity) {
+function findStartIndex(arr, index = 0, min = 0, max = arr.length - 1) {
     const value = arr[index];
-    if (min === max) return -1;
-    if (value === target) return index;
+    const next = arr[index + 1];
+    if (value > next) return index;
+    if (index === 0) return findStartIndex(arr, Math.floor(max - (max - index) / 2), min, max);
 
-    const isBiggerThanTarget = value > target;
-    const isRising = value > previousValue;
-    if (isBiggerThanTarget && isRising) {
-        return findStartIndex(arr, target, Math.floor(index - ((index - min) / 2)), previousValue, value, -Infinity);
-        // return findStartIndex(arr, target, Math.floor(max - ((max - index) / 2)), min + 1, max, value);
-    } else if (!isBiggerThanTarget && isRising) {
-        // return findStartIndex(arr, target, Math.floor(index - ((index - min) / 2)), previousValue, value, -Infinity);
-        return findStartIndex(arr, target, Math.floor(max - ((max - index) / 2)), min + 1, max, value);
-    } else if (isBiggerThanTarget && !isRising) {
-        const next = Math.floor(max - ((max - index) / 2));
-        return findStartIndex(arr, target, next === index ? next + 1 : index, min + 1, max, value);
-        // return findStartIndex(arr, target, min, min, index, -Infinity);
-    } else if (!isBiggerThanTarget && !isRising) {
-        // const next = Math.floor(max - ((max - index) / 2));
-        // return findStartIndex(arr, target, next === index ? next + 1 : index, min + 1, max, value);
-        return findStartIndex(arr, target, min, min, index, -Infinity);
+    const minValue = arr[min];
+    // go right
+    if (value > minValue) {
+        min = index;
+        const nextIndex = Math.floor(max - (max - index) / 2);
+        return findStartIndex(arr, nextIndex, min, max);
     } else {
-        console.log('?');
+        // go left
+        max = index;
+        const nextIndex = Math.floor(index - (index - min) / 2);
+        return findStartIndex(arr, nextIndex, min, max);
     }
 }
 
 function solution(arr, target) {
     if (!arr.length) return -1;
-    return findStartIndex(arr, target);
+    const idx = findStartIndex(arr);
+    return idx;
 }
 
-trySolution(solution, testData, 0);
+trySolution(solution, testData);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
