@@ -5,6 +5,8 @@
 - divide & conquer
 - iterate from begin / end
 - accumulor: by iterating forward you can keep track on how far you can go 
+- easiest solution first, before optimizing
+
 
 # Constraints
 The input strings consist of lowercase English characters only.

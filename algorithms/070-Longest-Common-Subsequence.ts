@@ -13,6 +13,10 @@ const meta = {
 
 const testData = [
     {
+        args: ['bcd', 'ace'],
+        output: 1
+    },
+    {
         args: ['abc', 'def'],
         output: 0
     },
@@ -27,22 +31,34 @@ const testData = [
 ];
 
 
-function solution(strA, strB) {
+function longestCommonSubsequence(strA, strB) {
     const arrA = strA.split('');
     const arrB = strB.split('');
 
-    const mem = {};
-    for (let x = 0; x < arrA.length; x++) {
-        mem[arrA[x]] = {};
-        for (let y = x; y < arrB.length; y++) {
-            mem[arrA[x]][arrB[y]]= {}
+    const DP = [];
+
+    for (let i = 0; i < arrA.length; i++) {
+        const arr = [];
+        DP.push(arr);
+        for (let j = 0; j < arrB.length; j++) {
+            if (arrA[i] === arrB[j]) {
+                DP[i][j] = i === 0 || j === 0 ? 1 : DP[i - 1][j - 1] + 1;
+            } else {
+                let a = 0;
+                let b = 0;
+                ''
+                try { a = DP[i - 1][j] || 0 } catch (e) {}
+                try { b = DP[i][j - 1] || 0} catch (e) {}
+
+                DP[i][j] = Math.max(a, b);
+            }
         }
     }
 
-    mem;
+    return DP[arrA.length - 1][arrB.length - 1]
 }
 
-trySolution(solution, testData, 0);
+trySolution(longestCommonSubsequence, testData);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
