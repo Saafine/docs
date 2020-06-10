@@ -18,89 +18,73 @@ const testData = [
     {
         args: [
             ['LRUCache', 'put', 'put', 'put', 'put', 'get', 'get', 'get', 'get', 'put', 'get', 'get', 'get', 'get', 'get'],
-            [[3], [1, 1], [2, 2], [3, 3], [4, 4], [4], [3], [2], [1], [5, 5], [1], [2], [3], [4], [5]]
+            [3, [1, 1], [2, 2], [3, 3], [4, 4], [4], [3], [2], [1], [5, 5], [1], [2], [3], [4], [5]]
         ],
         output: [4, 3, 2, -1, -1, 2, 3, -1, 5]
+    },
+    {
+        args: [
+            ['LRUCache', 'put', 'put', 'get', 'put', 'get', 'put', 'get', 'get', 'get'],
+            [2, [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]],
+        output: [1, -1, -1, 3, 4]
+                // 1,2,-1,-1,4
     }
 ];
-
+``
 class LRUCache {
-    capacity;
-    size = 0;
-
-    map = {};
-    head = null;
-    tail = null;
-
     constructor(capacity) {
         this.capacity = capacity;
+        this.size = 0;
+        this.map = {};
+        this.head = null;
+        this.tail = null;
     }
 
     put(key, value) {
-        const shouldUpdateExisting = typeof this.map[key] !== 'undefined';
-        shouldUpdateExisting ? this.reorderAndUpdateElement(key, value) : this.addNewElement(key, value);
+        if (this.keyExists(key)) {
+            this.joinNeighbours(key);
+        } else if (this.size === this.capacity) {
+            const head = this.head;
+            this.head = head.next;
+            delete this.map[head.key];
+        } else {
+            this.size++;
+        }
+
+        this.map[key] = {
+            key,
+            value,
+            next: null,
+            previous: this.tail || null
+        };
+
+        if (!this.head) this.head = this.map[key];
+        if (this.tail) this.tail.next = this.map[key];
+        this.tail = this.map[key];
     }
 
     get(key) {
         const obj = this.map[key];
         if (!obj) return -1;
-        this.reorderAndUpdateElement(key, obj.value);
+        if (this.keyExists(key)) this.put(obj.key, obj.value);
         return obj.value;
     }
 
-    reorderAndUpdateElement(key, value) {
-        // 1. set key to tail
-        // 2. update oldTail next to tail
-        // 3. update oldKey previous to oldKeyNext
-        // 4. update oldKeyNext previous to oldKey previous
-        const { tail } = this;
-
-        this.map[key].previous = this.map[key].next;
-        if (this.map[key].next) this.map[key].next.previous = this.map[key].previous;
-
-        this.tail = this.map[key] = {
-            key,
-            value,
-            next: null,
-            previous: tail.previous
-        };
-
-        tail.next = this.tail;
+    keyExists(key) {
+        return typeof this.map[key] !== 'undefined';
     }
 
-    addNewElement(key, value) {
-        const shouldFreeCache = this.size === this.capacity;
-        this.addNewElementToMap(key, value);
-        this.updateTail(key);
-        this.updateHead();
+    joinNeighbours(key) {
+        const obj = this.map[key];
+        const nextNode = obj.next;
+        const previousNode = obj.previous;
 
-        if (shouldFreeCache) {
-        } else {
-            this.size++;
-        }
-    }
+        if (previousNode) previousNode.next = nextNode || null;
+        if (nextNode) nextNode.previous = previousNode || null;
 
-    addNewElementToMap(key, value) {
-        this.map[key] = {
-            value,
-            key,
-            next: null,
-            previous: this.tail
-        };
-    }
-
-    updateTail(key) {
-        if (this.tail) {
-            this.tail.next = this.map[key];
-        }
-
-        this.tail = this.map[key];
-    }
-
-    updateHead() {
-        if (this.size === 0) {
-            this.head = this.tail;
-        }
+        if (this.map[key] === this.tail) this.tail = previousNode;
+        if (this.map[key] === this.head) this.head = this.head.next;
+        delete this.map[key];
     }
 }
 
@@ -119,7 +103,7 @@ function solution(commands, args) {
     return result;
 }
 
-trySolution(solution, testData);
+trySolution(solution, testData, 1);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
