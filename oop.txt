@@ -1,0 +1,29 @@
+﻿# Basic principles of OOP
+There are four basic principles of OOP. They are encapsulation, abstraction, inheritance, and polymorphism. 
+
+Data encapsulation is the mechanism of hiding the internal data of objects from the world. All interaction with the object and its data are performed through its public methods. Encapsulation allows programmers to protect the object from inconsistency.
+Data abstraction means that objects should provide the simplified, abstract version of their implementations. The details of their internal work usually aren't necessary for the user, so there's no need to represent them. Abstraction also means that only the most relevant features of the object will be presented.
+Inheritance is a mechanism for defining parent-child relationships between classes. Often objects are very similar, so inheritance allows programmers to reuse common logic and at the same time introduce unique concepts into the classes.
+Polymorphism literally means one name and many forms, and it concerns the inheritance of the classes. Just as the name suggests, it allows programmers to define different logic of the same method. So, the name (or interface) stays the same, but the actions performed may be different. In practice, it is done with overloading or overriding.
+
+# Numbers
+Java provides several types for integers and fractional numbers. These types are often used in arithmetic expressions.
+
+Integer numbers (0, 1, 2, ...) are represented by the following four types: long,int,short,byte(from the largest to the smallest). 
+These types have different sizes and may represent different ranges of values. The range of an integer type is calculated as −(2n−1) 
+to (2n−1)−1, where n is the number of bits. The range includes 0, which is the reason for subtracting 1 from the upper bound.
+byte: size 8 bits (1 byte), range from -128 to 127
+short: size 16 bits (2 bytes), range from -32768 to 32767
+int: size 32 bits (4 bytes), range from −(2^31) to (2^31)−1
+long: size 64 bits (8 bytes), range from −(2^63) to (2^63)−1
+
+
+# TEST
+Here is a snippet of code and a picture that demonstrates this.
+
+int a = 100;
+int b = a; // 100 is copied to b
+ 
+String language = new String("java");
+String java = language;
+The variable b has a copy of value stored in the variable a. But variables language and java reference to the same value, rather than copy it. The picture below clearly demonstrates the difference.
