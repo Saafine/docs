@@ -7,7 +7,7 @@ const meta = {
 
 const testData = [
     {
-        args: [[7, 3, 7, 3 , 1, 3, 4, 1]],
+        args: [[7, 3, 7, 3 , 1, 3, 4, 1]], // 2 , 6
         output: 5 // shortest trip to visit all destinations
     },
     {
@@ -22,34 +22,42 @@ const testData = [
 
 
 function solution(trips) {
-    let maxUniqueTrips = 0;
-    let optimalStart = 0;
+    let maxUniqueTrips = null;
+    let start = null;
+    let end = null;
 
     for (let x = 0; x < trips.length; x++) {
-        let unique = {};
         let tempUniqueTrips = 0;
-        let left = x + 1;
+        let unique = {};
+        let left = x;
 
-        while (tempUniqueTrips <= maxUniqueTrips && left === trips.length - 1) {
-            const tripId = trips[x];
+        while (tempUniqueTrips !== maxUniqueTrips && left < trips.length - 1) {
+            const tripId = trips[left];
+
             if (typeof unique[tripId] === 'undefined') {
                 unique[tripId] = 1;
                 tempUniqueTrips++;
-                maxUniqueTrips = tempUniqueTrips > maxUniqueTrips ? tempUniqueTrips : maxUniqueTrips;
+            }
+
+            if (maxUniqueTrips === tempUniqueTrips) {
+                start = x;
+                end = left;
             }
 
             left++;
         }
 
-        if (x > optimalStart && tempUniqueTrips === maxUniqueTrips) {
-            optimalStart = x - 1
+        if (x === 0) {
+            maxUniqueTrips = tempUniqueTrips;
+        } else {
+            if (tempUniqueTrips < maxUniqueTrips) break;
         }
     }
 
-    return optimalStart;
+    return end - start + 1;
 }
 
-trySolution(solution, testData, 0);
+trySolution(solution, testData);
 
 function trySolution(solutionFn, cases, specifyIdx = undefined) {
     let casesLen = cases.length;
