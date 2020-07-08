@@ -1,3 +1,7 @@
+# View volume data
+docker run --rm -it -v=nxcache:/localcache node bash
+
+
 # docker machine
 - list all methods
 docker-machine
