@@ -1,3 +1,6 @@
+# bind volume (must be full path)
+docker run -p 8080:80 -v C:/Projects/eagle-management-ui/nginx/template.conf:/etc/nginx/template.conf -it test5
+
 # View volume data
 docker run --rm -it -v=nxcache:/localcache node bash
 
