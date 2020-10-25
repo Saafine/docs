@@ -2,7 +2,7 @@ const { readFile } = require('fs');
 const { getArguments } = require('./custom-utils');
 const { getSpecFromFilePath, isSpecFile } = require('./string.utils');
 
-const PATH_TO_ANGULAR_JSON = 'C:/Projects/snippets/angular.json';
+const PATH_TO_ANGULAR_JSON = 'C:/Projects/echo-web-clients/angular.json';
 
 async function init() {
   const userInput = getArguments();
