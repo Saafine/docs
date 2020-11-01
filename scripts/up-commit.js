@@ -11,7 +11,7 @@ async function init() {
 }
 
 function getDescription(branch) {
-  return /-\d*-(.+)/.exec(branch)[1].replace('-', ' ');
+  return /-\d*-(.+)/.exec(branch)[1].replace(/-/gi, ' ');
 }
 
 function getTask(branch) {
