@@ -15,14 +15,14 @@ function getDescription(branch) {
 }
 
 function getTask(branch) {
-  return /\/(.+?-\d.)/.exec(branch)[1]
+  return /\/(.+?-\d+)/.exec(branch)[1]
 }
 
 function getType(branch) {
   if (/feature\//.test(branch)) return 'feature';
   if (/hotfix\//.test(branch)) return 'hotfix';
   if (/bugfix\//.test(branch)) return 'bugfix';
-  return '';
+  throw Error(`Branch type not supported!`)
 }
 
 init();

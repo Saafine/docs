@@ -4,6 +4,7 @@ from functools import partial
 from random import choices, randint, randrange, random
 from typing import List, Callable, Tuple
 import matplotlib.pyplot as plt
+from statistics import mean
 
 Genome = List[int]
 Population = List[Genome]
@@ -34,14 +35,23 @@ backpack_capacity = 25
 def generate_genome(length: int) -> Genome:
     return choices([0, 1], k=length)
 
-
 def generate_population(size: int, genome_length: int) -> Population:
     return [generate_genome(genome_length) for _ in range(size)]
+
+
+avgFitness = []
+maxFitness = []
+def forEachGeneration(population: [Genome], fitness_func: FitnessFunc) -> None:
+    fitness = list(map(fitness_func, population))
+    avgFitness.append(mean(fitness))
+    maxFitness.append(max(fitness))
 
 
 # FITNESS FUNCTION
 def fitness(genome: Genome, things: [Thing], weight_limit: int) -> int:
     if len(genome) != len(things):
+        print(genome)
+        print(things)
         raise ValueError("genome and things must be of the same length")
 
     weight = 0
@@ -126,6 +136,8 @@ def run_evolution(populate_func: PopulateFunc,
         if fitness_func(population[0]) >= fitness_limit:
             break
 
+        forEachGeneration(population, fitness_func)
+
         # Pick two best genomes from population
         # Elitism involves copying a small proportion of the fittest candidates, unchanged, into the next generation.
         next_generation = population[0:2]
@@ -151,7 +163,7 @@ start = time.time()
 population, generations = run_evolution(
     populate_func=partial(generate_population, size=10, genome_length=len(backpack_items)),
     fitness_func=partial(fitness, things=backpack_items, weight_limit=backpack_capacity),
-    fitness_limit=1630,  # value limit that makes us satisfied with the solution
+    fitness_limit=1630,  # value limit that makes us satisfied with the solution, 1630
     generation_limit=100  # so that we don't loop forever when fitness limit is never reached
 )
 end = time.time()
@@ -175,20 +187,23 @@ def genome_to_things(genome: Genome, things: [Thing]) -> [Thing]:
 
 
 print(f"number of generations, {generations}")
-print(f"time: {end - start}s")
-print(f"best solution, {genome_to_things(population[0], backpack_items)}")
-print(f"Solution:, {genome_to_things(population[0], backpack_items)}")
+# print(f"time: {end - start}s")
+# print(f"best solution, {genome_to_things(population[0], backpack_items)}")
+# print(f"Solution:, {genome_to_things(population[0], backpack_items)}")
+#
 
 def showPlot() -> None:
     plt.title('Dzialanie Alg. Genetycznego')
     plt.xlabel('pokolenie')
     plt.ylabel('fitness (ocena)')
-    plt.plot(generations, maximum, marker='o', color='red')
-    plt.plot(generations, average, marker='o', color='blue')
+
+    _generations = [i + 1 for i in range(generations)]
+
+    plt.plot(_generations, avgFitness, marker='.', color='blue')
+    plt.plot(_generations, maxFitness, marker='', color='red')
     plt.legend(['srednia', 'maksymalnie'])
     plt.show()
 
 
-
-
+showPlot()
 
