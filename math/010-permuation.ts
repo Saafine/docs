@@ -10,7 +10,7 @@ function B(m, i) {
     }
 }
 
-const P = ['X', 1, 2, 3, 4];
+const P = ['X', 1, 2, 3];
 const n = P.length - 1;
 
 function PERM(m) {

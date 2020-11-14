@@ -10,11 +10,12 @@ function B(m, i) {
     }
 }
 
-// const P = ['X', 1, 2, 3];
-// const n = P.length - 1;
+const P = ['_', 1, 2, 3];
+const n = 3;
 
 function PERM(n) {
-    const stack = [[n, ['_', 1, 2, 3]]];
+    debugger;
+    const stack = [[n, P]];
 
     while(stack.length) {
         const [m, A] = stack.pop();
@@ -31,7 +32,7 @@ function PERM(n) {
     }
 }
 
-PERM(3);
+PERM(n);
 
 function swap(array, indexA, indexB) {
     const tempA = array[indexA];

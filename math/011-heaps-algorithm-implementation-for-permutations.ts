@@ -1,7 +1,4 @@
-// Implementation of Heap's algorithm:
-// https://en.wikipedia.org/wiki/Heap%27s_algorithm
-function generatePermutations(A, n = A.length) {
-    // @ts-ignore
+function generatePermutations(A: number[], n: number = A.length): void {
     const c = Array(n).fill(0);
 
     console.log(A);
