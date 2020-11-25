@@ -94,7 +94,6 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
         next_move: Coords = get_next_move_coords(position, move)
         valid_move: bool = is_valid_move(next_move, maze)  # todo withing bounds
 
-        idx = index + 1
         # visualizeMaze(mazeDef, genome[:idx], start=get_coords_for_field(maze, START), maze_name=str(index))
 
         if valid_move:
@@ -110,8 +109,6 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
                 visits[visit_key] = 1
 
             if square == END:
-                found_exit = True
-                position = next_move
                 print('SUCCESS')
                 print(genome)
                 return SOLUTION_FOUND_FITNESS_VALUE
@@ -119,12 +116,11 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
                 steps = steps + 1
                 if is_dead_end(maze, position, next_move):
                     maze[x][y] = DEAD_END
-                    # break
-                    return DEAD_END_FITNESS_VALUE  # TODO should kill on dead end or just decrease fitness by a lot?
+                    return DEAD_END_FITNESS_VALUE
                 else:
                     position = next_move
             else:
-                # print('dead')
+                # dead
                 break
         else:
             break
