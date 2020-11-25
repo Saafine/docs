@@ -170,7 +170,7 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # todo number of mutations
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, number_of_mutations: int = 5, mutation_probability: float = 0.5) -> Genome:
+def mutation(genome: Genome, number_of_mutations: int = 15, mutation_probability: float = 0.5) -> Genome:
     for _ in range(number_of_mutations):
         randomGenomeIndex = randrange(len(genome))
         # leaves genome the same
