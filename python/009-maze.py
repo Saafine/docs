@@ -22,12 +22,14 @@ mazeDef: Maze = [
 
 MAX_MOVES = 40
 GENERATIONS = 300
+POPULATION_SIZE = 100
+
+# FITNESS
 SOLUTION_FOUND_FITNESS_VALUE = 10000
 DEAD_END_FITNESS_VALUE = -10000
-POPULATION_SIZE = 100
 DISTANCE_FROM_START_POINTS_MULTIPLIER = 10
-DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 10  # this is negative points
-STEPS_MULTIPLIER = 10
+DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 15  # this is negative points
+STEPS_MULTIPLIER = 20
 
 
 def generate_genome(length: int) -> Genome:
@@ -126,8 +128,7 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
             break
 
     # todo how points are calculated
-    extra_points = SOLUTION_FOUND_FITNESS_VALUE if found_exit else 0
-    return DISTANCE_FROM_START_POINTS_MULTIPLIER * distance(position, start) - DISTANCE_TO_FINISH_POINTS_MULTIPLIER * distance(position, finish) + extra_points + STEPS_MULTIPLIER * steps
+    return DISTANCE_FROM_START_POINTS_MULTIPLIER * distance(position, start) - DISTANCE_TO_FINISH_POINTS_MULTIPLIER * distance(position, finish) + STEPS_MULTIPLIER * steps
 
 # fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.TOP, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.TOP, Move.TOP, Move.BOTTOM, Move.LEFT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
 # fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
