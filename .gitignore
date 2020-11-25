@@ -1,5 +1,6 @@
 ### Ignore my files ###
 _DoNotCopy
+__pycache__
 
 ### Node ###
 
