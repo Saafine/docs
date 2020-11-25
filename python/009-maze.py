@@ -21,13 +21,13 @@ mazeDef: Maze = [
 ]
 
 MAX_MOVES = 40
-GENERATIONS = 100
+GENERATIONS = 300
 SOLUTION_FOUND_FITNESS_VALUE = 10000
 DEAD_END_FITNESS_VALUE = -10000
 POPULATION_SIZE = 100
 DISTANCE_FROM_START_POINTS_MULTIPLIER = 10
-DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 20
-STEPS_MULTIPLIER = 5
+DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 10  # this is negative points
+STEPS_MULTIPLIER = 10
 
 
 def generate_genome(length: int) -> Genome:
@@ -87,6 +87,8 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
     position: Coords = start
     found_exit = False
     steps = 0
+    visits = {}
+
 
     for index, move in enumerate(genome):
         next_move: Coords = get_next_move_coords(position, move)
@@ -99,17 +101,26 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
             x: int = next_move[0]
             y: int = next_move[1]
             square = maze[x][y]  # todo square ??
+            visit_key = str(x) + str(y)
+
+            # prevent circles
+            if visit_key in visits:
+                break
+            else:
+                visits[visit_key] = 1
+
             if square == END:
                 found_exit = True
+                position = next_move
                 print('SUCCESS')
                 print(genome)
-                break
+                return SOLUTION_FOUND_FITNESS_VALUE
             elif square == PATH:
                 steps = steps + 1
                 if is_dead_end(maze, position, next_move):
                     maze[x][y] = DEAD_END
-                    break
-                    # return DEAD_END_FITNESS_VALUE # TODO should kill on dead end or just decrease fitness by a lot?
+                    # break
+                    return DEAD_END_FITNESS_VALUE  # TODO should kill on dead end or just decrease fitness by a lot?
                 else:
                     position = next_move
             else:
@@ -161,7 +172,9 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # # Sample Input [1,1,1,1,1]
 # # Sample Output [1,0,1,1,1] (only element at index 1 was mutated)
 # todo number of mutations
-def mutation(genome: Genome, number_of_mutations: int = 20, mutation_probability: float = 0.5) -> Genome:
+# if mutation is too big, it will never reach the end
+# if mutation is too small, he will never grow
+def mutation(genome: Genome, number_of_mutations: int = 5, mutation_probability: float = 0.5) -> Genome:
     for _ in range(number_of_mutations):
         randomGenomeIndex = randrange(len(genome))
         # leaves genome the same
@@ -188,15 +201,16 @@ def run_evolution(populate_func: PopulateFunc,
     for i in range(generation_limit):
         #  sort populations based on their fitness
         population = sorted(population, key=lambda genome: fitness_func(genome), reverse=True)
+
+        visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START), maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])))
+
         #  if the genome already meets our requirements (ie. value of items of things in backpack is enough for us, we can exit)
         if fitness_func(population[0]) >= fitness_limit:
-            print("good enough")
             break
 
         # Pick two best genomes from population
         # Elitism involves copying a small proportion of the fittest candidates, unchanged, into the next generation.
         next_generation = population[0:2]
-        # visualizeMaze(maze=mazeDef, moves=population[5], start=get_coords_for_field(mazeDef, START), maze_name=str(i))
 
         # visualizeMaze(mazeDef, next_generation[0], start=get_coords_for_field(mazeDef, START))
 
@@ -234,8 +248,8 @@ def main():
         generation_limit=GENERATIONS  # so that we don't loop forever when fitness limit is never reached
     )
     end = time.time()
-    visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START), maze_name="1")
-    visualizeMaze(maze=mazeDef, moves=population[1], start=get_coords_for_field(mazeDef, START), maze_name="2")
+    # visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START), maze_name="1")
+    # visualizeMaze(maze=mazeDef, moves=population[1], start=get_coords_for_field(mazeDef, START), maze_name="2")
 
 
 main()
