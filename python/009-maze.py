@@ -4,31 +4,34 @@ from random import choices, randint, randrange, random
 
 from python.types import *
 from python.visualize import visualizeMaze
+from python.genMaze2 import get_maze
 
-mazeDef: Maze = [
-    [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
-    [WALL, START, PATH, PATH, WALL, PATH, PATH, PATH, WALL, PATH, PATH, WALL],
-    [WALL, WALL, WALL, PATH, PATH, PATH, WALL, PATH, WALL, WALL, PATH, WALL],
-    [WALL, PATH, PATH, PATH, WALL, PATH, WALL, PATH, PATH, PATH, PATH, WALL],
-    [WALL, PATH, WALL, PATH, WALL, WALL, PATH, PATH, WALL, WALL, PATH, WALL],
-    [WALL, PATH, PATH, WALL, WALL, PATH, PATH, PATH, WALL, PATH, PATH, WALL],
-    [WALL, PATH, PATH, PATH, PATH, PATH, WALL, PATH, PATH, PATH, WALL, WALL],
-    [WALL, PATH, WALL, PATH, PATH, WALL, WALL, PATH, WALL, PATH, PATH, WALL],
-    [WALL, PATH, WALL, WALL, WALL, PATH, PATH, PATH, WALL, WALL, PATH, WALL],
-    [WALL, PATH, WALL, PATH, WALL, WALL, PATH, WALL, PATH, WALL, PATH, WALL],
-    [WALL, PATH, WALL, PATH, PATH, PATH, PATH, PATH, PATH, PATH, END, WALL],
-    [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
-]
+# mazeDef: Maze = [
+#     [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
+#     [WALL, START, PATH, PATH, WALL, PATH, PATH, PATH, WALL, PATH, PATH, WALL],
+#     [WALL, WALL, WALL, PATH, PATH, PATH, WALL, PATH, WALL, WALL, PATH, WALL],
+#     [WALL, PATH, PATH, PATH, WALL, PATH, WALL, PATH, PATH, PATH, PATH, WALL],
+#     [WALL, PATH, WALL, PATH, WALL, WALL, PATH, PATH, WALL, WALL, PATH, WALL],
+#     [WALL, PATH, PATH, WALL, WALL, PATH, PATH, PATH, WALL, PATH, PATH, WALL],
+#     [WALL, PATH, PATH, PATH, PATH, PATH, WALL, PATH, PATH, PATH, WALL, WALL],
+#     [WALL, PATH, WALL, PATH, PATH, WALL, WALL, PATH, WALL, PATH, PATH, WALL],
+#     [WALL, PATH, WALL, WALL, WALL, PATH, PATH, PATH, WALL, WALL, PATH, WALL],
+#     [WALL, PATH, WALL, PATH, WALL, WALL, PATH, WALL, PATH, WALL, PATH, WALL],
+#     [WALL, PATH, WALL, PATH, PATH, PATH, PATH, PATH, PATH, PATH, END, WALL],
+#     [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
+# ]
 
-MAX_MOVES = 40
+mazeDef: Maze = get_maze(size=[6, 6])
+
+MAX_MOVES = 60
 GENERATIONS = 300
 POPULATION_SIZE = 100
+MUTATIONS = 15
 
 # FITNESS
 SOLUTION_FOUND_FITNESS_VALUE = 10000
 DEAD_END_FITNESS_VALUE = -10000
-DISTANCE_FROM_START_POINTS_MULTIPLIER = 10
-DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 15  # this is negative points
+DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 5  # this is negative points
 STEPS_MULTIPLIER = 20
 
 
@@ -128,7 +131,7 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
             break
 
     # todo how points are calculated
-    return DISTANCE_FROM_START_POINTS_MULTIPLIER * distance(position, start) - DISTANCE_TO_FINISH_POINTS_MULTIPLIER * distance(position, finish) + STEPS_MULTIPLIER * steps
+    return - DISTANCE_TO_FINISH_POINTS_MULTIPLIER * distance(position, finish) + STEPS_MULTIPLIER * steps
 
 # fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.TOP, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.TOP, Move.TOP, Move.BOTTOM, Move.LEFT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
 # fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
@@ -171,7 +174,7 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # todo number of mutations
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, number_of_mutations: int = 15, mutation_probability: float = 0.5) -> Genome:
+def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome:
     for _ in range(number_of_mutations):
         randomGenomeIndex = randrange(len(genome))
         # leaves genome the same

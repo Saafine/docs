@@ -2,8 +2,6 @@ from python.types import *
 from PIL import Image, ImageDraw
 import copy
 
-MAZE_ROWS = 12
-MAZE_COLUMNS = 12
 SIZE = 100
 
 TYPE_TO_COLOR = {
@@ -33,6 +31,8 @@ def get_next_move_coords(fromXY: Coords, move: Move) -> Coords:
 
 def visualizeMaze(maze: Maze, moves: List[Move], start: Coords, maze_name: str = '0') -> None:
     maze = copy.deepcopy(maze)
+    MAZE_COLUMNS = len(maze)
+    MAZE_ROWS = len(maze)
     out = Image.new('RGB', (MAZE_COLUMNS * SIZE, MAZE_ROWS * SIZE), MAZE_BACKGROUND)
     d = ImageDraw.Draw(out)
 
