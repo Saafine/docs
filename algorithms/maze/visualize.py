@@ -1,4 +1,4 @@
-from python.types import *
+from algorithms.maze.types import *
 from PIL import Image, ImageDraw
 import copy
 

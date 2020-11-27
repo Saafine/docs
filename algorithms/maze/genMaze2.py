@@ -4,9 +4,7 @@
 """
 from PIL import Image,ImageDraw, ImageColor
 import random as rnd
-import re
-import pprint
-from python.types import *
+from algorithms.maze.types import *
 
 
 class Maze:

@@ -2,9 +2,9 @@ import time
 from functools import partial
 from random import choices, randint, randrange, random
 
-from python.types import *
-from python.visualize import visualizeMaze
-from python.genMaze2 import get_maze
+from algorithms.maze.types import *
+from algorithms.maze.visualize import visualizeMaze
+from algorithms.maze.genMaze2 import get_maze
 
 # mazeDef: Maze = [
 #     [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
@@ -237,7 +237,7 @@ def run_evolution(populate_func: PopulateFunc,
 
 
 # TODO PARTIAL FAILING
-import os, shutil
+import os
 import glob
 
 
