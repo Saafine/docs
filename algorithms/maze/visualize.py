@@ -1,3 +1,4 @@
+from algorithms.maze.helpers import get_next_move_coords
 from algorithms.maze.types import *
 from PIL import Image, ImageDraw
 import copy
@@ -15,21 +16,7 @@ TYPE_TO_COLOR = {
 
 MAZE_BACKGROUND = (211, 255, 213)
 
-
-# todo reuse
-def get_next_move_coords(fromXY: Coords, move: Move) -> Coords:
-    if move == Move.TOP:
-        return [fromXY[0] - 1, fromXY[1]]
-    elif move == Move.RIGHT:
-        return [fromXY[0], fromXY[1] + 1]
-    elif move == Move.BOTTOM:
-        return [fromXY[0] + 1, fromXY[1]]
-    elif move == Move.LEFT:
-        return [fromXY[0], fromXY[1] - 1]
-    else:
-        raise ValueError('Illegal move')
-
-def visualizeMaze(maze: Maze, moves: List[Move], start: Coords, maze_name: str = '0') -> None:
+def visualize_maze(maze: Maze, moves: List[Move], start: Coords, maze_name: str = '0') -> None:
     maze = copy.deepcopy(maze)
     MAZE_COLUMNS = len(maze)
     MAZE_ROWS = len(maze)
@@ -55,6 +42,6 @@ def visualizeMaze(maze: Maze, moves: List[Move], start: Coords, maze_name: str =
     for i, column in enumerate(maze):
         for j, row in enumerate(column):
             d.rectangle((j * SIZE, i * SIZE, j * SIZE + SIZE, i * SIZE + SIZE), fill=TYPE_TO_COLOR[row])
-    out.save("pics/" + maze_name + ".jpg")
+    out.save("maze_paths/" + maze_name + ".jpg")
     out.close()
 

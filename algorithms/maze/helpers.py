@@ -49,7 +49,9 @@ def distance(fromXY: Coords, toXY: Coords) -> int:
 
 
 def clear_folder() -> None:
-    folder = 'C:\Projects\docs\python\pics'
-    files = glob.glob('C:/Projects/docs/python/pics/*')
+    files = glob.glob('C:/Projects/docs/algorithms/maze/maze_paths/*')
     for f in files:
         os.remove(f)
+
+def get_average(list):
+    return sum(list) / len(list)

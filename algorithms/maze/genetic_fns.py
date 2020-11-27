@@ -1,9 +1,24 @@
+import time
+from functools import partial
 from random import choices, randint, randrange, random
-
-from algorithms.maze.helpers import get_coords_for_field
+from algorithms.maze.generator import get_maze
+from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_valid_move, is_dead_end, distance, clear_folder
 from algorithms.maze.types import *
-from algorithms.maze.variables import MUTATIONS, mazeDef
-from algorithms.maze.visualize import visualizeMaze
+from algorithms.maze.visualize import visualize_maze
+
+mazeDef: Maze = get_maze(size=[6, 6])
+MAX_MOVES = 40
+GENERATIONS = 100
+POPULATION_SIZE = 100
+MUTATIONS = 20  # 15
+
+# FITNESS
+SOLUTION_FOUND_FITNESS_VALUE = 10000
+DEAD_END_FITNESS_VALUE = -100
+NEGATIVE_FINISH_MULTIPLIER = 50  # 25, this is negative points
+STEPS_MULTIPLIER = 0
+
+LONGEST_PATH = 0
 
 
 def generate_genome(length: int, exclude: Move = None) -> Genome:
@@ -50,16 +65,31 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # # Sample Output [1,0,1,1,1] (only element at index 1 was mutated)
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome:
+def mutation(genome: Genome, mutation_start_index: int = 0, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome:
+    genome_len = len(genome)
+    start_idx = int(LONGEST_PATH / 2)
     for _ in range(number_of_mutations):
-        randomGenomeIndex = randrange(len(genome))
+        randomGenomeIndex = randrange(genome_len)
         # leaves genome the same
         # OR turns 1 into 0 or 0 into 1
         # based on the mutation probability
         # TODO RANDOM GENOME
         genome[randomGenomeIndex] = genome[randomGenomeIndex] if random() > mutation_probability else generate_genome(1)[0]
-
     return genome
+
+
+def update_steps(steps: int) -> None:
+    global LONGEST_PATH
+    global STEPS_MULTIPLIER
+
+    if steps > LONGEST_PATH:
+        STEPS_MULTIPLIER = 0
+    else:
+        STEPS_MULTIPLIER = STEPS_MULTIPLIER + 1
+
+    LONGEST_PATH = max(steps, LONGEST_PATH)
+    print([LONGEST_PATH, STEPS_MULTIPLIER])
+
 
 
 # fitness_limit - if the fitness of the best solution exceeds this limit, we are done
@@ -79,8 +109,8 @@ def run_evolution(populate_func: PopulateFunc,
         #  sort populations based on their fitness
         population = sorted(population, key=lambda genome: fitness_func(genome), reverse=True)
 
-        visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START),
-                      maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])) + "_" + str("_"))
+        visualize_maze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START),
+                       maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])) + "_" + str("_"))
 
         #  if the genome already meets our requirements (ie. value of items of things in backpack is enough for us, we can exit)
         if fitness_func(population[0]) >= fitness_limit:
@@ -90,8 +120,6 @@ def run_evolution(populate_func: PopulateFunc,
         # Pick two best genomes from population
         # Elitism involves copying a small proportion of the fittest candidates, unchanged, into the next generation.
         next_generation = population[0:2]
-
-        # visualizeMaze(mazeDef, next_generation[0], start=get_coords_for_field(mazeDef, START))
 
         #  Loop as long as its needed to create a new generation with size equal to previous one
         for j in range(int(len(population) / 2) - 1):
@@ -108,3 +136,69 @@ def run_evolution(populate_func: PopulateFunc,
         population = next_generation
 
     return population, i
+
+
+def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
+    position: Coords = start
+    steps = 0
+    visits = {}
+
+    for index, move in enumerate(genome):
+        next_move: Coords = get_next_move_coords(position, move)
+        valid_move: bool = is_valid_move(next_move, maze)  # todo withing bounds
+
+        if valid_move:
+            x: int = next_move[0]
+            y: int = next_move[1]
+            square = maze[x][y]  # todo square ??
+            visit_key = str(x) + str(y)
+
+            # prevent circles
+            if visit_key in visits:
+                return DEAD_END_FITNESS_VALUE
+            else:
+                visits[visit_key] = 1
+
+            if square == END:
+                return SOLUTION_FOUND_FITNESS_VALUE
+            elif square == PATH:
+                steps = steps + 1
+                # todo not needed?
+                if is_dead_end(maze, position, next_move):
+                    maze[x][y] = DEAD_END
+                    # MUTATION_PREF = 0
+                    return DEAD_END_FITNESS_VALUE
+                else:
+                    position = next_move
+            else:
+                # dead
+                break
+        else:
+            break
+
+    distance_to_finish = distance(position, finish)
+
+    update_steps(steps)
+
+    return steps - distance_to_finish
+
+
+def main():
+    def use_fitness(genome: Genome):
+        return fitness(genome, maze=mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
+
+    clear_folder()
+    start = time.time()
+    # pop = [Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.TOP]
+    # visualize_maze(maze=mazeDef, moves=pop, start=get_coords_for_field(mazeDef, START),
+    #                maze_name="generation" + str(2) + "_" + str(use_fitness(pop)) + "_" + str("_"))
+    population, generations = run_evolution(
+        fitness_func=use_fitness,
+        populate_func=partial(generate_population, size=POPULATION_SIZE, genome_length=MAX_MOVES),
+        fitness_limit=SOLUTION_FOUND_FITNESS_VALUE,  # value limit that makes us satisfied with the solution
+        generation_limit=GENERATIONS  # so that we don't loop forever when fitness limit is never reached
+    )
+    end = time.time()
+
+
+main()

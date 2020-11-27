@@ -19,7 +19,7 @@ FitnessFunc = Callable[[Genome], int]  # distance from exit, calculated by going
 PopulateFunc = Callable[[], Population]  # fn that takes nothing and spits out Population
 SelectionFunc = Callable[[Population, FitnessFunc], Tuple[Genome, Genome]]
 CrossoverFunc = Callable[[Genome, Genome], Tuple[Genome, Genome]]
-MutationFunc = Callable[[Genome], Genome]
+MutationFunc = Callable[[Genome, int], Genome]
 Maze = List[List[int]]  # maze 12x12 where 0 is path, and 1 is wall
 Coords = [int, int]
 
