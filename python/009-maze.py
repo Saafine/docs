@@ -21,22 +21,26 @@ from python.genMaze2 import get_maze
 #     [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],
 # ]
 
-mazeDef: Maze = get_maze(size=[6, 6])
+mazeDef: Maze = get_maze(size=[12, 12])
 
-MAX_MOVES = 60
-GENERATIONS = 300
-POPULATION_SIZE = 100
-MUTATIONS = 15
+MAX_MOVES = 300
+GENERATIONS = 1000
+POPULATION_SIZE = 30
+MUTATIONS = 100  # 15
 
 # FITNESS
 SOLUTION_FOUND_FITNESS_VALUE = 10000
 DEAD_END_FITNESS_VALUE = -10000
-DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 5  # this is negative points
+DISTANCE_TO_FINISH_POINTS_MULTIPLIER = 1  # 25, this is negative points
 STEPS_MULTIPLIER = 20
 
+# MUTATION
+MUTATION_PREF = 0
 
-def generate_genome(length: int) -> Genome:
-    return choices([Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT], k=length)
+
+def generate_genome(length: int, exclude: Move = None) -> Genome:
+    moves = list(filter(lambda move: move != exclude, [Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT]))
+    return choices(moves, k=length)
 
 
 def generate_population(size: int, genome_length: int) -> Population:
@@ -90,16 +94,13 @@ def is_dead_end(maze: Maze, prev_coords: Coords, next_coords: Coords) -> bool:
 
 def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
     position: Coords = start
-    found_exit = False
     steps = 0
+    global MUTATION_PREF
     visits = {}
-
 
     for index, move in enumerate(genome):
         next_move: Coords = get_next_move_coords(position, move)
         valid_move: bool = is_valid_move(next_move, maze)  # todo withing bounds
-
-        # visualizeMaze(mazeDef, genome[:idx], start=get_coords_for_field(maze, START), maze_name=str(index))
 
         if valid_move:
             x: int = next_move[0]
@@ -114,13 +115,12 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
                 visits[visit_key] = 1
 
             if square == END:
-                print('SUCCESS')
-                print(genome)
                 return SOLUTION_FOUND_FITNESS_VALUE
             elif square == PATH:
                 steps = steps + 1
                 if is_dead_end(maze, position, next_move):
                     maze[x][y] = DEAD_END
+                    MUTATION_PREF = 0
                     return DEAD_END_FITNESS_VALUE
                 else:
                     position = next_move
@@ -130,13 +130,12 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
         else:
             break
 
-    # todo how points are calculated
+    # todo
+    MUTATION_PREF = max(steps, MUTATION_PREF)
+
     return - DISTANCE_TO_FINISH_POINTS_MULTIPLIER * distance(position, finish) + STEPS_MULTIPLIER * steps
 
-# fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.TOP, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.BOTTOM, Move.BOTTOM, Move.BOTTOM, Move.TOP, Move.TOP, Move.BOTTOM, Move.LEFT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.LEFT, Move.RIGHT, Move.RIGHT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
-# fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.LEFT, Move.BOTTOM], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
-# result = fitness([Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.TOP], mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
-# print(result)
+
 # # SELECTION FUNCTION
 # # Selects a pair of 2 solutions that will be the parents of 2 new solution of next generation
 def selection_pair(population: Population, fitness_func: FitnessFunc) -> Population:
@@ -168,20 +167,24 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
     return a[0:p] + b[p:], b[0:p] + a[p:]
 
 
+# todo numerowanie krokow
+
 #
 # # Sample Input [1,1,1,1,1]
 # # Sample Output [1,0,1,1,1] (only element at index 1 was mutated)
 # todo number of mutations
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome:
+def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome: # todo mutation probability
     for _ in range(number_of_mutations):
-        randomGenomeIndex = randrange(len(genome))
+        randomGenomeIndex = randrange(MUTATION_PREF, min(MUTATION_PREF + 2, len(genome)))
+        print(MUTATION_PREF)
         # leaves genome the same
         # OR turns 1 into 0 or 0 into 1
         # based on the mutation probability
         # TODO RANDOM GENOME
         genome[randomGenomeIndex] = genome[randomGenomeIndex] if random() > mutation_probability else generate_genome(1)[0]
+
     return genome
 
 
@@ -202,10 +205,12 @@ def run_evolution(populate_func: PopulateFunc,
         #  sort populations based on their fitness
         population = sorted(population, key=lambda genome: fitness_func(genome), reverse=True)
 
-        visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START), maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])))
+        visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START),
+                      maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])) + "_" + str(MUTATION_PREF))
 
         #  if the genome already meets our requirements (ie. value of items of things in backpack is enough for us, we can exit)
         if fitness_func(population[0]) >= fitness_limit:
+            print('SUCCESS')
             break
 
         # Pick two best genomes from population
@@ -227,19 +232,20 @@ def run_evolution(populate_func: PopulateFunc,
             next_generation += [offspring_a, offspring_b]
 
         population = next_generation
-        # print(population)
-        # print(fitness_func(population[0]))
-        # print(fitness_func(population[1]))
-        # print(fitness_func(population[2]))
 
     return population, i
 
 
 # TODO PARTIAL FAILING
+import os, shutil
+import glob
+
+
 def main():
     def use_fitness(genome: Genome):
         return fitness(genome, maze=mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
 
+    clear_folder()
     start = time.time()
     population, generations = run_evolution(
         fitness_func=use_fitness,
@@ -250,6 +256,13 @@ def main():
     end = time.time()
     # visualizeMaze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START), maze_name="1")
     # visualizeMaze(maze=mazeDef, moves=population[1], start=get_coords_for_field(mazeDef, START), maze_name="2")
+
+
+def clear_folder() -> None:
+    folder = 'C:\Projects\docs\python\pics'
+    files = glob.glob('C:/Projects/docs/python/pics/*')
+    for f in files:
+        os.remove(f)
 
 
 main()

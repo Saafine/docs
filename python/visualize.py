@@ -2,6 +2,8 @@ from python.types import *
 from PIL import Image, ImageDraw
 import copy
 
+
+
 SIZE = 100
 
 TYPE_TO_COLOR = {
@@ -57,3 +59,4 @@ def visualizeMaze(maze: Maze, moves: List[Move], start: Coords, maze_name: str =
             d.rectangle((j * SIZE, i * SIZE, j * SIZE + SIZE, i * SIZE + SIZE), fill=TYPE_TO_COLOR[row])
     out.save("pics/" + maze_name + ".jpg")
     out.close()
+
