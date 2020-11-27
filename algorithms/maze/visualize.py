@@ -2,8 +2,6 @@ from algorithms.maze.types import *
 from PIL import Image, ImageDraw
 import copy
 
-
-
 SIZE = 100
 
 TYPE_TO_COLOR = {

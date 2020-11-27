@@ -1,3 +1,6 @@
+# A maze generator in Python 3.6
+# https://github.com/Turidus/Python-Maze
+
 """
     Written by turidus (github.com/turidus) in python 3.6.0
     Dependend on Pillow 4.2, a fork of PIL (https://pillow.readthedocs.io/en/4.2.x/index.html)
@@ -730,11 +733,9 @@ def get_maze(show = False, size = [5, 5]):
     mazeImageBW, test = newMaze.makePP(mode='RGB', colorWall=(0, 0, 0), colorFloor=(255, 255, 255))
 
     if show:
-        mazeImageBW.show() #can or can not work, see Pillow documentation. For debuging only
+        mazeImageBW.show()  #can or can not work, see Pillow documentation. For debuging only
 
     test[0][1] = START
     test[-1][-2] = END
 
     return test
-
-# get_maze()
