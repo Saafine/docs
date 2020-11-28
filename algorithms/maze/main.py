@@ -1,9 +1,11 @@
 import time
 from functools import partial
 from random import choices, randint, randrange, random
-from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_dead_end, distance, clear_folder
+
+from algorithms.maze.dfs_solve import find_exit_bfs
+from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_dead_end, distance, clear_folder, map_coords_to_moves
 from algorithms.maze.types import *
-from algorithms.maze.variables import MUTATIONS, mazeDef, SOLUTION_FOUND_FITNESS_VALUE, DEAD_END_FITNESS_VALUE, STEPS_MULTIPLIER, NEGATIVE_FINISH_MULTIPLIER, POPULATION_SIZE, MAX_MOVES, GENERATIONS
+from algorithms.maze.variables import MUTATIONS, MAZE, SOLUTION_FOUND_FITNESS_VALUE, DEAD_END_FITNESS_VALUE, STEPS_MULTIPLIER, NEGATIVE_FINISH_MULTIPLIER, POPULATION_SIZE, MAX_MOVES, GENERATIONS
 from algorithms.maze.visualize import visualize_maze
 
 
@@ -79,10 +81,10 @@ def run_evolution(populate_func: PopulateFunc,
         #  sort populations based on their fitness
         population = sorted(population, key=lambda genome: fitness_func(genome), reverse=True)
 
-        visualize_maze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START),
+        visualize_maze(maze=MAZE, moves=population[0], start=get_coords_for_field(MAZE, START),
                        maze_name="generation_" + str(i))
 
-        #  if the genome already meets our requirements (ie. value of items of things in backpack is enough for us, we can exit)
+        #  if the genome already meets our requirements
         if fitness_func(population[0]) >= fitness_limit:
             print('SUCCESS')
             break
@@ -119,7 +121,7 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
         x: int = next_move[0]
         y: int = next_move[1]
         cell = maze[x][y]
-        visit_key = str(x) + str(y)
+        visit_key = 'x' + str(x) + 'y' + str(y)
 
         # prevent circles
         if visit_key in visits:
@@ -146,11 +148,18 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
 
 def main():
     def use_fitness(genome: Genome):
-        return fitness(genome, maze=mazeDef, start=get_coords_for_field(mazeDef, START), finish=get_coords_for_field(mazeDef, END))
+        return fitness(genome, maze=MAZE, start=get_coords_for_field(MAZE, START), finish=get_coords_for_field(MAZE, END))
 
     clear_folder()
-    start = time.time()
 
+    start = get_coords_for_field(MAZE, START)
+
+    bfs_exit_path = find_exit_bfs(maze=MAZE, position=start)
+    # print(MAZE)
+    bfs_exit_moves = map_coords_to_moves(bfs_exit_path)
+    visualize_maze(maze=MAZE, moves=bfs_exit_moves, start=start, maze_name="bfs")
+
+    start = time.time()
     population, generations = run_evolution(
         fitness_func=use_fitness,
         populate_func=partial(generate_population, size=POPULATION_SIZE, genome_length=MAX_MOVES),
@@ -158,5 +167,6 @@ def main():
         generation_limit=GENERATIONS  # so that we don't loop forever when fitness limit is never reached
     )
     end = time.time()
+
 
 main()

@@ -735,7 +735,9 @@ def get_maze(show = False, size = [5, 5]):
     if show:
         mazeImageBW.show()  #can or can not work, see Pillow documentation. For debuging only
 
-    test[0][1] = START
-    test[-1][-2] = END
+    test[0][1] = WALL
+    test[-1][-2] = WALL
+    test[1][1] = START
+    test[-2][-2] = END
 
     return test

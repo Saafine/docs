@@ -7,11 +7,11 @@ class Move(Enum):
     RIGHT = 3
     LEFT = 4
 
-# class Field(Enum):
-#     PATH = 0
-#     WALL = 1
-#     START = 2
-#     END = 3
+class Field(Enum):
+    PATH = 0
+    WALL = 1
+    START = 2
+    END = 3
 
 Genome = List[Move]  # sequence of 40 moves T, B, L, R
 Population = List[Genome]
@@ -23,7 +23,7 @@ MutationFunc = Callable[[Genome, int], Genome]
 Maze = List[List[int]]  # maze 12x12 where 0 is path, and 1 is wall
 Coords = [int, int]
 
-
+# todo move to variables
 PATH: int = 0
 WALL: int = 1
 START: int = 2

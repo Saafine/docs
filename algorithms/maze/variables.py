@@ -4,8 +4,8 @@ from algorithms.maze.types import Maze
 
 PATH_TO_MAZE_IMAGE_OUTPUT = 'C:/Projects/docs/algorithms/maze/maze_paths/*'
 
-# mazeDef: Maze = standard_maze
-mazeDef: Maze = get_maze(size=[5, 5])
+# MAZE: Maze = standard_maze
+MAZE: Maze = get_maze(size=[5, 5])
 
 MAX_MOVES = 40
 GENERATIONS = 500
