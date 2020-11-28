@@ -1,32 +1,14 @@
 import time
 from functools import partial
 from random import choices, randint, randrange, random
-
-from algorithms.maze.example_maze import standard_maze
-from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_valid_move, is_dead_end, distance, clear_folder
+from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_dead_end, distance, clear_folder
 from algorithms.maze.types import *
+from algorithms.maze.variables import MUTATIONS, mazeDef, SOLUTION_FOUND_FITNESS_VALUE, DEAD_END_FITNESS_VALUE, STEPS_MULTIPLIER, NEGATIVE_FINISH_MULTIPLIER, POPULATION_SIZE, MAX_MOVES, GENERATIONS
 from algorithms.maze.visualize import visualize_maze
 
-mazeDef: Maze = standard_maze
-# mazeDef: Maze = get_maze(size=[6, 6])
-MAX_MOVES = 40
-GENERATIONS = 500
-POPULATION_SIZE = 50
-MUTATIONS = 10
 
-# FITNESS
-SOLUTION_FOUND_FITNESS_VALUE = 10000
-DEAD_END_FITNESS_VALUE = -10000
-START_MULTIPLIER = 15
-NEGATIVE_FINISH_MULTIPLIER = 5  # 25, this is negative points
-STEPS_MULTIPLIER = 25
-
-LONGEST_PATH = 0
-
-
-def generate_genome(length: int, exclude: Move = None) -> Genome:
-    moves = list(filter(lambda move: move != exclude, [Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT]))
-    return choices(moves, k=length)
+def generate_genome(length: int) -> Genome:
+    return choices([Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT], k=length)
 
 
 def generate_population(size: int, genome_length: int) -> Population:
@@ -68,32 +50,17 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # # Sample Output [1,0,1,1,1] (only element at index 1 was mutated)
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, mutation_start_index: int = 0, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.1) -> Genome:
+def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.1) -> Genome:
     genome_len = len(genome)
-    start_idx = int(LONGEST_PATH / 2)
     for _ in range(number_of_mutations):
         randomGenomeIndex = randrange(genome_len)
         # leaves genome the same
         # OR turns 1 into 0 or 0 into 1
         # based on the mutation probability
-        # TODO RANDOM GENOME
         if random() < mutation_probability:
-            print("mutation")
             genome[randomGenomeIndex] = generate_genome(1)[0]
 
     return genome
-
-
-def update_steps(steps: int) -> None:
-    global LONGEST_PATH
-    global STEPS_MULTIPLIER
-
-    # if steps > LONGEST_PATH:
-    #     STEPS_MULTIPLIER = 0
-    # else:
-    #     STEPS_MULTIPLIER = STEPS_MULTIPLIER + 1
-
-    LONGEST_PATH = max(steps, LONGEST_PATH)
 
 
 # generation_limit - maximum number of generation our evolution runs for, if it is not reaching the fitness limit before that
@@ -113,7 +80,7 @@ def run_evolution(populate_func: PopulateFunc,
         population = sorted(population, key=lambda genome: fitness_func(genome), reverse=True)
 
         visualize_maze(maze=mazeDef, moves=population[0], start=get_coords_for_field(mazeDef, START),
-                       maze_name="generation" + str(i) + "_" + str(fitness_func(population[0])) + "_" + str("_"))
+                       maze_name="generation_" + str(i))
 
         #  if the genome already meets our requirements (ie. value of items of things in backpack is enough for us, we can exit)
         if fitness_func(population[0]) >= fitness_limit:
@@ -163,19 +130,16 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
         if cell == END:
             return SOLUTION_FOUND_FITNESS_VALUE
         elif cell == PATH:
-
-            steps = steps + 1
             if is_dead_end(maze, position, next_move):
                 maze[x][y] = DEAD_END
                 return DEAD_END_FITNESS_VALUE
             else:
+                steps = steps + 1
                 position = next_move
         else:
             break
 
     distance_to_finish = distance(position, finish)
-
-    update_steps(steps)
 
     return STEPS_MULTIPLIER * steps - NEGATIVE_FINISH_MULTIPLIER * distance_to_finish
 
@@ -186,9 +150,7 @@ def main():
 
     clear_folder()
     start = time.time()
-    # pop = [Move.RIGHT, Move.RIGHT, Move.BOTTOM, Move.RIGHT, Move.RIGHT, Move.TOP]
-    # visualize_maze(maze=mazeDef, moves=pop, start=get_coords_for_field(mazeDef, START),
-    #                maze_name="generation" + str(2) + "_" + str(use_fitness(pop)) + "_" + str("_"))
+
     population, generations = run_evolution(
         fitness_func=use_fitness,
         populate_func=partial(generate_population, size=POPULATION_SIZE, genome_length=MAX_MOVES),
@@ -196,6 +158,5 @@ def main():
         generation_limit=GENERATIONS  # so that we don't loop forever when fitness limit is never reached
     )
     end = time.time()
-
 
 main()

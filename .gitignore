@@ -1,7 +1,7 @@
 ### Ignore my files ###
 _DoNotCopy
 python/__pycache__
-algorithms/maze/pics
+algorithms/maze/maze_paths
 
 ### Node ###
 

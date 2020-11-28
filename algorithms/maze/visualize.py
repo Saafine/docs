@@ -34,7 +34,6 @@ def visualize_maze(maze: Maze, moves: List[Move], start: Coords, maze_name: str 
             break
         elif maze[x][y] == END:
             maze[x][y] = VISIT
-            print("printing end")
             break
         else:
             maze[x][y] = VISIT

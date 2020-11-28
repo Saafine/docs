@@ -1,6 +1,7 @@
 import glob
 import os
 from algorithms.maze.types import *
+from algorithms.maze.variables import PATH_TO_MAZE_IMAGE_OUTPUT
 
 
 def get_next_move_coords(fromXY: Coords, move: Move) -> Coords:
@@ -49,7 +50,7 @@ def distance(fromXY: Coords, toXY: Coords) -> int:
 
 
 def clear_folder() -> None:
-    files = glob.glob('C:/Projects/docs/algorithms/maze/maze_paths/*')
+    files = glob.glob(PATH_TO_MAZE_IMAGE_OUTPUT)
     for f in files:
         os.remove(f)
 
