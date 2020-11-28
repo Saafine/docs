@@ -1,7 +1,7 @@
 import glob
 import os
 from algorithms.maze.types import *
-from algorithms.maze.variables import PATH_TO_MAZE_IMAGE_OUTPUT
+from algorithms.maze.variables import PATH_TO_MAZE_IMAGE_OUTPUT, WALL, DEAD_END
 
 
 def get_next_move_coords(fromXY: Coords, move: Move) -> Coords:
@@ -41,7 +41,6 @@ def is_dead_end(maze: Maze, prev_coords: Coords, next_coords: Coords) -> bool:
     return is_dead
 
 
-# todo reuse
 def get_neighbours(maze: Maze, coords: Coords):
     x = coords[0]
     y = coords[1]

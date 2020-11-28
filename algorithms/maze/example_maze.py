@@ -1,4 +1,5 @@
-from algorithms.maze.types import END, PATH, START, WALL, Maze
+from algorithms.maze.types import Maze
+from algorithms.maze.variables import WALL, START, END, PATH
 
 standard_maze: Maze = [
     [WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL],

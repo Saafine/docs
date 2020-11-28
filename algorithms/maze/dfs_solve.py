@@ -1,12 +1,7 @@
-import time
-
-from algorithms.maze.example_maze import standard_maze
-from algorithms.maze.generator import get_maze
-from algorithms.maze.helpers import get_neighbours, get_coords_for_field, map_coords_to_moves
-from algorithms.maze.types import Maze, Coords, Move, START, PATH, END
 from typing import List
-
-from algorithms.maze.visualize import visualize_maze
+from algorithms.maze.helpers import get_neighbours
+from algorithms.maze.types import Maze, Coords, Move
+from algorithms.maze.variables import END, PATH
 
 visits = {}
 
@@ -29,17 +24,3 @@ def find_exit_bfs(maze: Maze, position: Coords, path: List[Move] = []) -> List[M
             return try_path
 
     return []
-
-
-# maze_to_search = standard_maze
-# maze_to_search = get_maze(size=[20, 20])
-# start_coords = get_coords_for_field(maze_to_search, START)
-#
-# start = time.time()
-# exit_path = find_exit_bfs(maze_to_search, start_coords)
-# end = time.time()
-#
-# exit_moves = map_coords_to_moves(exit_path)
-
-# visualize_maze(maze=maze_to_search, moves=exit_moves, start=start_coords,
-#                maze_name="bfs")

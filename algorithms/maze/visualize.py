@@ -2,6 +2,7 @@ from algorithms.maze.helpers import get_next_move_coords
 from algorithms.maze.types import *
 from PIL import Image, ImageDraw, ImageFont
 import copy
+from algorithms.maze.variables import WALL, START, END, VISIT, DEAD_END, PATH
 
 SIZE = 100
 
@@ -15,6 +16,7 @@ TYPE_TO_COLOR = {
 }
 
 MAZE_BACKGROUND = (211, 255, 213)
+
 
 def visualize_maze(maze: Maze, moves: List[Move], start: Coords, maze_name: str = '0') -> None:
     maze = copy.deepcopy(maze)
@@ -49,4 +51,3 @@ def visualize_maze(maze: Maze, moves: List[Move], start: Coords, maze_name: str 
             d.text((j * SIZE, i * SIZE), cell_name, fill=(0, 0, 0), font=font)
     out.save("maze_paths/" + maze_name + ".jpg")
     out.close()
-

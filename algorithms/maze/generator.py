@@ -8,6 +8,7 @@
 from PIL import Image,ImageDraw, ImageColor
 import random as rnd
 from algorithms.maze.types import *
+from algorithms.maze.variables import WALL, START, END, PATH
 
 
 class Maze:
