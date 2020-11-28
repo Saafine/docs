@@ -1,22 +1,25 @@
 import time
 from functools import partial
 from random import choices, randint, randrange, random
-from algorithms.maze.generator import get_maze
+
+from algorithms.maze.example_maze import standard_maze
 from algorithms.maze.helpers import get_coords_for_field, get_next_move_coords, is_valid_move, is_dead_end, distance, clear_folder
 from algorithms.maze.types import *
 from algorithms.maze.visualize import visualize_maze
 
-mazeDef: Maze = get_maze(size=[6, 6])
+mazeDef: Maze = standard_maze
+# mazeDef: Maze = get_maze(size=[6, 6])
 MAX_MOVES = 40
-GENERATIONS = 100
-POPULATION_SIZE = 100
-MUTATIONS = 20  # 15
+GENERATIONS = 500
+POPULATION_SIZE = 10
+MUTATIONS = 15  # 15
 
 # FITNESS
 SOLUTION_FOUND_FITNESS_VALUE = 10000
-DEAD_END_FITNESS_VALUE = -100
-NEGATIVE_FINISH_MULTIPLIER = 50  # 25, this is negative points
-STEPS_MULTIPLIER = 0
+DEAD_END_FITNESS_VALUE = -10000
+START_MULTIPLIER = 15
+NEGATIVE_FINISH_MULTIPLIER = 25  # 25, this is negative points
+STEPS_MULTIPLIER = 25
 
 LONGEST_PATH = 0
 
@@ -69,7 +72,7 @@ def mutation(genome: Genome, mutation_start_index: int = 0, number_of_mutations:
     genome_len = len(genome)
     start_idx = int(LONGEST_PATH / 2)
     for _ in range(number_of_mutations):
-        randomGenomeIndex = randrange(genome_len)
+        randomGenomeIndex = randrange(start_idx, genome_len)
         # leaves genome the same
         # OR turns 1 into 0 or 0 into 1
         # based on the mutation probability
@@ -82,13 +85,12 @@ def update_steps(steps: int) -> None:
     global LONGEST_PATH
     global STEPS_MULTIPLIER
 
-    if steps > LONGEST_PATH:
-        STEPS_MULTIPLIER = 0
-    else:
-        STEPS_MULTIPLIER = STEPS_MULTIPLIER + 1
+    # if steps > LONGEST_PATH:
+    #     STEPS_MULTIPLIER = 0
+    # else:
+    #     STEPS_MULTIPLIER = STEPS_MULTIPLIER + 1
 
     LONGEST_PATH = max(steps, LONGEST_PATH)
-    print([LONGEST_PATH, STEPS_MULTIPLIER])
 
 
 
@@ -180,7 +182,7 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
 
     update_steps(steps)
 
-    return steps - distance_to_finish
+    return STEPS_MULTIPLIER * steps - NEGATIVE_FINISH_MULTIPLIER * distance_to_finish
 
 
 def main():
