@@ -11,14 +11,14 @@ mazeDef: Maze = standard_maze
 # mazeDef: Maze = get_maze(size=[6, 6])
 MAX_MOVES = 40
 GENERATIONS = 500
-POPULATION_SIZE = 10
-MUTATIONS = 15  # 15
+POPULATION_SIZE = 50
+MUTATIONS = 10
 
 # FITNESS
 SOLUTION_FOUND_FITNESS_VALUE = 10000
 DEAD_END_FITNESS_VALUE = -10000
 START_MULTIPLIER = 15
-NEGATIVE_FINISH_MULTIPLIER = 25  # 25, this is negative points
+NEGATIVE_FINISH_MULTIPLIER = 5  # 25, this is negative points
 STEPS_MULTIPLIER = 25
 
 LONGEST_PATH = 0
@@ -68,16 +68,19 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 # # Sample Output [1,0,1,1,1] (only element at index 1 was mutated)
 # if mutation is too big, it will never reach the end
 # if mutation is too small, he will never grow
-def mutation(genome: Genome, mutation_start_index: int = 0, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.5) -> Genome:
+def mutation(genome: Genome, mutation_start_index: int = 0, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.1) -> Genome:
     genome_len = len(genome)
     start_idx = int(LONGEST_PATH / 2)
     for _ in range(number_of_mutations):
-        randomGenomeIndex = randrange(start_idx, genome_len)
+        randomGenomeIndex = randrange(genome_len)
         # leaves genome the same
         # OR turns 1 into 0 or 0 into 1
         # based on the mutation probability
         # TODO RANDOM GENOME
-        genome[randomGenomeIndex] = genome[randomGenomeIndex] if random() > mutation_probability else generate_genome(1)[0]
+        if random() < mutation_probability:
+            print("mutation")
+            genome[randomGenomeIndex] = generate_genome(1)[0]
+
     return genome
 
 
@@ -93,8 +96,6 @@ def update_steps(steps: int) -> None:
     LONGEST_PATH = max(steps, LONGEST_PATH)
 
 
-
-# fitness_limit - if the fitness of the best solution exceeds this limit, we are done
 # generation_limit - maximum number of generation our evolution runs for, if it is not reaching the fitness limit before that
 def run_evolution(populate_func: PopulateFunc,
                   fitness_func: FitnessFunc,
@@ -147,34 +148,28 @@ def fitness(genome: Genome, maze: Maze, start: Coords, finish: Coords) -> int:
 
     for index, move in enumerate(genome):
         next_move: Coords = get_next_move_coords(position, move)
-        valid_move: bool = is_valid_move(next_move, maze)  # todo withing bounds
 
-        if valid_move:
-            x: int = next_move[0]
-            y: int = next_move[1]
-            square = maze[x][y]  # todo square ??
-            visit_key = str(x) + str(y)
+        x: int = next_move[0]
+        y: int = next_move[1]
+        cell = maze[x][y]
+        visit_key = str(x) + str(y)
 
-            # prevent circles
-            if visit_key in visits:
+        # prevent circles
+        if visit_key in visits:
+            break
+        else:
+            visits[visit_key] = 1
+
+        if cell == END:
+            return SOLUTION_FOUND_FITNESS_VALUE
+        elif cell == PATH:
+
+            steps = steps + 1
+            if is_dead_end(maze, position, next_move):
+                maze[x][y] = DEAD_END
                 return DEAD_END_FITNESS_VALUE
             else:
-                visits[visit_key] = 1
-
-            if square == END:
-                return SOLUTION_FOUND_FITNESS_VALUE
-            elif square == PATH:
-                steps = steps + 1
-                # todo not needed?
-                if is_dead_end(maze, position, next_move):
-                    maze[x][y] = DEAD_END
-                    # MUTATION_PREF = 0
-                    return DEAD_END_FITNESS_VALUE
-                else:
-                    position = next_move
-            else:
-                # dead
-                break
+                position = next_move
         else:
             break
 
