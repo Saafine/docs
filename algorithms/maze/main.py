@@ -10,8 +10,8 @@ from algorithms.maze.variables import MUTATIONS, SOLUTION_FOUND_FITNESS_VALUE, D
     START, END, DEAD_END, PATH
 from algorithms.maze.visualize import visualize_maze
 
-MAZE2: Maze = standard_maze
-MAZE: Maze = get_maze(size=[5, 5])  # * 2 + 1
+# MAZE: Maze = standard_maze
+MAZE: Maze = get_maze(size=[3, 3])  # * 2 + 1
 
 def generate_genome(length: int) -> Genome:
     return choices([Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT], k=length)
