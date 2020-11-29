@@ -10,8 +10,8 @@ from algorithms.maze.variables import MUTATIONS, SOLUTION_FOUND_FITNESS_VALUE, D
     START, END, DEAD_END, PATH
 from algorithms.maze.visualize import visualize_maze
 
-MAZE: Maze = standard_maze
-MAZE2: Maze = get_maze(size=[3, 3])  # * 2 + 1
+MAZE2: Maze = standard_maze
+MAZE: Maze = get_maze(size=[5, 5])  # * 2 + 1
 
 def generate_genome(length: int) -> Genome:
     return choices([Move.BOTTOM, Move.TOP, Move.RIGHT, Move.LEFT], k=length)
@@ -43,7 +43,7 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
     return a[0:p] + b[p:], b[0:p] + a[p:]
 
 
-def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.1) -> Genome:
+def mutation(genome: Genome, number_of_mutations: int = MUTATIONS, mutation_probability: float = 0.2) -> Genome:
     genome_len = len(genome)
     for _ in range(number_of_mutations):
         randomGenomeIndex = randrange(genome_len)
