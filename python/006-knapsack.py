@@ -116,7 +116,7 @@ def run_evolution(populate_func: PopulateFunc,
     # random genomes:
     # for population size = 2 and genome_length of 10, it can be: [[0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
     population = populate_func()
-
+    print(population)
 
     for i in range(generation_limit):
         #  sort populations based on their fitness
