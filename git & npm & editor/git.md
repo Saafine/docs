@@ -1,2 +1,7 @@
-# searching string in git (ie. removed comment)
+# searching string in git (for example removed comment)
 git log -p -S xxx
+
+# Revert from X to Y
+git revert 0766c053..HEAD
+If there are merge requests in the log, you need to revert them one by:
+git revert 07666c053 -m 1
