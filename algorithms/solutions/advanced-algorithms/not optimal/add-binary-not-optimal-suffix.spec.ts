@@ -1,4 +1,4 @@
-import { Binary } from './binary-adding';
+import { Binary } from '../binary-adding';
 import { addBinarySuboptimal } from './add-binary-not-optimal-suffix';
 
 describe('add binary not optimal', () => {

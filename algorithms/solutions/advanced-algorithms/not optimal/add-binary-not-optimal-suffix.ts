@@ -1,4 +1,4 @@
-import { addBinary, addBinaryMatrix, Binary } from './binary-adding';
+import { addBinary, addBinaryMatrix, Binary } from '../binary-adding';
 
 // EREW PRAM
 
