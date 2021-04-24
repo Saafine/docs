@@ -89,3 +89,7 @@ p.replace(regex, 'ferret')
 
 ## Generating regexp dynamically
 const regexp = new RegExp(pattern, 'gi');
+
+## Snippets
+in: cySelect\((.+?\))
+out: cy.get(testId($1)

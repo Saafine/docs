@@ -5,3 +5,6 @@ git log -p -S xxx
 git revert 0766c053..HEAD
 If there are merge requests in the log, you need to revert them one by:
 git revert 07666c053 -m 1
+
+# searching string in git in all branches
+git grep "string/regexp" $(git rev-list --all --since=01-01-2020)

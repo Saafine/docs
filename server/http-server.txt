@@ -1,0 +1,1 @@
+http-server -S -C tools/localhost.crt -K tools/localhost.key --port=4200 -c-1 dist/apps/portal

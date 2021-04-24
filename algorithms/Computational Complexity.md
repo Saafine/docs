@@ -206,7 +206,7 @@ Complexity: 1 + n * (n + 1 + 1) + 1
 Complexity order: O(n^2)
 
 # Example 7
-Order of gloth class that best describes an expression:
+Order of growth class that best describes an expression:
 5n => O(n)
 3n^2 + 2n - 100 => O(n^c)
 10 log(n) + 5n => O(n)
