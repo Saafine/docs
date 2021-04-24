@@ -1,4 +1,4 @@
-import { calculateSuffixSumUsingOptimalAlgorithm } from './sufix-sum-optimal';
+import { calculateSuffixSumUsingOptimalAlgorithm } from './optimal-suffix-sum';
 
 describe('calculateSuffixSumUsingOptimalAlgorithm', () => {
     it('should solve', () => {

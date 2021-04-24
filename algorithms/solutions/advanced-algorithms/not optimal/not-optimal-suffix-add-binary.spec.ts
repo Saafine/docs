@@ -1,5 +1,5 @@
 import { Binary } from '../binary-adding';
-import { addBinarySuboptimal } from './add-binary-not-optimal-suffix';
+import { addBinarySuboptimal } from './not-optimal-suffix-add-binary';
 
 describe('add binary not optimal', () => {
     it('should calc', () => {
