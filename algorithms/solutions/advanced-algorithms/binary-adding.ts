@@ -1,7 +1,7 @@
 export type Binary = 0 | 1;
 export type BinaryMatrix = Array<Binary[]>
 
-export function sumBinary(a: Binary, b: Binary): BinaryMatrix {
+export function addBinary(a: Binary, b: Binary): BinaryMatrix {
     if (a === 0 && b === 0) return [[0, 0], [1, 0]];
     if ((a === 1 && b === 0) || (a === 0 && b === 1)) return [[1, 0], [0, 1]];
     if (a === 1 && b === 1) return [[0, 1], [1, 1]];
@@ -23,3 +23,4 @@ export function addBinaryMatrix(matrixA: BinaryMatrix, matrixB: BinaryMatrix): B
         [z, w]
     ];
 }
+
