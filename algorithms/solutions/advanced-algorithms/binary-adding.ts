@@ -24,3 +24,23 @@ export function addBinaryMatrix(matrixA: BinaryMatrix, matrixB: BinaryMatrix): B
     ];
 }
 
+export function formatMatrix() {
+    const input: BinaryMatrix[] = [
+        [[0, 1], [0, 1]],
+        [[1, 0], [1, 0]],
+        [[1, 0], [1, 0]],
+        [[1, 0], [1, 0]],
+        [[1, 0], [1, 0]],
+        [[1, 0], [1, 0]],
+        [[0, 1], [0, 1]],
+        [[0, 1], [1, 1]]
+    ];
+
+    const result = input.forEach((matrix) => {
+        const [row1, row2] = matrix;
+        console.log(row1);
+        console.log(row2);
+    });
+}
+
+// formatMatrix();
