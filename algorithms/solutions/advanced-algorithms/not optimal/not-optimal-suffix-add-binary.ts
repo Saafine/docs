@@ -51,7 +51,7 @@ export function addBinarySuboptimal(binaryA: Binary[], binaryB: Binary[]) {
         // ];
         // if (h === 1) TEMP_B = binaryMatrixSub;
         B = JSON.parse(JSON.stringify(TEMP_B));
-        if (h === 3) console.log(`Krok ${ h }:`, B);
+        if (h === 2) console.log(`Krok ${ h }:`, B);
     }
 
     const wynik = B.filter((x) => !!x).map(([upperRow], index) => {
