@@ -22,6 +22,7 @@ function getType(branch) {
   if (/feature\//.test(branch)) return 'feature';
   if (/hotfix\//.test(branch)) return 'hotfix';
   if (/bugfix\//.test(branch)) return 'bugfix';
+  if (/chore\//.test(branch)) return 'chore'
   throw Error(`Branch type not supported!`)
 }
 
