@@ -8,10 +8,16 @@
 
 
 
-alias cd-dev='cd "C:/Projects"'
-alias cd-main='cd "C:\Projects\projectportal\ProjectPortal\ClientApp"'
+alias cd-p='cd "C:/Projects"'
+alias cd-mono='cd "C:\Projects\echo-web-clients"'
+alias cd-platform='cd "C:\Projects\eagle-management-ui"'
 alias nt='npm run test'
 alias ns='npm start'
+alias nsp='npm run start:portal'
+alias nsq='npm run start:quote'
+alias nsd='npm run start:documents'
+alias nsm='npm run start:meetings'
+alias nsb='npm run start:bob'
 alias go='git checkout'
 alias gf='git branch --list $1'
 alias gs='git status'
@@ -39,8 +45,8 @@ alias td='bash "C:/Projects/docs/scripts/nx-jest-test-debug.sh"'
 alias ta='npm run affected:test:dev'
 alias c='bash "C:/Projects/docs/scripts/run-coverage.sh"'
 alias recent='bash "C:/Projects/docs/scripts/git-recent.sh"'
-
+alias up='node /c/Projects/docs/scripts/up-commit.js'
+alias upp='up && push'
 
 # Run Commands
-cd-main
-# t2
+cd-mono
