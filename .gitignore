@@ -2,6 +2,7 @@
 _DoNotCopy
 python/__pycache__
 algorithms/maze/maze_paths
+.parcel-cache
 
 ### Node ###
 

@@ -1,0 +1,65 @@
+const height = 500;
+const width = 500;
+const pointSize = 5;
+const scale = 10;
+
+export function render(_points: Array<number[]>): void {
+    const points = _points.map(rescale);
+
+    const ctx = buildCanvas();
+    drawAxis(ctx);
+
+    const firstCoord = points[0];
+
+    points.forEach(([x, y], index) => {
+        drawPoint(ctx, x, y);
+        const nextPoints = points[index + 1];
+
+        if (nextPoints) connectPoints(ctx, [x, y], [nextPoints[0], nextPoints[1]]);
+        if (index === points.length - 1) connectPoints(ctx, [x, y], [firstCoord[0], firstCoord[1]]);
+    });
+}
+
+function buildCanvas(): CanvasRenderingContext2D {
+    const canvas = document.querySelector('canvas');
+    canvas.height = height;
+    canvas.width = width;
+
+    const ctx = canvas.getContext('2d');
+    ctx.transform(1, 0, 0, -1, canvas.width / 2, canvas.height / 2);
+    return ctx;
+}
+
+function drawPoint(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x, y, pointSize, pointSize);
+}
+
+function drawAxis(ctx: CanvasRenderingContext2D): void {
+    // horizontal
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+    ctx.moveTo(0, -height / 2);
+    ctx.lineTo(0, height / 2);
+    ctx.stroke();
+
+    // vertical
+    ctx.moveTo(-width / 2, 0);
+    ctx.lineTo(width / 2, 0);
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function connectPoints(ctx: CanvasRenderingContext2D, [fromX, fromY]: [number, number], [toX, toY]: [number, number]): void {
+    ctx.beginPath();
+    ctx.strokeStyle = 'blue';
+    ctx.moveTo(fromX, fromY);
+    ctx.lineTo(toX, toY);
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function rescale(inputs: number[]): [number, number] {
+    return [inputs[0] * scale, inputs[1] * scale]
+}
+
