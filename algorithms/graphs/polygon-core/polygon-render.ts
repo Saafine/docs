@@ -3,9 +3,9 @@ import { Point } from './point';
 const height = 900;
 const width = 900;
 const pointSize = 5;
-const scale = 4;
+const scale = 14;
 
-export function render(_points: Array<number[]>, { local_max, local_min }: { local_min: Point, local_max: Point }): void {
+export function render(_points: Array<number[]>, { local_max, local_min, min_combined, max_combined }: { local_min: Point, local_max: Point, max_combined: Point, min_combined: Point }): void {
     const points = _points.map(rescale);
 
     const ctx = buildCanvas();
@@ -22,14 +22,19 @@ export function render(_points: Array<number[]>, { local_max, local_min }: { loc
         if (index === points.length - 1) connectPoints(ctx, [x, y], [firstCoord[0], firstCoord[1]]);
     });
 
-    const [[localMinX, localMinY]] = [[local_min.getX(), local_min.getY()]].map(rescale);
-    const [[localMaxX, localMaxY]] = [[local_max.getX(), local_max.getY()]].map(rescale);
+    const [[localMinX, localMinY]] = [[local_min?.getX(), local_min?.getY()]].map(rescale);
+    const [[localMaxX, localMaxY]] = [[local_max?.getX(), local_max?.getY()]].map(rescale);
+    const [[combinedMinX, combinedMinY]] = [[min_combined?.getX(), min_combined?.getY()]].map(rescale);
+    const [[combinedMaxX, combinedMaxY]] = [[max_combined?.getX(), max_combined?.getY()]].map(rescale);
+
     drawPoint(ctx, localMinX, localMinY, 'green');
     drawPoint(ctx, localMaxX, localMaxY, 'black');
+    drawPoint(ctx, combinedMinX, combinedMinY, 'pink');
+    drawPoint(ctx, combinedMaxX, combinedMaxY, 'pink');
 
     const customPoint = new Point([35, 30]);
     const [[customX, customY]] = [[customPoint.getX(), customPoint.getY()]].map(rescale);
-    drawPoint(ctx, customX, customY, 'aqua');
+    // drawPoint(ctx, customX, customY, 'aqua');
 }
 
 function buildCanvas(): CanvasRenderingContext2D {

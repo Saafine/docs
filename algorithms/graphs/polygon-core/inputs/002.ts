@@ -1,6 +1,6 @@
 import { textToCoords } from '../polygon-utils';
 
-const txt = textToCoords(`
+export const input = textToCoords(`
 1,0
 4,1
 2,2

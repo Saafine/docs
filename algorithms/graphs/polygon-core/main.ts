@@ -1,16 +1,25 @@
 import { render } from './polygon-render';
-import { input_003 } from './inputs/003';
 import { checkPolygon } from './polygon-core';
-
-const input = input_003;
+import { input } from './inputs/002';
+import { isValidPolygon } from './polygon-validation';
 
 console.log(`Input: ${ input }`);
-const result = checkPolygon(input);
-render(input, {
-    local_min: result.local_min,
-    local_max: result.local_max
-});
-console.log(result);
 
-// console.log(getPointOrientation({ p: new Point([10, 5]), q: new Point([5, 0]), r: new Point([0, 5]) }));
-// render([[10, 5], [5, 0], [0, 5]]);
+function run() {
+    if (!isValidPolygon(input)) {
+        console.warn('Invalid polygon');
+        return;
+    }
+
+    const result = checkPolygon(input);
+    render(input, {
+        local_min: result.local_min,
+        local_max: result.local_max,
+        min_combined: result.min_combined,
+        max_combined: result.max_combined,
+    });
+
+    console.log(result);
+}
+run();
+
