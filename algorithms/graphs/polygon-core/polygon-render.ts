@@ -3,7 +3,7 @@ import { Point } from './point';
 const height = 900;
 const width = 900;
 const pointSize = 5;
-const scale = 14;
+const scale = 35;
 
 export function render(_points: Array<number[]>, { local_max, local_min, min_combined, max_combined }: { local_min: Point, local_max: Point, max_combined: Point, min_combined: Point }): void {
     const points = _points.map(rescale);

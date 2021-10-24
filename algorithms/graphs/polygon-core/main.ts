@@ -1,6 +1,6 @@
 import { render } from './polygon-render';
 import { checkPolygon } from './polygon-core';
-import { input } from './inputs/002';
+import { input } from './inputs/001';
 import { isValidPolygon } from './polygon-validation';
 
 console.log(`Input: ${ input }`);
