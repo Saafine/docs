@@ -24,8 +24,8 @@ Złożoność liniowa - O(n)
 2) znaleźć minimum punktu w wielokącie  y_min 👍
 3) znaleźć minimum punktu w wielokącie y_max 👍
 4) wylicz orientację puntków 👍
-5) wyznacz min lokalne
-6) wyznacz min lokalne i znajdz najmniejsze z nich, i porównaj lokalne z y_min (wybieramy mniejsze)
+5) wyznacz min lokalne 👍
+6) wyznacz min lokalne i znajdz najmniejsze z nich, i porównaj lokalne z y_min (wybieramy mniejsze) 
 (jezeli jest wiecej, niz 1 to bedzie trzeba o tym pamietac przy liczeniu obwodu)
 - znajdz taką trójkę wierzchołków, gdzie środkowy punkt ma mniejszą lub równą współrzędną y
 i dodatkowo szukamy skrętów w prawo (55:48)
@@ -42,7 +42,6 @@ jeśli jakiekolwiek min lokalne istnieje, to na pewno będzie mniejsze niż y ma
 (ale inaczej jak nie ma lokalnych minimow)
 6) czy istnieje jądro?
       - jeśli tak, to jaki obwód?
-7) jak wyznaczyć minimum lokalne?
 8) show y_max points and y_min points on canvas
 9) walidacja, czy w wielokąt jest prawidłowy?
 10) może się zdarzyć, że jądra nie będzie
@@ -56,3 +55,5 @@ jeśli jakiekolwiek min lokalne istnieje, to na pewno będzie mniejsze niż y ma
 ![img_7.png](images/img_7.png)
 ![img_8.png](images/img_8.png) // brak maksimum lokalnego, ma tylko minima?
 ![img_11.png](images/img_11.png)
+![img.png](images/img_125.png)
+![img.png](img.png)

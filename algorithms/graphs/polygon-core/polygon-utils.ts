@@ -11,5 +11,15 @@ export function getPointOrientation({ p, q, r }: { p: Point, q: Point, r: Point 
 
     if (result === 0) return PointOrientation.Zero;
 
-    return result > 0 ? PointOrientation.Negative : PointOrientation.Positive;
+    return result > 0 ? PointOrientation.Right : PointOrientation.Left;
+}
+
+export function getNextOrientationPoints({index: startIndex, points}: {index: number, points: Point[]}): [Point, Point, Point] {
+
+    const getNext = (count = 3, index = startIndex) => {
+        const element = points[index];
+        return count === 1 ? [element] : [element].concat(getNext(count - 1, index === points.length - 1 ? 0 : index + 1))
+    }
+
+    return getNext();
 }

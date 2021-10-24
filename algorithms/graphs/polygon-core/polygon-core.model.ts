@@ -4,10 +4,23 @@ export interface PolygonResult {
     y_min: Point;
     y_max: Point;
     hasCore: boolean;
+    orientations: Orientation[]
+    local_max: Point,
+    local_min: Point,
+    min_combined: Point;
+    max_combined: Point;
 }
 
 export enum PointOrientation {
-    Positive = 'Positive', // 1 - przeciwna do wskazowek zegara
-    Zero = 'Zero', // 0 - liniowa
-    Negative = 'Negative' // -1 zgodna ze wskazowkami zegara
+
+    Left = 'LEFT',
+    Zero = 'Zero', // 0 - współliniowe
+    Right = 'RIGHT'
+}
+
+export interface Orientation {
+    p: Point;
+    q: Point;
+    r: Point;
+    orientation: PointOrientation;
 }
