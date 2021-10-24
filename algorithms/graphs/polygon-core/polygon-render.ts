@@ -31,10 +31,6 @@ export function render(_points: Array<number[]>, { local_max, local_min, min_com
     drawPoint(ctx, localMaxX, localMaxY, 'black');
     drawPoint(ctx, combinedMinX, combinedMinY, 'pink');
     drawPoint(ctx, combinedMaxX, combinedMaxY, 'pink');
-
-    const customPoint = new Point([35, 30]);
-    const [[customX, customY]] = [[customPoint.getX(), customPoint.getY()]].map(rescale);
-    // drawPoint(ctx, customX, customY, 'aqua');
 }
 
 function buildCanvas(): CanvasRenderingContext2D {
