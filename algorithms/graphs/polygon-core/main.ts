@@ -1,6 +1,6 @@
 import { render } from './polygon-render';
 import { checkPolygon } from './polygon-core';
-import { input } from './inputs/cw_001';
+import { input } from './inputs/cw_002';
 import { isValidPolygon } from './polygon-validation';
 
 console.log(`Input: ${ input }`);
@@ -12,6 +12,7 @@ function run() {
     }
 
     const result = checkPolygon(input);
+
     render(input, {
         local_min: result.local_min,
         local_max: result.local_max,
@@ -21,5 +22,6 @@ function run() {
 
     console.log(result);
 }
+
 run();
 

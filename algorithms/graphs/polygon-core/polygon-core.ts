@@ -30,6 +30,7 @@ export function checkPolygon(inputs: Array<number[]>): PolygonResult {
 
     const min_combined = minBy([y_max, local_min].filter(Boolean), getY);
     const max_combined = maxBy([y_min, local_max].filter(Boolean), getY);
+
     const hasCore = min_combined.getY() >= max_combined.getY();
 
     return {

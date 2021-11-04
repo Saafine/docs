@@ -3,10 +3,10 @@ export class Point {
     }
 
     getX(): number {
-        return this.coord[0] as number;
+        return this.coord[0];
     }
 
     getY(): number {
-        return this.coord[1] as number;
+        return this.coord[1];
     }
 }
