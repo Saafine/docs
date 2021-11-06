@@ -15,14 +15,19 @@ export function closestPairOfPoints(input: Point[]): PointPair {
 
 function closestPair(X: Point[], Y: Point[]): PointPair {
   const size = X.length;
+
+  if (size === 2)
+    return {
+      pair: [X[0] as Point, X[1] as Point],
+      d: getDistance(X[0] as Point, X[1] as Point),
+    };
   if (size <= 3) return closestPairOfPointsSimple(X);
 
   const midIndex = Math.ceil(size / 2);
   const mid = X[midIndex] as Point;
 
-  // left side can be larger
   const dl = closestPair(X.slice(0, midIndex), Y);
-  const dr = closestPair(X.slice(midIndex + 1), Y);
+  const dr = closestPair(X.slice(-midIndex), Y);
   let d = minBy([dl, dr], (pair) => pair.d) as PointPair; // TODO [P. Labus] toDistance fn
 
   const S = getStrip(Y, mid, d.d);
@@ -49,7 +54,7 @@ function getStrip(points: Point[], mid: Point, distance: number): Point[] {
 }
 
 export function closestPairOfPointsSimple(points: Point[]): PointPair {
-  if (points.length < 2) throw new Error('Invalid number of points');
+  if (points.length < 2) throw new Error(`Invalid number of points: ${points.length}`);
   let pair: [Point, Point] | undefined;
   let minDistance: number | undefined;
 
