@@ -10,17 +10,22 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "strict": true,
     "strictBindCallApply": true,
+    "moduleResolution": "node",
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "target": "es2020",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"]
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true
-  }
+  },
+  "exclude": ["node_modules", "tmp"]
 }
