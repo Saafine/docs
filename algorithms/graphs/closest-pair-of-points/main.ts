@@ -1,16 +1,15 @@
 import { render } from './render';
 import { input } from './inputs/001';
-import { checkPoints } from './closest-pair-of-points';
 import { Point } from './point';
+import { closestPairOfPoints } from './closest-pair-of-points';
 
-console.log(`Input: ${ input }`);
+console.log(`Input: ${input}`);
 
 function run() {
-    const points = input.map((coords) => new Point(coords));
-    const result = checkPoints(points);
-    render(input);
-    console.log(result);
+  const points = input.map((coords) => new Point(coords));
+  const result = closestPairOfPoints(points);
+  render(input, result);
+  console.log(result);
 }
 
 run();
-

@@ -19,6 +19,7 @@ describe('closest pair of points', () => {
       const points = testData.input.map(toPoints);
       const output = testData.output.map(toPoints);
       expect(new Set(closestPairOfPoints(points).pair)).toEqual(new Set(output));
+      expect(new Set(closestPairOfPointsSimple(points).pair)).toEqual(new Set(output));
     });
   });
 });
