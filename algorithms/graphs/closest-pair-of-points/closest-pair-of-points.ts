@@ -2,10 +2,7 @@ import { Point } from './point';
 import { isNil, minBy, sortBy } from 'lodash';
 import { getDistance } from './point.utils';
 import { PointPair } from './closest-pair.model';
-import { isInRange } from './closest-pair.utils';
-
-// Assume all points have distinct coordinates (no ties)
-// Assume at least 4 points in the input
+import { getPointDistance, isInRange } from './closest-pair.utils';
 
 export function closestPairOfPoints(input: Point[]): PointPair {
   const Sx = sortBy(input, (p: Point) => p.getX());
@@ -16,11 +13,12 @@ export function closestPairOfPoints(input: Point[]): PointPair {
 function closestPair(X: Point[], Y: Point[]): PointPair {
   const size = X.length;
 
-  if (size === 2)
+  if (size === 2) {
     return {
       pair: [X[0] as Point, X[1] as Point],
       d: getDistance(X[0] as Point, X[1] as Point),
     };
+  }
   if (size <= 3) return closestPairOfPointsSimple(X);
 
   const midIndex = Math.ceil(size / 2);
@@ -28,7 +26,7 @@ function closestPair(X: Point[], Y: Point[]): PointPair {
 
   const dl = closestPair(X.slice(0, midIndex), Y);
   const dr = closestPair(X.slice(-midIndex), Y);
-  let d = minBy([dl, dr], (pair) => pair.d) as PointPair; // TODO [P. Labus] toDistance fn
+  let d = minBy([dl, dr], getPointDistance) as PointPair;
 
   const S = getStrip(Y, mid, d.d);
   const stripSize = S.length;
@@ -42,7 +40,7 @@ function closestPair(X: Point[], Y: Point[]): PointPair {
         d: distance,
         pair,
       };
-      d = minBy([d, pointPair], (pair) => pair.d) as PointPair; // TODO [P. Labus] toDistance fn
+      d = minBy([d, pointPair], getPointDistance) as PointPair;
     }
   }
 
