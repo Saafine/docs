@@ -10,41 +10,41 @@ export function closestPairOfPoints(input: Point[]): PointPair {
   return closestPair(Sx, Sy);
 }
 
-function closestPair(X: Point[], Y: Point[]): PointPair {
-  const size = X.length;
+function closestPair(Sx: Point[], Sy: Point[]): PointPair {
+  const size = Sx.length;
 
   if (size === 2) {
     return {
-      pair: [X[0] as Point, X[1] as Point],
-      d: getDistance(X[0] as Point, X[1] as Point),
+      pair: [Sx[0] as Point, Sx[1] as Point],
+      d: getDistance(Sx[0] as Point, Sx[1] as Point),
     };
   }
-  if (size <= 3) return closestPairOfPointsSimple(X);
+  if (size <= 3) return closestPairOfPointsSimple(Sx);
 
   const midIndex = Math.ceil(size / 2);
-  const mid = X[midIndex] as Point;
+  const mid = Sx[midIndex] as Point;
 
-  const dl = closestPair(X.slice(0, midIndex), Y);
-  const dr = closestPair(X.slice(-midIndex), Y);
-  let d = minBy([dl, dr], getPointDistance) as PointPair;
+  const dl = closestPair(Sx.slice(0, midIndex), Sy);
+  const dr = closestPair(Sx.slice(-midIndex), Sy);
+  let minPair = minBy([dl, dr], getPointDistance) as PointPair;
 
-  const S = getStrip(Y, mid, d.d);
-  const stripSize = S.length;
+  const stripPoints = getStrip(Sy, mid, minPair.d);
+  const stripSize = stripPoints.length;
 
   for (let i = 0; i < stripSize; i++) {
     const maxNext = Math.min(6, stripSize - 1 - i);
     for (let j = i + 1; j <= maxNext; j++) {
-      const pair = [S[i], S[j]] as [Point, Point];
+      const pair = [stripPoints[i], stripPoints[j]] as [Point, Point];
       const distance = getDistance(pair[0], pair[1]);
       const pointPair: PointPair = {
         d: distance,
         pair,
       };
-      d = minBy([d, pointPair], getPointDistance) as PointPair;
+      minPair = minBy([minPair, pointPair], getPointDistance) as PointPair;
     }
   }
 
-  return d;
+  return minPair;
 }
 
 function getStrip(points: Point[], mid: Point, distance: number): Point[] {

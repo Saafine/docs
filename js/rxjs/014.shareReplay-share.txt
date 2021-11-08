@@ -1,0 +1,22 @@
+shareReplay()
+- repeats ALL values to every subscriber
+- stays hot even when refCount (all subscribers) is 0, so you can't cancel it with takeUntil()
+- shareReplay(1) replays one last value
+
+share()
+- stays hot only when refCounts is bigger than 0
+- flow example:
+	- A subscribes
+	- observable becomes hot
+	- B subscribes
+	- C subscribes
+	- one request is made
+	- A unsubscribes
+	- B unsubscribes
+	- C unsubscribes
+	- D subscribes
+	- observable becomes cold
+	- second request is made
+	- observable becomes hot
+	- D unsubscribes
+	- observable becomes cold
