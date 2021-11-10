@@ -23,9 +23,35 @@ function closestPair(Sx: Point[], Sy: Point[]): PointPair {
 
   const midIndex = Math.ceil(size / 2);
   const mid = Sx[midIndex] as Point;
+  const sxLeft = Sx.slice(0, midIndex);
+  const sxRight = Sx.slice(-midIndex);
 
-  const dl = closestPair(Sx.slice(0, midIndex), Sy);
-  const dr = closestPair(Sx.slice(-midIndex), Sy);
+  let syLeft: Point[] = [];
+  let syRight: Point[] = [];
+
+  let counter1 = 0;
+  let counter2 = 0;
+
+  for (let point of Sy) {
+    counter1++;
+
+    // @ts-ignore
+    if (point.getX() <= sxLeft[midIndex].getX()) {
+      syLeft.push(point);
+      counter2++;
+    } else {
+      syRight.push(point);
+    }
+
+    if (counter2 > midIndex) {
+      const points: Point[] = Sy.slice(-counter1 - 1);
+      syRight = syRight.concat(points);
+      break;
+    }
+  }
+
+  const dl = closestPair(sxLeft, syLeft);
+  const dr = closestPair(sxRight, syRight);
   let minPair = minBy([dl, dr], getPointDistance) as PointPair;
 
   const stripPoints = getStrip(Sy, mid, minPair.d);

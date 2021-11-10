@@ -1,5 +1,5 @@
 import { render } from './render';
-import { input } from './inputs/cw_001';
+import { input } from './inputs/cw_002';
 import { Point } from './point';
 import { closestPairOfPoints } from './closest-pair-of-points';
 
