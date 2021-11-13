@@ -9,10 +9,11 @@ export function getTotalTableConfigurations(menCount: number, womenCount: number
   const women = getUniqueNames(womenCount).map(toWomanName);
   const all = men.concat(women);
 
-  const solved = solve(all);
-  console.log(solved);
+  const solved = solve(all)
+    .map(reorderToEqualStart)
+    .map((solution) => solution.join());
 
-  return solved.length;
+  return new Set(solved).size;
 }
 
 function solve(all: string[]): Array<string[]> {
@@ -67,4 +68,14 @@ function isWomanName(name: string): boolean {
 
 function skip<T>(elements: T[], index: number): T[] {
   return elements.filter((_, i) => i !== index);
+}
+
+function reorderToEqualStart(elements: string[]): string[] {
+  // force M1 to always be 1st
+  const firstElementIndex = elements.indexOf('M1');
+
+  const left = elements.slice(firstElementIndex);
+  const right = elements.slice(0, firstElementIndex);
+
+  return left.concat(right);
 }
