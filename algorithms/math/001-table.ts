@@ -1,5 +1,5 @@
 import { first as getFirst, last } from 'lodash';
-
+// const fs = require('fs');
 /*
  Zadanie 10. Na ile sposobów mozna ustawic: 4 mezczyzn oraz 7 kobiet przy okraglym stole
  w taki sposób, aby zaden mezczyzna nie sasiadowal z innym mezczyzna?
@@ -13,7 +13,15 @@ export function getTotalTableConfigurations(menCount: number, womenCount: number
     .map(reorderToEqualStart)
     .map((solution) => solution.join());
 
-  return new Set(solved).size;
+  const unique = new Set(solved);
+
+  // const toPrint = Array.from(unique).map((x) => `${x}\n`);
+  //
+  // fs.writeFile('helloworld.json', String(toPrint), (err: any) =>  {
+  //   if (err) return console.log(err);
+  // });
+
+  return unique.size;
 }
 
 function solve(all: string[]): Array<string[]> {

@@ -8,3 +8,9 @@ git revert 07666c053 -m 1
 
 # searching string in git in all branches
 git grep "string/regexp" $(git rev-list --all --since=01-01-2020)
+
+# No merge commit sync
+git merge --ff-only origin/xx
+
+# Package Vulnerability
+git rev-list --all | xargs git grep "ua-parser-js@" | cut -d@ -f2 | uniq) t
