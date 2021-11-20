@@ -4,5 +4,5 @@ export class Node {
   left: Node | null = null;
   right: Node | null = null;
 
-  constructor(private point: Point, private parent: Node | null) {}
+  constructor(public point: Point, private parent: Node | null) {}
 }
