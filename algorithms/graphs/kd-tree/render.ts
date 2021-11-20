@@ -41,12 +41,7 @@ function drawRectangle(ctx: CanvasRenderingContext2D, from: Point, to: Point, co
   const x = Math.min(from.getX(), to.getX())
   const y = Math.min(from.getY(), to.getY())
   ctx.rect(x * scale, y * scale, width, height);
-  console.log({ height, width });
   ctx.stroke();
-  // ctx.beginPath();
-  // ctx.moveTo(from.getX() * scale, from.getY() * scale);
-  // ctx.lineTo(to.getX() * scale, to.getY() * scale);
-  // ctx.fill();
 }
 
 function drawAxis(ctx: CanvasRenderingContext2D): void {

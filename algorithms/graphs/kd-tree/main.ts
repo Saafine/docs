@@ -17,6 +17,7 @@ function run() {
   console.log({
     input,
     result,
+    tree
   });
 }
 
