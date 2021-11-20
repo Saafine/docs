@@ -1,12 +1,18 @@
 import { render } from './render';
 import { input } from './inputs/001';
-import { Point } from './point';
+import { Point, PointRange } from './point';
+import { kdTree } from './kd-tree';
+import { kdTreeSearch } from './kd-tree-search';
 
 console.log(`Input: ${input}`);
 
 function run() {
   const points = input.coords.map((coords) => new Point(coords));
-  // const result = closestPairOfPoints(points);
+  const from = new Point(input.area[0] as number[]);
+  const to = new Point(input.area[1] as number[]);
+  const range = new PointRange(from, to);
+  const tree = kdTree(points);
+  const result = kdTreeSearch(tree, range);
   render(input.coords);
   console.log(result);
 }

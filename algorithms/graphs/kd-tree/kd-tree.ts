@@ -4,8 +4,8 @@ import { sortBy } from 'lodash';
 
 export type KdTree = Node;
 
-export function kdTree(points: Point[]): KdTree | null {
-  return buildTree(points, 0, null) as KdTree | null;
+export function kdTree(points: Point[]): KdTree {
+  return buildTree(points, 0, null) as KdTree;
 }
 
 function buildTree(points: Point[], depth: number, parent: Node | null): Node | null {
