@@ -1,9 +1,11 @@
+import { Point } from './point';
+
 const height = 900;
-const width = 900;
+const width = 1500;
 const pointSize = 5;
 const scale = 35;
 
-export function render(_points: Array<number[]>): void {
+export function render(_points: Array<number[]>, { from, to }: { from: Point; to: Point }): void {
   const points = _points.map(rescale);
 
   const ctx = buildCanvas();
@@ -12,9 +14,8 @@ export function render(_points: Array<number[]>): void {
   points.forEach(([x, y]) => {
     drawPoint(ctx, x, y);
   });
-  //
-  // drawPoint(ctx, result.pair[0].getX() * scale, result.pair[0].getY() * scale, 'green');
-  // drawPoint(ctx, result.pair[1].getX() * scale, result.pair[1].getY() * scale, 'green');
+
+  drawRectangle(ctx, from, to, 'green');
 }
 
 function buildCanvas(): CanvasRenderingContext2D {
@@ -30,6 +31,12 @@ function buildCanvas(): CanvasRenderingContext2D {
 function drawPoint(ctx: CanvasRenderingContext2D, x: number, y: number, color = 'red'): void {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, pointSize, pointSize);
+}
+
+function drawRectangle(ctx: CanvasRenderingContext2D, from: Point, to: Point, color = 'red'): void {
+  ctx.fillStyle = color;
+  ctx.rect(from.getX() * scale, from.getY() * scale, to.getX() * scale, to.getY() * scale);
+  ctx.stroke();
 }
 
 function drawAxis(ctx: CanvasRenderingContext2D): void {

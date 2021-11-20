@@ -13,8 +13,13 @@ function run() {
   const range = new PointRange(from, to);
   const tree = kdTree(points);
   const result = kdTreeSearch(tree, range);
-  render(input.coords);
-  console.log(result);
+
+  render(input.coords, { from, to });
+
+  console.log({
+    input,
+    result,
+  });
 }
 
 run();
