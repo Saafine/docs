@@ -1,5 +1,5 @@
-import { Node } from './node';
-import { Point } from './point';
+import { Node } from '../node';
+import { Point } from '../point';
 
 describe('node', () => {
   it('should report subtree', () => {

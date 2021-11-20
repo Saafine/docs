@@ -1,4 +1,4 @@
-import { Point, PointRange } from './point';
+import { Point, PointRange } from '../point';
 
 describe('point range', () => {
   it('contains point', () => {
