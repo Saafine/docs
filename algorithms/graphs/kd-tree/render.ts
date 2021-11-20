@@ -35,8 +35,18 @@ function drawPoint(ctx: CanvasRenderingContext2D, x: number, y: number, color = 
 
 function drawRectangle(ctx: CanvasRenderingContext2D, from: Point, to: Point, color = 'red'): void {
   ctx.fillStyle = color;
-  ctx.rect(from.getX() * scale, from.getY() * scale, to.getX() * scale, to.getY() * scale);
+  const height = Math.abs(from.getY() - to.getY()) * scale;
+  const width = Math.abs(from.getX() - to.getX()) * scale;
+
+  const x = Math.min(from.getX(), to.getX())
+  const y = Math.min(from.getY(), to.getY())
+  ctx.rect(x * scale, y * scale, width, height);
+  console.log({ height, width });
   ctx.stroke();
+  // ctx.beginPath();
+  // ctx.moveTo(from.getX() * scale, from.getY() * scale);
+  // ctx.lineTo(to.getX() * scale, to.getY() * scale);
+  // ctx.fill();
 }
 
 function drawAxis(ctx: CanvasRenderingContext2D): void {

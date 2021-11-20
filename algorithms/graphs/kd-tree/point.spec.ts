@@ -60,5 +60,9 @@ describe('point range', () => {
     expect(pointRange1.intersects(pointRange1c)).toBeTruthy();
     expect(pointRange1.intersects(pointRange1d)).toBeFalsy();
     expect(pointRange1.intersects(pointRange1e)).toBeFalsy();
+
+    const pointRange2 = new PointRange(new Point([6, 2]), new Point([7, 5]));
+    const pointRange2b = new PointRange(new Point([10, 3.5]), new Point([2, 2]));
+    expect(pointRange2.intersects(pointRange2b)).toBeTruthy();
   });
 });

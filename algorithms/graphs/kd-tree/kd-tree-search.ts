@@ -2,9 +2,10 @@ import { KdTree } from './kd-tree';
 import { Point, PointRange } from './point';
 import { Node } from './node';
 
+// TODO [P. Labus] parent not needed
+
 export function kdTreeSearch(kdTree: KdTree, range: PointRange): Point[] {
   const pointsInRange: Point[] = [];
-
   function search(node: Node) {
     if (node.isLeaf()) {
       if (range.contains(node.point)) pointsInRange.push(node.point);
@@ -15,6 +16,8 @@ export function kdTreeSearch(kdTree: KdTree, range: PointRange): Point[] {
     const regionRight = node.right && new PointRange(node.point, node.right.point);
 
     if (regionLeft) {
+      // console.log({ contains: range.containsRange(regionLeft), range, regionLeft });
+      console.log({ intersects: range.intersects(regionLeft), range, regionLeft });
       if (range.containsRange(regionLeft)) {
         node.forEach((point) => pointsInRange.push(point));
       } else if (range.intersects(regionLeft)) {

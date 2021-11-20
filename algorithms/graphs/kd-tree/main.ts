@@ -4,8 +4,6 @@ import { Point, PointRange } from './point';
 import { kdTree } from './kd-tree';
 import { kdTreeSearch } from './kd-tree-search';
 
-console.log(`Input: ${input}`);
-
 function run() {
   const points = input.coords.map((coords) => new Point(coords));
   const from = new Point(input.area[0] as number[]);

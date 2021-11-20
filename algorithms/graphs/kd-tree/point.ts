@@ -29,9 +29,7 @@ export class PointRange {
   }
 
   intersects(range: PointRange): boolean {
-    const containsFrom = this.contains(range.from);
-    const containsTo = this.contains(range.to);
-    return containsFrom || containsTo;
+    return this.contains(range.from) || this.contains(range.to) || range.contains(this.from) || range.contains(this.to);
   }
 
   private getMaxX(): number {
