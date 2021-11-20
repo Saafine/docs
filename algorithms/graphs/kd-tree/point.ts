@@ -28,6 +28,12 @@ export class PointRange {
     return containsFrom && containsTo;
   }
 
+  intersects(range: PointRange): boolean {
+    const containsFrom = this.contains(range.from);
+    const containsTo = this.contains(range.to);
+    return containsFrom || containsTo;
+  }
+
   private getMaxX(): number {
     return Math.max(this.from.getX(), this.to.getX());
   }

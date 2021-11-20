@@ -47,4 +47,18 @@ describe('point range', () => {
     expect(pointRange1.containsRange(pointRange1d)).toBeFalsy();
     expect(pointRange1.containsRange(pointRange1e)).toBeFalsy();
   });
+
+  it('intersects subrange', () => {
+    const pointRange1 = new PointRange(new Point([0, 0]), new Point([1, 1]));
+    const pointRange1a = new PointRange(new Point([1, 1]), new Point([2, 2]));
+    const pointRange1b = new PointRange(new Point([2, 2]), new Point([1, 1]));
+    const pointRange1c = new PointRange(new Point([0, 0]), new Point([1, 1]));
+    const pointRange1d = new PointRange(new Point([-1, -1]), new Point([-2, -2]));
+    const pointRange1e = new PointRange(new Point([2, 2]), new Point([2, 3]));
+    expect(pointRange1.intersects(pointRange1a)).toBeTruthy();
+    expect(pointRange1.intersects(pointRange1b)).toBeTruthy();
+    expect(pointRange1.intersects(pointRange1c)).toBeTruthy();
+    expect(pointRange1.intersects(pointRange1d)).toBeFalsy();
+    expect(pointRange1.intersects(pointRange1e)).toBeFalsy();
+  });
 });
