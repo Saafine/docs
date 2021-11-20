@@ -7,8 +7,8 @@ export function kdTreeSearch(kdTree: KdTree, range: PointRange): Point[] {
 
   function search(node: Node) {
     const region = node.getRegion();
-    if (!region.intersects(range)) return;
-    if (region.contains(node.point)) pointsInRange.push(node.point);
+    if (!range.intersects(region)) return;
+    if (range.contains(node.point)) pointsInRange.push(node.point);
     if (node.left) search(node.left);
     if (node.right) search(node.right);
   }
