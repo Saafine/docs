@@ -1,5 +1,5 @@
 import { render } from './render';
-import { input } from './inputs/001';
+import { input } from './inputs/006';
 import { Point, PointRange } from './point';
 import { kdTree } from './kd-tree';
 import { kdTreeSearch } from './kd-tree-search';
@@ -12,7 +12,7 @@ function run() {
   const tree = kdTree(points);
   const result = kdTreeSearch(tree, range);
 
-  render(input.coords, { from, to });
+  render(input.coords, { from, to, result });
 
   console.log({
     input,

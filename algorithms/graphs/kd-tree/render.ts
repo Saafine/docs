@@ -5,7 +5,10 @@ const width = 1500;
 const pointSize = 5;
 const scale = 35;
 
-export function render(_points: Array<number[]>, { from, to }: { from: Point; to: Point }): void {
+export function render(
+  _points: Array<number[]>,
+  { from, to, result }: { from: Point; to: Point; result: Point[] }
+): void {
   const points = _points.map(rescale);
 
   const ctx = buildCanvas();
@@ -13,6 +16,10 @@ export function render(_points: Array<number[]>, { from, to }: { from: Point; to
 
   points.forEach(([x, y]) => {
     drawPoint(ctx, x, y);
+  });
+
+  result.forEach((point) => {
+    drawPoint(ctx, point.getX() * scale, point.getY() * scale, 'blue');
   });
 
   drawRectangle(ctx, from, to, 'green');
@@ -38,8 +45,8 @@ function drawRectangle(ctx: CanvasRenderingContext2D, from: Point, to: Point, co
   const height = Math.abs(from.getY() - to.getY()) * scale;
   const width = Math.abs(from.getX() - to.getX()) * scale;
 
-  const x = Math.min(from.getX(), to.getX())
-  const y = Math.min(from.getY(), to.getY())
+  const x = Math.min(from.getX(), to.getX());
+  const y = Math.min(from.getY(), to.getY());
   ctx.rect(x * scale, y * scale, width, height);
   ctx.stroke();
 }
