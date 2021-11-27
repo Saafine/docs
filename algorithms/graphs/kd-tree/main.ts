@@ -1,5 +1,5 @@
 import { render } from './render';
-import { input } from './inputs/008';
+import { input } from './inputs/cw__001';
 import { Point, PointRange } from './point';
 import { kdTree } from './kd-tree';
 import { kdTreeSearch } from './kd-tree-search';
