@@ -10,6 +10,7 @@ export class Node {
   minX: number | null = null;
   maxY: number | null = null;
   minY: number | null = null;
+  region: PointRange | null = null;
 
   constructor(public point: Point) {}
 
@@ -17,14 +18,20 @@ export class Node {
     return !this.left && !this.right;
   }
 
-  getRegion(): PointRange {
+  setRegion(): void {
     const maxX = this.getMaxX();
     const maxY = this.getMaxY();
 
     const minX = this.getMinX();
     const minY = this.getMinY();
 
-    return new PointRange(new Point([minX, minY]), new Point([maxX, maxY]));
+    this.region = new PointRange(new Point([minX, minY]), new Point([maxX, maxY]));
+    if (this.left) this.left.setRegion();
+    if (this.right) this.right.setRegion();
+  }
+
+  getRegion(): PointRange {
+    return this.region as PointRange;
   }
 
   getMaxX(): number {
