@@ -1,5 +1,6 @@
 import { Point } from '../point';
-import { kdTree } from '../kd-tree';
+import { kdTree, kdTree2 } from '../kd-tree';
+import { kdTreeToString } from '../kd-tree-to-string';
 
 describe('kd-tree', () => {
   it('should build tree', () => {
@@ -21,4 +22,21 @@ describe('kd-tree', () => {
     expect(tree?.left?.left?.left).toBeNull();
     expect(tree?.left?.left?.left).toBeNull();
   });
+
+  it('should return tree as string', () => {
+    const points = [
+      { x: 1, y: 2 },
+      { x: 3, y: 4 },
+      { x: 5, y: 6 },
+      { x: 7, y: 8 },
+    ].map(({ x, y }) => new Point([x, y]));
+
+    const tree = kdTree(points);
+    const tree2 = kdTree2(points);
+    const treeString = kdTreeToString(tree);
+    const treeString2 = kdTreeToString(tree2);
+
+    expect(treeString).toEqual('X5Y6X3Y4X1Y2X7Y8')
+    expect(treeString2).toEqual('X5Y6X3Y4X1Y2X7Y8')
+  })
 });
