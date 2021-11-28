@@ -6,7 +6,6 @@ export type KdTree = Node;
 
 export function kdTree(points: Point[]): KdTree {
   const tree = buildTree(points, 0) as KdTree;
-  tree.setRegion();
   return tree;
 }
 
