@@ -5,8 +5,7 @@ import { sortBy } from 'lodash';
 export type KdTree = Node;
 
 export function kdTree(points: Point[]): KdTree {
-  const tree = buildTree(points, 0) as KdTree;
-  return tree;
+  return buildTree(points, 0) as KdTree;
 }
 
 function buildTree(points: Point[], depth: number): Node | null {
@@ -39,11 +38,25 @@ function buildTree2(Sx: Point[], Sy: Point[], depth: number): Node | null {
   const mid = Math.floor(points.length / 2);
   const node = new Node(points[mid] as Point);
 
-  const sxLeft = isEven ? Sx.slice(0, mid) : splitReduced(Sx, mid, (point, mid) => point.getY() <= mid.getY()).left;
-  const sxRight = isEven ? Sx.slice(mid + 1) : splitReduced(Sx, mid, (point, mid) => point.getY() <= mid.getY()).right;
+  let sxLeft;
+  let sxRight;
+  let syLeft;
+  let syRight;
 
-  const syLeft = isEven ? splitReduced(Sy, mid, (point, mid) => point.getX() <= mid.getX()).left : Sy.slice(0, mid);
-  const syRight = isEven ? splitReduced(Sy, mid, (point, mid) => point.getX() <= mid.getX()).right : Sy.slice(mid + 1);
+
+  if (isEven) {
+    const {left, right} = splitReduced(Sy, mid, (point, mid) => point.getX() <= mid.getX());
+    sxLeft = Sx.slice(0, mid);
+    sxRight = Sx.slice(mid + 1);
+    syLeft = left;
+    syRight = right;
+  } else {
+    const {left, right} = splitReduced(Sx, mid, (point, mid) => point.getY() <= mid.getY());
+    sxLeft = left;
+    sxRight = right;
+    syLeft =  Sy.slice(0, mid);
+    syRight = Sy.slice(mid + 1)
+  }
 
   node.left = buildTree2(sxLeft, syLeft, depth + 1);
   node.right = buildTree2(sxRight, syRight, depth + 1);

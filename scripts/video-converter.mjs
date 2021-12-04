@@ -22,7 +22,7 @@ async function runConversion() {
     console.log({ input, output, inputDir });
 
     await mkdir(inputDir, { recursive: true });
-    await execShellCommand(`ffmpeg -i ${input} -vcodec libx264 -crf 28 ${output}`);
+    await execShellCommand(`ffmpeg -i "${input}" -vcodec libx264 -crf 28 "${output}"`);
   }
 
   console.log('File Paths:', files);
