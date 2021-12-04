@@ -1,9 +1,5 @@
 import { sum } from 'lodash';
 
-export function maxIndependentSet(node: NodeV): number {
-  return node.getMaxIndependentSetSize();
-}
-
 export class NodeV {
   private children: NodeV[] = [];
   private maxIndependentSetSize: number | null = null;

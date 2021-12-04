@@ -1,4 +1,4 @@
-import { NodeV } from './max-independent-set';
+import { NodeV } from './get-max-independent-set-size';
 
 interface TestTree {
   node: number;
