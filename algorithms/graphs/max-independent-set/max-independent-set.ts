@@ -10,14 +10,6 @@ export class NodeV {
 
   constructor(private testId: string | number) {}
 
-  addChild(child: NodeV): void {
-    this.children.push(child);
-  }
-
-  getChildren(): NodeV[] {
-    return this.children;
-  }
-
   getMaxIndependentSetSize(): number {
     if (this.maxIndependentSetSize !== null) return this.maxIndependentSetSize;
     if (this.children.length === 0) return 1;
@@ -38,5 +30,13 @@ export class NodeV {
     this.maxIndependentSetSize = max;
 
     return max;
+  }
+
+  addChild(child: NodeV): void {
+    this.children.push(child);
+  }
+
+  getChildren(): NodeV[] {
+    return this.children;
   }
 }
