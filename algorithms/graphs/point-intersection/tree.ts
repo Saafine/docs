@@ -1,32 +1,8 @@
 import { Point } from './point';
 import { ascend, prop, sortWith } from 'ramda';
-import { NodeJs, NodeManagerJsNumber, Tree } from './tree/src';
 import { flatten } from 'lodash';
-
-type Range = [number, number];
-type NodeP<T> = NodeJs<number, T>;
-
-export interface InputData {
-  verticals: Segment[];
-  horizontals: Segment[];
-}
-
-export type Segment = {
-  from: Point;
-  to: Point;
-};
-
-export enum PointType {
-  HORIZONTAL_LEFT = 1,
-  VERTICAL = 2,
-  HORIZONTAL_RIGHT = 3,
-}
-
-export interface SegmentPoint {
-  x: number;
-  source: Segment;
-  type: PointType;
-}
+import { InputData, NodeP, PointType, Range, SegmentPoint } from './model';
+import { NodeJs, NodeManagerJsNumber, Tree } from './tree/src';
 
 export function intersections({ verticals, horizontals }: InputData): Point[] {
   const N: SegmentPoint[] = getSegmentPoints({ verticals, horizontals });
@@ -51,6 +27,33 @@ export function intersections({ verticals, horizontals }: InputData): Point[] {
   }
 
   return result;
+}
+
+export function getSegmentPoints({ horizontals, verticals }: InputData): SegmentPoint[] {
+  const sort = sortWith<SegmentPoint>([ascend(prop('x')), ascend(prop('type'))]);
+
+  const horizontalSegmentPoints: SegmentPoint[] = flatten(
+    horizontals.map((segment) => [
+      {
+        x: segment.from.getX(),
+        type: PointType.HORIZONTAL_LEFT,
+        source: segment,
+      },
+      {
+        x: segment.to.getX(),
+        type: PointType.HORIZONTAL_RIGHT,
+        source: segment,
+      },
+    ])
+  );
+
+  const verticalSegmentPoints: SegmentPoint[] = verticals.map((segment) => ({
+    x: segment.from.getX(),
+    source: segment,
+    type: PointType.VERTICAL,
+  }));
+
+  return sort(horizontalSegmentPoints.concat(verticalSegmentPoints));
 }
 
 export function rangeQuery1d<T = unknown>(root: NodeJs<number, T> | null, range: Range): NodeP<T>[] {
@@ -85,31 +88,4 @@ function findSplitNode<T = unknown>(root: NodeJs<number, T> | null, range: Range
   }
 
   return splitNode;
-}
-
-export function getSegmentPoints({ horizontals, verticals }: InputData): SegmentPoint[] {
-  const sort = sortWith<SegmentPoint>([ascend(prop('x')), ascend(prop('type'))]);
-
-  const horizontalSegmentPoints: SegmentPoint[] = flatten(
-    horizontals.map((segment) => [
-      {
-        x: segment.from.getX(),
-        type: PointType.HORIZONTAL_LEFT,
-        source: segment,
-      },
-      {
-        x: segment.to.getX(),
-        type: PointType.HORIZONTAL_RIGHT,
-        source: segment,
-      },
-    ])
-  );
-
-  const verticalSegmentPoints: SegmentPoint[] = verticals.map((segment) => ({
-    x: segment.from.getX(),
-    source: segment,
-    type: PointType.VERTICAL,
-  }));
-
-  return sort(horizontalSegmentPoints.concat(verticalSegmentPoints));
 }
