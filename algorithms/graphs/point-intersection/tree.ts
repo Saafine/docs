@@ -4,7 +4,7 @@ import { NodeJs, NodeManagerJsNumber, Tree } from './tree/src';
 import { flatten } from 'lodash';
 
 type Range = [number, number];
-type NodeP = NodeJs<number, unknown>;
+type NodeP<T> = NodeJs<number, T>;
 
 export interface InputData {
   verticals: Segment[];
@@ -28,12 +28,12 @@ export interface SegmentPoint {
   type: PointType;
 }
 
-export function intersections({ verticals, horizontals }: InputData): SegmentPoint[] {
+export function intersections({ verticals, horizontals }: InputData): Point[] {
   const N: SegmentPoint[] = getSegmentPoints({ verticals, horizontals });
   const nodeManager = new NodeManagerJsNumber<SegmentPoint>();
   const tree = new Tree(nodeManager);
 
-  let result: SegmentPoint[] = [];
+  let result: Point[] = [];
 
   for (let x = 0; x < N.length; x++) {
     const L = N[x] as SegmentPoint;
@@ -42,8 +42,10 @@ export function intersections({ verticals, horizontals }: InputData): SegmentPoi
     } else if (L.type === PointType.HORIZONTAL_RIGHT) {
       tree.removeNode(L.source.from.getY());
     } else {
-      const query = rangeQuery1d(nodeManager.getRoot(), [L.source.from.getY(), L.source.to.getY()]);
-      const found = query.map((node) => node.getValue() as SegmentPoint);
+      const b = L.source.from.getY();
+      const c = L.source.to.getY();
+      const query = rangeQuery1d<SegmentPoint>(nodeManager.getRoot(), [b, c]);
+      const found = query.map((node) => new Point([L.source.from.getX(), node.getValue().source.from.getY()]));
       result = result.concat(found);
     }
   }
@@ -51,9 +53,9 @@ export function intersections({ verticals, horizontals }: InputData): SegmentPoi
   return result;
 }
 
-export function rangeQuery1d(root: NodeJs<number, unknown> | null, range: Range): NodeP[] {
-  let nodes: NodeP[] = [];
-  const splitNode = findSplitNode(root, range);
+export function rangeQuery1d<T = unknown>(root: NodeJs<number, T> | null, range: Range): NodeP<T>[] {
+  let nodes: NodeP<T>[] = [];
+  const splitNode = findSplitNode<T>(root, range);
   if (!splitNode) return nodes;
   if (isWithinRange(splitNode, range)) nodes.push(splitNode);
   nodes = nodes.concat(rangeQuery1d(splitNode.getLeft(), range));
@@ -61,24 +63,24 @@ export function rangeQuery1d(root: NodeJs<number, unknown> | null, range: Range)
   return nodes;
 }
 
-function isWithinRange(node: NodeP, range: Range): boolean {
+function isWithinRange<T>(node: NodeP<T>, range: Range): boolean {
   const value = node.getKey();
   const [min, max] = range; // Expect range to be sorted
   return min <= value && value <= max;
 }
 
-function findSplitNode(root: NodeJs<number, unknown> | null, range: Range): NodeP | null {
+function findSplitNode<T = unknown>(root: NodeJs<number, T> | null, range: Range): NodeP<T> | null {
   if (!root) return null;
-  let splitNode: NodeJs<number, unknown> = root;
+  let splitNode: NodeJs<number, T> = root;
   const [min, max] = range; // Expect range to be sorted
 
   const isLeaf = (node: NodeJs<any, any>) => !node.getLeft() && !node.getRight();
 
   while (!isLeaf(splitNode) && (max <= splitNode.getKey() || splitNode.getKey() < min)) {
     if (max <= splitNode.getKey()) {
-      splitNode = splitNode.getLeft() as NodeJs<number, string>;
+      splitNode = splitNode.getLeft() as NodeJs<number, T>;
     } else {
-      splitNode = splitNode.getRight() as NodeJs<number, string>;
+      splitNode = splitNode.getRight() as NodeJs<number, T>;
     }
   }
 

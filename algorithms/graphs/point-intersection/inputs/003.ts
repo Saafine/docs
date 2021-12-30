@@ -47,7 +47,7 @@ export const input: InputData = {
   ],
   verticals: [
     {
-      from: new Point([-2, 3]),
+      from: new Point([-2, -3]),
       to: new Point([-2, 2]),
     },
     {
