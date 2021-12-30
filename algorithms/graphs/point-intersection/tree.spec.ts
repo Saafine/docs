@@ -1,5 +1,6 @@
 import { Point } from './point';
-import { getSegmentPoints, intersections, PointType, Segment, SegmentPoint } from './tree';
+import { getSegmentPoints, intersections } from './tree';
+import { PointType, Segment, SegmentPoint } from './model';
 import { input as input_001 } from './inputs/001';
 import { input as input_002 } from './inputs/002';
 import { input as input_003 } from './inputs/003';

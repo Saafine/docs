@@ -1,4 +1,4 @@
-import { InputData } from '../tree';
+import { InputData } from '../model';
 import { Point } from '../point';
 
 // przyklad 1 z cwiczen, powinny byc wszystkie konce odcinkow poziomych

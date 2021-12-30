@@ -1,4 +1,4 @@
-import { InputData } from '../tree';
+import { InputData } from '../model';
 import { Point } from '../point';
 
 // przyklad 3 z cwiczen, powinno byc 4: (-1, 1), (-1, -1), (1,1), (1, -1)
