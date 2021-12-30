@@ -1,9 +1,14 @@
 import { Point } from './point';
-import { getSegmentPoints, PointType, runTreeTest, Segment, SegmentPoint } from './tree';
+import { getSegmentPoints, intersections, PointType, Segment, SegmentPoint } from './tree';
+import { input as input_001 } from './inputs/001';
+import { input as input_002 } from './inputs/002';
+import { input as input_003 } from './inputs/003';
 
 describe('test tree', () => {
-  it('abc', () => {
-    runTreeTest();
+  it('should find intersection points', () => {
+    expect(intersections(input_001)).toHaveLength(0);
+    expect(intersections(input_002)).toHaveLength(4);
+    expect(intersections(input_003)).toHaveLength(20);
   });
 
   describe('sorting segments', () => {

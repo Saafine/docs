@@ -35,3 +35,12 @@ współrzędną x jak odcinki pionowe
 
 Trzeba sprawdzać zakres y:
 ![img_4.png](img_4.png)
+
+
+# Implementation based on:
+https://cw.fel.cvut.cz/b181/_media/courses/cg/lectures/03-rangesearch.pdf
+http://www.facweb.iitkgp.ac.in/~sourav/Lecture-17.pdf
+https://github.com/Shalin23/Range-Tree/blob/main/RangeTree.py
+http://people.scs.carleton.ca/~michiel/lecturenotes/ALGGEOM/horverintersect.pdf
+http://www-di.inf.puc-rio.br/~laber/range_kd_trees.pdf
+https://github.com/pavle10/faculty_projects/blob/e6d9063538608bfd824013b3085ef85fb767b799/les/src/les/RangeTree.java
