@@ -13,6 +13,7 @@ class Hero { }
 
 console.log(Hero.power); // returns flight
 
+
 // Example 2
 // ---------------------
 // if we are applying a decorator to a method or to a function on an object,
