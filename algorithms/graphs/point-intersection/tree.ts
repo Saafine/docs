@@ -72,12 +72,13 @@ function isWithinRange<T>(node: NodeP<T>, range: Range): boolean {
   return min <= value && value <= max;
 }
 
-function findSplitNode<T = unknown>(root: NodeJs<number, T> | null, range: Range): NodeP<T> | null {
+export function findSplitNode<T = unknown>(root: NodeJs<number, T> | null, range: Range): NodeP<T> | null {
   if (!root) return null;
   let splitNode: NodeJs<number, T> = root;
   const [min, max] = range; // Expect range to be sorted
 
   const isLeaf = (node: NodeJs<any, any>) => !node.getLeft() && !node.getRight();
+
 
   while (!isLeaf(splitNode) && (max <= splitNode.getKey() || splitNode.getKey() < min)) {
     if (max <= splitNode.getKey()) {

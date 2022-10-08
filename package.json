@@ -8,7 +8,8 @@
     "watch:graphs:polygone-core": "parcel algorithms/graphs/polygon-core/index.html",
     "watch:graphs:closest-pair-of-points": "parcel algorithms/graphs/closest-pair-of-points/index.html",
     "watch:graphs:kd-tree": "parcel algorithms/graphs/kd-tree/index.html",
-    "watch:graphs:points-intersection": "parcel algorithms/graphs/point-intersection/index.html"
+    "watch:graphs:points-intersection": "parcel algorithms/graphs/point-intersection/index.html",
+    "watch:graphs:k-center": "parcel algorithms/graphs/k-center-problem/index.html"
   },
   "repository": "git+https://github.com/Saafine/docs.git",
   "author": "Pawel L",

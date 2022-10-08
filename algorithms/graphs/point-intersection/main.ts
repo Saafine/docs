@@ -1,5 +1,5 @@
 import { render } from './render';
-import { input } from './inputs/003';
+import { input } from './inputs/001';
 import { intersections } from './tree';
 
 // @ts-ignore

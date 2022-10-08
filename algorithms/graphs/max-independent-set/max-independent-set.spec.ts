@@ -202,7 +202,7 @@ function test(tree: TestTree): number {
   function walk(testTree: TestTree, previous: NodeV) {
     const node = new NodeV(testTree.node);
     previous.addChild(node);
-    testTree.children?.forEach((child) => {
+    testTree.children && testTree.children.forEach((child) => {
       walk(child, node);
     });
   }
