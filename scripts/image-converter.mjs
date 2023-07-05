@@ -13,6 +13,8 @@ async function runConversion() {
   const dir = './';
   const files = await getFiles(dir);
 
+  const failures = [];
+
   let index = 0;
   for (const file of files) {
     index++;
@@ -24,8 +26,15 @@ async function runConversion() {
     console.log({ input, output, inputDir });
 
     await mkdir(inputDir, { recursive: true });
-    await convertImage(input, output);
+    try {
+		await convertImage(input, output);
+	} catch (e) {
+		console.error(e);
+		failures.push(input);
+	}
   }
+
+  if (failures.length > 0) console.warn('Failures:', failures);
 
   console.log('File Paths:', files);
   console.log('Total Affected files:', files.length);

@@ -1,0 +1,5 @@
+# How  to create MySQL db on Oracle Cloud network
+- create vcn, create public subnet with security list that allows tcp ingress on all ports
+- create mysql db, save username & password, wait for it to create and copy private ip
+- create network load balancer, create backend list, add backend, specificy private ip (mysql private), allow on all ports
+- test if works: nc -vz <public load-balancer-ip> <port>

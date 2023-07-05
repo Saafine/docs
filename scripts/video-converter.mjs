@@ -16,6 +16,10 @@ async function runConversion() {
   for (const file of files) {
     console.log('Running...');
     const input = join(dir, relative(dir, file));
+	if (shouldSkipFile(input)) {
+	 console.log('Skipping', input);
+	 continue;
+	}
     const inputDir = join(outputFolderName, relative(dir, file), '../');
     const output = join(outputFolderName, relative(dir, file));
 
@@ -28,4 +32,10 @@ async function runConversion() {
   console.log('File Paths:', files);
   console.log('Total Affected files:', files.length);
 }
+
+function shouldSkipFile(input) {
+  const excludeExtensions = ['ini', 'txt'];
+  return excludeExtensions.some((ext) => input.endsWith(ext));
+}
+
 runConversion();
