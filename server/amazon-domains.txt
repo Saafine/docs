@@ -18,3 +18,39 @@ alias name: empty
 aliast target: www.testing-domain.pl
 
 https://www.youtube.com/watch?v=aHuQExY360I
+
+# Adding domain & certficate to Cloudfront + Namescheap
+- in namescheap specify:
+	- alias record | @ | www.example.com
+	- cname | www | xxx.cloudfront.net. (take from cloudfront)
+	- URL Redirect record | * | https://www.example.com/
+	- URL Redirect record | www | https://www.example.com/
+- in cloudfront, add domain and certificate
+
+
+# Make sure accessing URLs work:
+https://xxx.com
+http://www.xxx.com
+www.xxx.com
+xxx.com
+
+# Adding Certificates
+1. Go to AWS Certificate Manager
+2. Request a public Certificate
+3. Select 3 domain names: abc.com and www.abc.com and *.abc.com 
+4. Select Email Validation
+
+Other Validations:
+- DNS validation
+- Copy CNAME name and put it into domain provider
+ - for example namescheap: manage domains / advanced dns / host records / add new record / cname
+ - host: abc (NAMESCHEAP APPENDS domain name automatically so you don't copy the whole CNAME name from AWS dashboard)
+ - value: CNAME value from AWS
+ - Wait for Success status in AWS Certificates dashboard (did not work for certificate starting with www.)
+
+# Checking cname (DNS Validation only)
+- https://dev.to/namuny/integrating-aws-cloudfront-with-third-party-domain-provider-2ce3
+- get CNAME name from aws certificate page
+- dig cname _6ff37e31f12xxxx.jump2url.com.
+- check for answer section
+
