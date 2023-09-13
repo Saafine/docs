@@ -1,0 +1,4 @@
+share folder on windows
+check in explorer/networks to make sure only 1 folder is shared
+get ip from ipconfig
+go to ipad/files, type smb://<ip> and get the folder
