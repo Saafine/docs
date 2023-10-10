@@ -1,0 +1,2 @@
+# Position: fixed element is not visible
+https://stackoverflow.com/questions/26704903/only-in-safari-positionfixed-child-cut-off-when-parent-is-positionfixed-and
