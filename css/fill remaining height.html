@@ -1,0 +1,33 @@
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  /* Header styles */
+}
+
+.content {
+background: red;
+overflow-y: auto;
+  flex: 1; /* This makes the div fill the remaining space */
+}
+
+.content2 {
+height: 2000px;
+background: green;
+}
+</style>
+
+<div class="container">
+  <div class="header">Header Content</div>
+  <div class="content"><div class="content2">
+  Your Content Here</div></div>
+</div>

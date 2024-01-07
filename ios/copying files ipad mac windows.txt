@@ -15,3 +15,9 @@ go to ipad/files, type smb://<ip> and get the folder
 - share the folder to mac user
 - on windows, use the ip that is displayed on mac (when sharing folder)
 - on windows, type in explorer \\192.168.0.10 enter mac credentials
+
+#4 how to check what's shared in windows
+Press Windows + X and choose "Computer Management".
+Computer Management
+Shared Folders
+Shared

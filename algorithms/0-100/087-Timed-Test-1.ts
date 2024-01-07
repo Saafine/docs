@@ -22,7 +22,6 @@ function solution(): number {
     let mem = {};
 
     function fibonacci(to: number) {
-        if(typeof mem[to] !== 'undefined') return mem[to];
         if (to === 0 || to === 1) return 1;
         return fibonacci(to - 1) + fibonacci(to - 2);
     }
