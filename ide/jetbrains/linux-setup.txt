@@ -1,0 +1,2 @@
+- "run configuration in intellij" does not see environment variables defined in .zshrc
+   - add them to /etc/profile
