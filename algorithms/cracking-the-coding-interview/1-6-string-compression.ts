@@ -6,26 +6,38 @@
 // should return original string.
 // You can assume the string has only uppercase and lowercase letters (a-z)
 
+// The runtime is O(p + k^2), where p is the size of the original string and k is the number of character sequences. For example,
+// if the string is aabccdeeaa, then there are six character sequences. It's slow
+// because string concatenation operates in O(n^2) time
 export function stringCompression(text: string): string {
   let compressed = '';
-  let count = 0;
-  let previousChar = text[0];
 
-  for (const char of text) {
-    const compressedCharCount = count;
-    const compressedChar = previousChar;
-    const isCharRepeated = previousChar === char;
-    previousChar = char;
-    count = isCharRepeated ? count + 1 : 1;
+  let pointer = 0;
 
-    if (!isCharRepeated) {
-      compressed = `${compressed}${compressedChar}${compressedCharCount}`;
-    }
-
+  for (let x = 0; x <= text.length; x++) {
+    const pointerChar = text[pointer];
+    if (pointerChar === text[x]) continue;
+    const count = x - pointer;
+    pointer = x;
+    compressed = `${compressed}${pointerChar}${count}`;
   }
 
-  // TODO [P. Labus] 
-  compressed = previousChar ? `${compressed}${previousChar}${count}` : compressed;
-
   return compressed.length < text.length ? compressed : text;
+}
+
+export function stringCompression2(text: string): string {
+  const compressed = [];
+
+  let pointer = 0;
+
+  for (let x = 0; x <= text.length; x++) {
+    const pointerChar = text[pointer];
+    if (pointerChar === text[x]) continue;
+    const count = x - pointer;
+    pointer = x;
+    compressed.push(pointerChar as string + count)
+  }
+
+  const result = compressed.join('')
+  return result.length < text.length ? result : text;
 }
