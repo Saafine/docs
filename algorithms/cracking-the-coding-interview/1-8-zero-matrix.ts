@@ -4,7 +4,6 @@
 export function zeroMatrix(matrix: Array<number[]>): Array<number[]> {
   const n = matrix.length;
 
-  // TODO [P. Labus] skip zeroed rows and column
   for (let column = 0; column < n; column++) {
     for (let row = 0; row < n; row++) {
       const value = matrix[column]?.[row];
