@@ -1,0 +1,7 @@
+# Check the ip route table before using vpn
+ip route
+# And after using vpn
+ip route
+# Write down the vpn gateway ip (for example via XX.X.XXX.XXX dev tun 0)
+# Set default route
+sudo ip route add default via <vpn gateway-ip> dev tun0;
