@@ -1,0 +1,4 @@
+Alt+F2
+Type nm-connection-editor
+Click on the Wi-Fi connection you want to fix and press the settings button below
+Change the Band option from Automatic to B/G (2.4 GHz)

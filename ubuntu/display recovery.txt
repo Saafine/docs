@@ -1,0 +1,12 @@
+sudo apt update
+sudo apt install --reinstall gnome-session
+
+# Optional
+sudo apt install --reinstall ubuntu-desktop
+
+Make sure to use xorg instead of wayland
+- sudo nano /etc/gdm3/custom.conf
+This should be uncommented:
+WaylandEnable=false
+echo $XDG_SESSION_TYPE // expect x11
+
