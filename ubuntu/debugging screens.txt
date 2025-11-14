@@ -1,0 +1,8 @@
+# Debugging screens
+sudo nvidia-settings
+switch to X11
+nvidia-smi
+
+sudo nano /etc/X11/xorg.conf
+sudo systemctl restart gdm
+ALT+F2 and r

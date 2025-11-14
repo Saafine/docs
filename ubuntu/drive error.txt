@@ -1,0 +1,4 @@
+ubuntu. unable to access "My Passport" Error mounting /dev/sdc1. wrong fs type, bad option, bad superblock on /dev/sdc1, missing codepage or helper program, or other error. works fine on windows
+
+chkdsk X: /f
+

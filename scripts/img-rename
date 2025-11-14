@@ -1,0 +1,113 @@
+#!/bin/bash
+
+# -----------------------------------------------------------
+# img-rename: Rename image files based on EXIF creation time
+#
+# Format:
+#   Unique:   YYYY-MM-DD___HH-mm-ss.<extension>
+#   Duplicate: YYYY-MM-DD___HH-mm-ss_<index>.<extension>
+#
+# Requirements:
+#   exiftool (install with: sudo apt install libimage-exiftool-perl)
+#
+# Supports:
+#   --dry-run  (preview changes without renaming)
+#
+# Usage:
+#   img-rename <directory> [--dry-run]
+# -----------------------------------------------------------
+
+# Check if exiftool is installed
+if ! command -v exiftool >/dev/null 2>&1; then
+  echo "❗ Error: 'exiftool' not found."
+  echo "   Install: sudo apt install libimage-exiftool-perl"
+  exit 1
+fi
+
+# Parse arguments
+DIR=""
+DRY_RUN=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true ;;
+    --help|-h)
+      echo "Usage: img-rename <directory> [--dry-run]"
+      exit 0
+      ;;
+    *)
+      if [ -z "$DIR" ]; then
+        DIR="$arg"
+      fi
+      ;;
+  esac
+done
+
+# Validate directory argument
+if [ -z "$DIR" ]; then
+  echo "Usage: img-rename <directory> [--dry-run]"
+  exit 1
+fi
+
+if [ ! -d "$DIR" ]; then
+  echo "❌ Error: '$DIR' is not a valid directory"
+  exit 1
+fi
+
+# Counters
+RENAMED=0
+SKIPPED=0
+
+# Process files using process substitution to preserve variable scope
+while IFS= read -r -d '' file; do
+  ext="${file##*.}"
+  dir="$(dirname "$file")"
+
+  # Extract EXIF date
+  datetime=$(exiftool -s3 -DateTimeOriginal "$file" 2>/dev/null)
+  [ -z "$datetime" ] && datetime=$(exiftool -s3 -CreateDate "$file" 2>/dev/null)
+
+  if [ -z "$datetime" ]; then
+    echo "❌ Skipped (no date found): '$file'"
+    ((SKIPPED++))
+    continue
+  fi
+
+  # Format: YYYY-MM-DD___HH-mm-ss
+  formatted=$(echo "$datetime" | sed -E 's/([0-9]{4}):([0-9]{2}):([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/\1-\2-\3___\4-\5-\6/')
+
+  base="$dir/$formatted"
+  newname="$base.$ext"
+  counter=1
+
+  # Avoid overwriting by appending _<index>
+  while [ -e "$newname" ] && [ "$newname" != "$file" ]; do
+    newname="${base}_$counter.$ext"
+    ((counter++))
+  done
+
+  # Rename or simulate
+  if [ "$file" != "$newname" ]; then
+    if [ "$DRY_RUN" = true ]; then
+      echo "🔍 Would rename: '$file' -> '$newname'"
+    else
+      echo "✅ Renaming: '$file' -> '$newname'"
+      if mv "$file" "$newname"; then
+        ((RENAMED++))
+      else
+        echo "❗ Failed to rename: '$file'"
+        ((SKIPPED++))
+      fi
+    fi
+  else
+    echo "⏭ Already correctly named: '$file'"
+    ((SKIPPED++))
+  fi
+done < <(find "$DIR" -type f -print0)
+
+# Summary
+echo ""
+echo "🏁 Done."
+echo "✔️  Files renamed: $RENAMED"
+echo "❌ Files skipped: $SKIPPED"
+
