@@ -21,3 +21,8 @@ Press Windows + X and choose "Computer Management".
 Computer Management
 Shared Folders
 Shared
+
+
+# Allow share with ubuntu on Mac
+1. System Settings → General → Sharing → File Sharing → ⓘ (Options)
+2. Untick the checkbox next to daria under "Windows File Sharing"

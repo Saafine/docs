@@ -2,3 +2,23 @@ ubuntu. unable to access "My Passport" Error mounting /dev/sdc1. wrong fs type, 
 
 chkdsk X: /f
 
+
+# ubuntu fix
+
+Two things to do on a fresh machine:
+
+1. Install the tools (Debian/Ubuntu — adjust for your distro):
+sudo apt install ntfs-3g udisks2
+
+2. Drop in the udisks2 config so GNOME stops choking on dirty NTFS volumes:
+sudo tee /etc/udisks2/mount_options.conf > /dev/null <<'EOF'
+[defaults]
+ntfs_drivers=ntfs,ntfs3
+ntfs_defaults=uid=$UID,gid=$GID,windows_names,recover
+ntfs_allow=uid=$UID,gid=$GID,umask,dmask,fmask,locale,recover,norecover,ignore_case,windows_names,compression,nocompression,big_writes
+ntfs3_defaults=uid=$UID,gid=$GID,force
+ntfs3_allow=uid=$UID,gid=$GID,umask,dmask,fmask,iocharset,discard,nodiscard,sparse,nosparse,hidden,nohidden,sys_immutable,nosys_immutable,showmeta,noshowmeta,prealloc,noprealloc,hide_dot_files,nohide_dot_files,windows_names,nocase,case,force
+EOF
+sudo systemctl restart udisks2
+
+That's it — prefers ntfs-3g (auto-replays the journal via recover) and falls back to ntfs3 with force if needed. Want me to save this as a script in ~/bin so it's one command on the next machine?
